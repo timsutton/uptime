@@ -25,7 +25,7 @@ fn main() {
                 .as_secs() as i64;
 
             let uptime_seconds = now - boottime.tv_sec;
-            println!("Uptime: {} seconds", uptime_seconds);
+            println!("{}", uptime_seconds);
         } else {
             eprintln!("Failed to get system uptime");
         }
