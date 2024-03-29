@@ -1,0 +1,59 @@
+# standalone LLVM
+bazel_dep(name = "toolchains_llvm", version = "1.0.0")
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+llvm.toolchain(
+    llvm_version = "17.0.6",
+)
+use_repo(llvm, "llvm_toolchain")
+register_toolchains("@llvm_toolchain//:all")
+
+# golang
+bazel_dep(name = "rules_go", version = "0.46.0")
+bazel_dep(name = "gazelle", version = "0.35.0")
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+
+# Download an SDK for the host OS & architecture as well as common remote execution platforms.
+go_sdk.download(version = "1.22.1")
+
+# Register the Go SDK installed on the host.
+go_sdk.host()
+
+# rust
+# bazel_dep(name = "rules_rust", version = "0.40.0")
+# rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+# rust.toolchain(
+#     edition = "2021",
+#     rustfmt_version = "nightly/2024-02-22",
+#     versions = ["1.77.1"],
+# )
+
+# crate = use_extension(
+#     "@rules_rust//crate_universe:extension.bzl",
+#     "crate",
+# )
+# crate.from_cargo(
+#     name = "crates",
+#     cargo_lockfile = "//src/rs:Cargo.lock",
+#     manifests = [
+#         "//src/rs:Cargo.toml",
+#     ],
+# )
+# use_repo(crate, "crates")
+
+# ruby
+bazel_dep(name = "rules_ruby", version = "0.9.1")
+ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
+ruby.toolchain(
+    name = "ruby",
+    version = "3.3.0",
+    # alternatively, load version from .ruby-version file
+    # version_file = "//:.ruby-version",
+)
+ruby.bundle_fetch(
+    name = "bundle",
+    gemfile = "//:Gemfile",
+    gemfile_lock = "//:Gemfile.lock",
+)
+use_repo(ruby, "ruby", "bundle", "ruby_toolchains")
+register_toolchains("@ruby_toolchains//:all")
