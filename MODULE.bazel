@@ -20,13 +20,13 @@ go_sdk.download(version = "1.22.1")
 go_sdk.host()
 
 # rust
-# bazel_dep(name = "rules_rust", version = "0.40.0")
-# rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
-# rust.toolchain(
-#     edition = "2021",
-#     rustfmt_version = "nightly/2024-02-22",
-#     versions = ["1.77.1"],
-# )
+bazel_dep(name = "rules_rust", version = "0.40.0")
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2021",
+    rustfmt_version = "nightly/2024-02-22",
+    versions = ["1.77.1"],
+)
 
 # crate = use_extension(
 #     "@rules_rust//crate_universe:extension.bzl",
