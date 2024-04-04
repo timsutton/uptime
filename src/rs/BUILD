@@ -6,8 +6,10 @@ rust_binary(
     name = "uptime",
     srcs = ["uptime.rs"],
     edition = "2021",
+    deps = [
+        "@crates//:libc",
+    ],
 )
-
 # # Borrowed from cloudflare/workerd:
 # # https://github.com/ObsidianMinor/workerd/blob/cb61734c3fa6e3e29971bf7805fed3f555825465/rust-deps/BUILD.bazel
 # selects.config_setting_group(
