@@ -14,7 +14,7 @@ bazel_dep(name = "gazelle", version = "0.35.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
 # Download an SDK for the host OS & architecture as well as common remote execution platforms.
-go_sdk.download(version = "1.22.1")
+go_sdk.download(version = "1.22.2")
 
 # Register the Go SDK installed on the host.
 go_sdk.host()
