@@ -1,3 +1,4 @@
 /target
 uptime
 bazel-*
+MODULE.bazel.lock
