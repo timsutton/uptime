@@ -12,7 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: macos-13
+          # re-enable macos-13 once we've fixed the swift build to be arch-independent
+          # - runner: macos-13
           - runner: macos-14
           - runner: ubuntu-22.04
     runs-on: ${{ matrix.runner }}
