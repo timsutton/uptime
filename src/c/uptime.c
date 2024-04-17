@@ -1,7 +1,6 @@
 #include <stdio.h>
 
-// TODO: Let's do BSD next?
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__FreeBSD__)
 #include <stdlib.h>
 #include <sys/sysctl.h>
 #include <sys/time.h>
@@ -14,7 +13,7 @@
 #endif
 
 int main(void) {
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__FreeBSD__)
   struct timeval boottime;
   size_t len = sizeof(boottime);
   int mib[2] = {CTL_KERN, KERN_BOOTTIME}; // MIB for kern.boottime
