@@ -1,10 +1,15 @@
+# we explicitly use platforms for //src/swift
+bazel_dep(name = "platforms", version = "0.0.9")
+
 # standalone LLVM
 bazel_dep(name = "toolchains_llvm", version = "1.0.0")
+
 llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
 llvm.toolchain(
     llvm_version = "17.0.6",
 )
 use_repo(llvm, "llvm_toolchain")
+
 register_toolchains("@llvm_toolchain//:all")
 
 # golang
@@ -18,18 +23,24 @@ go_sdk.download(version = "1.22.2")
 
 # rust
 bazel_dep(name = "rules_rust", version = "0.42.1")
+
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
     versions = ["1.77.1"],
 )
+
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
-crate.spec(package = "libc", version = "0.2")
+crate.spec(
+    package = "libc",
+    version = "0.2",
+)
 crate.from_specs(name = "crates")
 use_repo(crate, "crates")
 
 # ruby
 bazel_dep(name = "rules_ruby", version = "0.9.1")
+
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
@@ -42,17 +53,17 @@ ruby.bundle_fetch(
     gemfile = "//:Gemfile",
     gemfile_lock = "//:Gemfile.lock",
 )
-use_repo(ruby, "ruby", "bundle", "ruby_toolchains")
+use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
+
 register_toolchains("@ruby_toolchains//:all")
 
 # python
 bazel_dep(name = "rules_python", version = "0.31.0")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
-
 python.toolchain(
-    python_version = "3.12",
     is_default = True,
+    python_version = "3.12",
 )
 
 # swift
