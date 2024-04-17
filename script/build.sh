@@ -4,7 +4,6 @@ set -euo pipefail
 
 source ./script/deps.sh
 
-
 if [[ "${platform}" == "linux" ]]; then
     bazel run --config=quiet //src/c:uptime
 fi

@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # re-enable macos-13 once we've fixed the swift build to be arch-independent
+          # - runner: macos-13
+          - runner: macos-14
+          - runner: ubuntu-22.04
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+    - uses: actions/checkout@v4
+    # - name: Setup Xcode version
+    #   uses: maxim-lobanov/setup-xcode@v1.6.0
+    #   with:
+    #     xcode-version: ${{ matrix.xcode_version }}
+    - name: Build
+      run: |
+        ./script/build.sh
