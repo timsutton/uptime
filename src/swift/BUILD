@@ -6,6 +6,7 @@ swift_binary(
     name = "uptime",
     srcs = ["uptime.swift"],
     # TODO: set the arch dynamically using platforms, and is this even the best place for this config
+    # see Bazel Platforms Cookbook: https://docs.google.com/document/d/1UZaVcL08wePB41ATZHcxQV4Pu1YfA1RvvWm8FbZHuW8/edit
     copts = select({
         "@platforms//os:osx": ["--target=arm64-apple-macosx13"],
         "//conditions:default": [],
