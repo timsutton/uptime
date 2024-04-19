@@ -3,6 +3,7 @@ bazel_dep(name = "platforms", version = "0.0.9")
 
 # standalone LLVM
 bazel_dep(name = "toolchains_llvm", version = "1.0.0")
+
 # Override toolchains_llvm to newer Git sha. Currently up in the air as to who will maintain
 # the module in BCR: https://github.com/bazel-contrib/toolchains_llvm/issues/298
 archive_override(
@@ -18,7 +19,7 @@ llvm.toolchain(
         "darwin-x86_64": "15.0.7",
         "linux-aarch64": "18.1.2",
         "": "17.0.6",
-    }
+    },
 )
 use_repo(llvm, "llvm_toolchain")
 
