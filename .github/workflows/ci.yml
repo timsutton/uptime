@@ -7,6 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
+  buildifier:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run buildifier
+      uses: jbajic/buildifier@v1.0.1
   build:
     strategy:
       fail-fast: false
