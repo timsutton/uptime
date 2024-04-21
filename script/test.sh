@@ -12,7 +12,7 @@ ls -la artifacts/
 "./artifacts/${platform}/c/uptime"
 "./artifacts/${platform}/go/uptime"
 
-if [[ "${platform}" == "macos" ]]; then
-  "./artifacts/macos/rs/uptime"
-  "./artifacts/macos/swift/uptime"
-fi
+# if [[ "${platform}" == "macos" ]]; then
+#   "./artifacts/macos/rs/uptime"
+#   "./artifacts/macos/swift/uptime"
+# fi
