@@ -28,7 +28,9 @@ jobs:
       with:
         name: binaries-${{ matrix.runner }}
         path: artifacts
+
   test:
+    needs: build
     strategy:
       fail-fast: false
       matrix:
