@@ -6,6 +6,7 @@ source ./script/deps.sh
 
 if [[ "${platform}" == "linux" ]]; then
     bazel run --config=quiet //src/c:uptime
+    bazel run --config=quiet //src/go:uptime
     bazel run --config=quiet //src/py:uptime
 fi
 

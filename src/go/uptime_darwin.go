@@ -1,3 +1,6 @@
+//go:build darwin
+// +build darwin
+
 package main
 
 import (
@@ -7,7 +10,7 @@ import (
 	"unsafe"
 )
 
-func main() {
+func uptime() {
 	// Define the sysctl mib (Management Information Base)
 	mib := []int32{1, 21} // CTL_KERN, KERN_BOOTTIME
 
@@ -28,4 +31,8 @@ func main() {
 	// Calculate and print the uptime
 	uptime := time.Since(time.Unix(tv.Sec, int64(tv.Usec*1000)))
 	fmt.Printf("%d\n", int64(uptime.Seconds()))
+}
+
+func main() {
+	uptime()
 }
