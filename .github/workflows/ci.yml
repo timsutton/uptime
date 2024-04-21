@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: ./script/build.sh
     - name: Stage compiled artifacts
-      run: ./script/stash.sh
+      run: ./script/stage.sh
     - name: Archive built artifacts
       uses: actions/upload-artifact@v4
       with:
