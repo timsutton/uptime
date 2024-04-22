@@ -36,7 +36,6 @@ fn uptime() {
 
 #[cfg(target_os = "linux")]
 fn uptime() {
-    use libc::sysinfo;
     unsafe {
         let mut info: libc::sysinfo = zeroed();
         if libc::sysinfo(&mut info) == 0 {
