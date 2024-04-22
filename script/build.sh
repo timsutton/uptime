@@ -5,7 +5,8 @@ set -euo pipefail
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-query_linux="kind(.*_binary, //src/... except //src/swift/...)"
+# focused to only testing Swift for now on Linux
+query_linux="kind(.*_binary, //src/swift/...)"
 query_macos="kind(.*_binary, //src/...)"
 
 if [[ "${platform}" == "linux" ]]; then
@@ -13,10 +14,6 @@ if [[ "${platform}" == "linux" ]]; then
     export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
     # export LANG="en_US.UTF-8"
     query="${query_linux}"
-fi
-
-if [[ "${platform}" == "macos" ]]; then
-    query="${query_macos}"
 fi
 
 bazel query "${query}" | xargs bazel build --compilation_mode=opt
