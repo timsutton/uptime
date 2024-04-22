@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+# shellcheck source=deps.sh
 source ./script/deps.sh
 
 if [[ "${platform}" == "linux" ]]; then
