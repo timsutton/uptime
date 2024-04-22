@@ -1,11 +1,13 @@
 extern crate libc;
 
-use libc::{sysctlbyname, timeval};
 use std::mem::zeroed;
-use std::ptr;
-use std::time::{SystemTime, UNIX_EPOCH};
 
-fn main() {
+#[cfg(target_os = "macos")]
+fn uptime() {
+    use libc::{sysctlbyname, timeval};
+    use std::ptr;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
     unsafe {
         let mut boottime: timeval = zeroed();
         let mut len: libc::size_t = std::mem::size_of::<timeval>() as libc::size_t;
@@ -30,4 +32,21 @@ fn main() {
             eprintln!("Failed to get system uptime");
         }
     }
+}
+
+#[cfg(target_os = "linux")]
+fn uptime() {
+    use libc::sysinfo;
+    unsafe {
+        let mut info: libc::sysinfo = zeroed();
+        if libc::sysinfo(&mut info) == 0 {
+            println!("{}", info.uptime);
+        } else {
+            eprintln!("Failed to get system uptime");
+        }
+    }
+}
+
+fn main() {
+    uptime();
 }
