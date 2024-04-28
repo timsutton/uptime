@@ -7,8 +7,12 @@ if [ "$(uname -s)" = "Linux" ]; then
   export platform="linux"
 fi
 
-for lang in c go rs swift; do
+for lang in c go rs swift zig; do
   if [ "${platform}" = "linux" ] && [ "${lang}" = "swift" ]; then
+    continue
+  fi
+
+  if [ "${platform}" = "linux" ] && [ "${lang}" = "zig" ]; then
     continue
   fi
 
