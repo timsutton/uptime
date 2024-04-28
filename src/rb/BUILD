@@ -9,5 +9,8 @@ rb_library(
 rb_binary(
     name = "uptime",
     main = "uptime.rb",
-    deps = [":lib_uptime"],
+    deps = [
+        ":lib_uptime",
+        "@bundle",
+    ],
 )
