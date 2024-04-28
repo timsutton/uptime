@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: ./script/build.sh ${{ matrix.lang }}
       - name: Stage compiled artifacts
-        run: ./script/stage.sh
+        run: ./script/stage.sh ${{ matrix.lang }}
       - name: Archive built artifacts
         uses: actions/upload-artifact@v4
         with:
