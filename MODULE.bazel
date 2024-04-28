@@ -1,5 +1,18 @@
+# load(
+#     "@build_bazel_apple_support//lib:repositories.bzl",
+#     "apple_support_dependencies",
+# )
+
 # we explicitly use platforms for //src/swift
 bazel_dep(name = "platforms", version = "0.0.10")
+
+# apple
+bazel_dep(name = "rules_apple", version = "3.5.1", repo_name = "build_bazel_rules_apple")
+bazel_dep(name = "apple_support", version = "1.15.1", repo_name = "build_bazel_apple_support")
+# apple_cc_configure = use_extension("@build_bazel_apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
+# use_repo(apple_cc_configure, "local_config_apple_cc")
+
+# apple_support_dependencies()
 
 # standalone LLVM
 bazel_dep(name = "toolchains_llvm", version = "1.0.0")
@@ -89,7 +102,6 @@ python.toolchain(
 )
 
 # swift
-
 bazel_dep(name = "rules_swift", version = "1.18.0", repo_name = "build_bazel_rules_swift")
 
 # zig
