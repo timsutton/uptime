@@ -5,7 +5,7 @@ set -euo pipefail
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-query_linux="kind(.*_binary, //src/... except //src/swift/... except //src/zig/...)"
+query_linux="kind(.*_binary, //src/... except //src/swift/...)"
 query_macos="kind(.*_binary, //src/...)"
 
 if [[ "${platform}" == "linux" ]]; then
