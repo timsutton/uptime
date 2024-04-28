@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+# shellcheck source=common.sh
+source ./script/common.sh
 # shellcheck source=deps.sh
 source ./script/deps.sh
 

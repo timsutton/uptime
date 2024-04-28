@@ -33,23 +33,3 @@ jobs:
           path: artifacts
       - name: Test
         run: ./script/test.sh
-
-  # test:
-  #   needs: build
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #         - runner: macos-13
-  #         - runner: macos-14
-  #         - runner: ubuntu-22.04
-  #   runs-on: ${{ matrix.runner }}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: binaries-${{ matrix.runner }}
-  #         path: artifacts
-  #     - name: Test
-  #       run: ./script/test.sh

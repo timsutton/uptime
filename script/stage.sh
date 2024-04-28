@@ -2,17 +2,14 @@
 
 set -euo pipefail
 
-platform="macos"
-if [ "$(uname -s)" = "Linux" ]; then
-  export platform="linux"
+# shellcheck source=common.sh
+source ./script/common.sh
+
+lang="${1}"
+if [ "${platform}" = "linux" ] && [ "${lang}" = "swift" ]; then
+continue
 fi
 
-for lang in c go rs swift zig; do
-  if [ "${platform}" = "linux" ] && [ "${lang}" = "swift" ]; then
-    continue
-  fi
-
-  mkdir -p "artifacts/${platform}/${lang}"
-  src_path=$(bazel cquery --ui_event_filters=-info --output=starlark --starlark:expr=target.files_to_run.executable.path //src/${lang}/...)
-  cp -v "${src_path}" "artifacts/${platform}/${lang}"
-done
+mkdir -p "artifacts/${platform}/${lang}"
+src_path=$(bazel cquery --ui_event_filters=-info --output=starlark --starlark:expr=target.files_to_run.executable.path //src/${lang}/...)
+cp -v "${src_path}" "artifacts/${platform}/${lang}"
