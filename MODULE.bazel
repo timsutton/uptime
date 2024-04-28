@@ -54,10 +54,18 @@ use_repo(crate, "crates")
 # ruby
 bazel_dep(name = "rules_ruby", version = "0.9.1")
 
+# override for 3.3.1
+archive_override(
+    module_name = "rules_ruby",
+    integrity = "sha256-f5pp4OvJA/lUBNsoo/6d+lLyH7WfBhIBMwps25rLpAM=",
+    strip_prefix = "rules_ruby-7c8d7767672ceb2f63853923ef7fc5e65cf34af6",
+    urls = ["https://github.com/bazel-contrib/rules_ruby/archive/7c8d7767672ceb2f63853923ef7fc5e65cf34af6.tar.gz"],
+)
+
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
-    version = "3.3.0",
+    version = "3.3.1",
     # alternatively, load version from .ruby-version file
     # version_file = "//:.ruby-version",
 )

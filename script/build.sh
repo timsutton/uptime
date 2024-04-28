@@ -19,11 +19,11 @@ fi
 
 if [[ "${platform}" == "macos" ]]; then
     # TODO: rb isn't ready yet
-    for tgt in $(bazel query 'kind(.*_binary, //src/... except //src/rb/...)'); do
+    for tgt in $(bazel query 'kind(.*_binary, //src/...)'); do
         bazel run --config=quiet "${tgt}"
     done
 
-    for tgt in $(bazel query 'kind(.*_binary, //src/... except //src/rb/...)'); do
+    for tgt in $(bazel query 'kind(.*_binary, //src/...)'); do
         bazel build --config=quiet --compilation_mode=opt "${tgt}"
     done
 fi
