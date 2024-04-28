@@ -12,10 +12,6 @@ for lang in c go rs swift zig; do
     continue
   fi
 
-  if [ "${platform}" = "linux" ] && [ "${lang}" = "zig" ]; then
-    continue
-  fi
-
   mkdir -p "artifacts/${platform}/${lang}"
   src_path=$(bazel cquery --ui_event_filters=-info --output=starlark --starlark:expr=target.files_to_run.executable.path //src/${lang}/...)
   cp -v "${src_path}" "artifacts/${platform}/${lang}"
