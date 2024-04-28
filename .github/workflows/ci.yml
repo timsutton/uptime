@@ -21,8 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: ./script/build.sh
-
+        run: ./script/build.sh ${{ matrix.lang }}
       - name: Stage compiled artifacts
         run: ./script/stage.sh
       - name: Archive built artifacts
