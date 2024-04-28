@@ -3,9 +3,9 @@ const c = @cImport({
     @cInclude("sys/sysinfo.h");
 });
 
-pub fn getSystemUptime() u64 {
+pub fn getSystemUptime() c_long {
     var info: c.struct_sysinfo = undefined;
-    if (c.sysinfo(&info) == 0) return @as(u64, info.uptime);
+    if (c.sysinfo(&info) == 0) return @as(c_long, info.uptime);
     return 0;
 }
 
