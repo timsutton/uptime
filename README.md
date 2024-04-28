@@ -1,2 +1,3 @@
 # uptime
-Simple tiny executable to return uptime on macOS in seconds, maybe in the future we'll see how many different ways we can write this :D
+
+Learning Bazel with a polyglot multi-platform project: a simple `uptime` executable that prints uptime in seconds.
