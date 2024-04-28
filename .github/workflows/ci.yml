@@ -24,12 +24,12 @@ jobs:
       - name: Archive built artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: binaries-${{ matrix.runner }}
-          path: artifacts-${{ matrix.runner }}-${{ matrix.lang }}
+          name: binaries-${{ matrix.runner }}-${{ matrix.lang }}
+          path: artifacts
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: binaries-${{ matrix.runner }}
-          path: artifacts-${{ matrix.runner }}-${{ matrix.lang }}
+          name: binaries-${{ matrix.runner }}-${{ matrix.lang }}
+          path: artifacts
       - name: Test
         run: ./script/test.sh
