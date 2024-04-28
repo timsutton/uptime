@@ -66,13 +66,14 @@ ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
     version = "3.3.1",
-    # alternatively, load version from .ruby-version file
-    # version_file = "//:.ruby-version",
 )
 ruby.bundle_fetch(
     name = "bundle",
-    gemfile = "//:Gemfile",
-    gemfile_lock = "//:Gemfile.lock",
+    gem_checksums = {
+        "ffi-1.16.3": "6d3242ff10c87271b0675c58d68d3f10148fabc2ad6da52a18123f06078871fb",
+    },
+    gemfile = "//src/rb:Gemfile",
+    gemfile_lock = "//src/rb:Gemfile.lock",
 )
 use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 
