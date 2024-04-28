@@ -20,7 +20,7 @@ if [[ "${platform}" == "macos" ]]; then
 fi
 
 for tgt in $(bazel query "${query}"); do
-    bazel build --config=quiet --compilation_mode=opt "${tgt}"
+    bazel build --compilation_mode=opt "${tgt}"
 done
 
 for tgt in $(bazel query "${query}"); do

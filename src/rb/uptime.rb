@@ -4,6 +4,7 @@
 # (and build, and install) the ffi gem as part of the exercise
 
 current_os = Gem::Platform.local.os
+
 if current_os == 'darwin'
   boottime = `sysctl -n kern.boottime`.chomp
                                       .split('=')[1]
@@ -13,6 +14,6 @@ if current_os == 'darwin'
                                       .to_i
   now = Time.now.to_i
   puts now - boottime
-else
-  abort("unsupported OS: #{current_os}")
+elsif current_os == 'linux'
+  puts File.read('/proc/uptime').split.first.to_i
 end
