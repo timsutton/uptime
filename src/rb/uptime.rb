@@ -3,11 +3,17 @@
 # TODO: implement instead with ffi so that we need to require
 # (and build, and install) the ffi gem as part of the exercise
 
-boottime = `sysctl -n kern.boottime`.chomp
-                                    .split('=')[1]
-                                    .split
-                                    .first
-                                    .gsub(',', '')
-                                    .to_i
-now = Time.now.to_i
-puts now - boottime
+current_os = Gem::Platform.local.os
+
+if current_os == 'darwin'
+  boottime = `sysctl -n kern.boottime`.chomp
+                                      .split('=')[1]
+                                      .split
+                                      .first
+                                      .gsub(',', '')
+                                      .to_i
+  now = Time.now.to_i
+  puts now - boottime
+elsif current_os == 'linux'
+  puts File.read('/proc/uptime').split.first.to_i
+end

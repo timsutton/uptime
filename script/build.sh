@@ -5,25 +5,24 @@ set -euo pipefail
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-if [[ "${platform}" == "linux" ]]; then
-    bazel run --config=quiet //src/c:uptime
-    bazel run --config=quiet //src/go:uptime
-    bazel run --config=quiet //src/py:uptime
-    bazel run --config=quiet //src/rs:uptime
+query_linux="kind(.*_binary, //src/... except //src/swift/...)"
+query_macos="kind(.*_binary, //src/...)"
 
-    bazel build --config=quiet --compilation_mode=opt //src/c:uptime
-    bazel build --config=quiet --compilation_mode=opt //src/go:uptime
-    bazel build --config=quiet --compilation_mode=opt //src/py:uptime
-    bazel build --config=quiet --compilation_mode=opt //src/rs:uptime
+if [[ "${platform}" == "linux" ]]; then
+    # Note, on Linux we may need to set a couple extra things here to support ruby-build:
+    export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
+    # export LANG="en_US.UTF-8"
+    query="${query_linux}"
 fi
 
 if [[ "${platform}" == "macos" ]]; then
-    # TODO: rb isn't ready yet
-    for tgt in $(bazel query 'kind(.*_binary, //src/... except //src/rb/...)'); do
-        bazel run --config=quiet "${tgt}"
-    done
-
-    for tgt in $(bazel query 'kind(.*_binary, //src/... except //src/rb/...)'); do
-        bazel build --config=quiet --compilation_mode=opt "${tgt}"
-    done
+    query="${query_macos}"
 fi
+
+for tgt in $(bazel query "${query}"); do
+    bazel build --compilation_mode=opt "${tgt}"
+done
+
+for tgt in $(bazel query "${query}"); do
+    bazel run --config=quiet "${tgt}"
+done
