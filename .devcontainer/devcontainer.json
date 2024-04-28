@@ -12,7 +12,7 @@
 		"ghcr.io/audacioustux/devcontainers/bazel:1": {}
 	},
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "apt update && echo 'yes' | apt-get -y --force-yes install swiftlang && bazel fetch //..."
+	"postCreateCommand": "apt update && echo 'yes' | apt-get -y --force-yes install libffi-dev libyaml-dev openjdk-17-jdk swiftlang && bazel fetch //..."
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
