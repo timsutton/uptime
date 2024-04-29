@@ -24,6 +24,8 @@ fi
 
 env | sort
 
+which swiftc
+
 bazel query "${query}" | xargs bazel build --compilation_mode=opt --action_env=PATH="${PATH}"
 
 for tgt in $(bazel query "${query}"); do
