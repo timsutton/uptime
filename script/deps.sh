@@ -21,7 +21,7 @@ function install_swift_for_linux() {
   popd || exit
   # shellcheck disable=SC2155
   export PATH="${install_dir}/usr/bin:${PATH}"
-
+  export SWIFT_HOME="${install_dir}"
   echo "Listing the dir contents we've just added to PATH:"
   ls -la "${install_dir}/usr/bin"
   tree "${install_dir}"
