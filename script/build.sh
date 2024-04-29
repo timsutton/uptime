@@ -3,7 +3,6 @@
 set -euo pipefail
 
 set -x
-env | sort
 
 # shellcheck source=deps.sh
 source ./script/deps.sh
@@ -12,12 +11,18 @@ source ./script/deps.sh
 query_linux="kind(.*_binary, //src/swift/...)"
 query_macos="kind(.*_binary, //src/...)"
 
+if [[ "${platform}" == "macos" ]]; then
+    query="${query_macos}"
+fi
+
 if [[ "${platform}" == "linux" ]]; then
     # Note, on Linux we may need to set a couple extra things here to support ruby-build:
     export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
     # export LANG="en_US.UTF-8"
     query="${query_linux}"
 fi
+
+env | sort
 
 bazel query "${query}" | xargs bazel build --compilation_mode=opt
 
