@@ -17,13 +17,14 @@ function install_swift_for_linux() {
   install_dir=$(mktemp -d)
   pushd "${install_dir}" || exit
   url="https://download.swift.org/swift-${swift_version}-release/ubuntu$(echo "$ubuntu_version" | sed 's/\.//g')${arch_url_fragment}/swift-${swift_version}-RELEASE/swift-${swift_version}-RELEASE-ubuntu${ubuntu_version}${arch_url_fragment}.tar.gz"
-  curl -sfL "${url}" | tar -xz -f -
+  curl -sfL "${url}" | tar -xz --strip-components 1 -f -
   popd || exit
   # shellcheck disable=SC2155
-  export PATH="${install_dir}/swift-${swift_version}-RELEASE-ubuntu22.04-$(arch)/usr/bin:${PATH}"
+  export PATH="${install_dir}/usr/bin:${PATH}"
 
   echo "Listing the dir contents we've just added to PATH:"
-  ls -la "${install_dir}/swift-${swift_version}-RELEASE-ubuntu22.04-$(arch)/usr/bin"
+  ls -la "${install_dir}/usr/bin"
+  tree "${install_dir}"
   set +x
 }
 
