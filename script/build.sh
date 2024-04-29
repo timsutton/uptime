@@ -26,7 +26,7 @@ env | sort
 
 which swiftc
 
-bazel query "${query}" | xargs bazel build --compilation_mode=opt --action_env=PATH="${PATH}" --action_env=CC=clang
+bazel query "${query}" | xargs bazel build --compilation_mode=opt --action_env=PATH --action_env=CC=clang
 
 for tgt in $(bazel query "${query}"); do
     bazel run --config=quiet "${tgt}"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Can potentially optimize this based on what rules_swift's CI does for Linux:
+# https://github.com/bazelbuild/rules_swift/blob/master/.bazelci/presubmit.yml#L13-L19
 function install_swift_for_linux() {
   set -x
   swift_version="5.10"
@@ -24,7 +26,7 @@ function install_swift_for_linux() {
   export SWIFT_HOME="${install_dir}"
   echo "Listing the dir contents we've just added to PATH:"
   ls -la "${install_dir}/usr/bin"
-  tree "${install_dir}"
+
   set +x
 }
 
