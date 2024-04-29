@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+set -x
+env | sort
+
 # shellcheck source=deps.sh
 source ./script/deps.sh
 

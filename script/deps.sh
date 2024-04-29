@@ -15,10 +15,11 @@ function install_swift_for_linux() {
   fi
 
   install_dir=$(mktemp -d)
-  pushd "${install_dir}"
-    url="https://download.swift.org/swift-${swift_version}-release/ubuntu$(echo $ubuntu_version | sed 's/\.//g')${arch_url_fragment}/swift-${swift_version}-RELEASE/swift-${swift_version}-RELEASE-ubuntu${ubuntu_version}${arch_url_fragment}.tar.gz"
-    curl -sfL "${url}" | tar -xz -f -
-  popd
+  pushd "${install_dir}" || exit
+  url="https://download.swift.org/swift-${swift_version}-release/ubuntu$(echo "$ubuntu_version" | sed 's/\.//g')${arch_url_fragment}/swift-${swift_version}-RELEASE/swift-${swift_version}-RELEASE-ubuntu${ubuntu_version}${arch_url_fragment}.tar.gz"
+  curl -sfL "${url}" | tar -xz -f -
+  popd || exit
+  # shellcheck disable=SC2155
   export PATH="${install_dir}/swift-${swift_version}-RELEASE-ubuntu22.04-$(arch)/usr/bin:${PATH}"
   set +x
 }
@@ -26,7 +27,7 @@ function install_swift_for_linux() {
 export platform="macos"
 if [[ "$(uname -s)" == "Linux" ]]; then
   if [[ "$(awk -F= '/DISTRIB_ID/ {print $2}' /etc/lsb-release)" != "Ubuntu" ]]; then
-    echo "On Linux, only Linux is supported for building" >&2
+    echo "On Linux, only Ubuntu platform is supported for building (for now)" >&2
     exit 1
   fi
   export platform="linux"
