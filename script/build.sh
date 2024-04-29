@@ -24,7 +24,7 @@ fi
 
 env | sort
 
-bazel query "${query}" | xargs bazel build --compilation_mode=opt
+bazel query "${query}" | xargs bazel build --compilation_mode=opt --action_env=PATH="${PATH}"
 
 for tgt in $(bazel query "${query}"); do
     bazel run --config=quiet "${tgt}"
