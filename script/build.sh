@@ -26,6 +26,8 @@ env | sort
 
 which swiftc
 
+bazel --nosystem_rc --nohome_rc version
+
 bazel query "${query}" | xargs bazel build \
     --compilation_mode=opt \
     --worker_sandboxing \
