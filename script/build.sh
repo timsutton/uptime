@@ -6,7 +6,7 @@ set -euo pipefail
 source ./script/deps.sh
 
 # focused to only testing Swift for now on Linux
-query_linux="kind(.*_binary, //src/swift/...)"
+query_linux="kind(.*_binary, //src/...)"
 query_macos="kind(.*_binary, //src/...)"
 
 if [[ "${platform}" == "macos" ]]; then
@@ -20,19 +20,9 @@ if [[ "${platform}" == "linux" ]]; then
     query="${query_linux}"
 fi
 
-env | sort
-
-which swiftc
-
-set -x
-
-bazel --nosystem_rc --nohome_rc version
-
 bazel info
 
-bazel query "${query}" | xargs bazel build \
-    --compilation_mode=opt \
-    --action_env=PATH
+bazel query "${query}" | xargs bazel build --compilation_mode=opt
 
 for tgt in $(bazel query "${query}"); do
     bazel run --config=quiet "${tgt}"
