@@ -28,6 +28,7 @@ which swiftc
 
 bazel query "${query}" | xargs bazel build \
     --compilation_mode=opt \
+    --worker_sandboxing \
     --action_env=PATH \
     --action_env=CC=clang \
     --action_env=SWIFT_HOME \
