@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-set -x
-
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
@@ -26,7 +24,11 @@ env | sort
 
 which swiftc
 
+set -x
+
 bazel --nosystem_rc --nohome_rc version
+
+bazel info
 
 bazel query "${query}" | xargs bazel build \
     --compilation_mode=opt \
