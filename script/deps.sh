@@ -15,7 +15,6 @@ function install_swift_for_linux() {
     arch_url_fragment=""
   fi
 
-  # install_dir=$(mktemp -d)
   install_dir="${HOME}/.cache/swift-${swift_version}-${arch}"
   mkdir -p "${install_dir}"
 
@@ -25,9 +24,6 @@ function install_swift_for_linux() {
   popd || exit
   # shellcheck disable=SC2155
   export PATH="${install_dir}/usr/bin:${PATH}"
-
-  # TODO: we may not have a use for this anymore
-  export SWIFT_HOME="${install_dir}"
 }
 
 export platform="macos"

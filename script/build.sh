@@ -5,19 +5,15 @@ set -euo pipefail
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-# focused to only testing Swift for now on Linux
-query_linux="kind(.*_binary, //src/...)"
-query_macos="kind(.*_binary, //src/...)"
-
-if [[ "${platform}" == "macos" ]]; then
-    query="${query_macos}"
-fi
+query="kind(.*_binary, //src/...)"
 
 if [[ "${platform}" == "linux" ]]; then
-    # Note, on Linux we may need to set a couple extra things here to support ruby-build:
-    export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
-    # export LANG="en_US.UTF-8"
-    query="${query_linux}"
+    # Note, on Linux we may need to set a couple extra things here to support ruby-build
+    if [ -z "${JAVA_HOME:-}" ]; then
+        # shellcheck disable=SC2155
+        export JAVA_HOME="$(dirname "$(dirname "$(realpath "$(which javac)")")")"
+    fi
+    export LANG="en_US.UTF-8"
 fi
 
 bazel info
