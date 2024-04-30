@@ -3,7 +3,6 @@
 # Can potentially optimize this based on what rules_swift's CI does for Linux:
 # https://github.com/bazelbuild/rules_swift/blob/master/.bazelci/presubmit.yml#L13-L19
 function install_swift_for_linux() {
-  set -x
   swift_version="5.10"
   ubuntu_version=$(awk -F= '/DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)
   # Because Swift Linux releases put a 'aarch64' in the URL for Arm releases, and nothing at all for x86_64
@@ -26,11 +25,9 @@ function install_swift_for_linux() {
   popd || exit
   # shellcheck disable=SC2155
   export PATH="${install_dir}/usr/bin:${PATH}"
-  export SWIFT_HOME="${install_dir}"
-  echo "Listing the dir contents we've just added to PATH:"
-  ls -la "${install_dir}/usr/bin"
 
-  set +x
+  # TODO: we may not have a use for this anymore
+  export SWIFT_HOME="${install_dir}"
 }
 
 export platform="macos"
@@ -41,14 +38,6 @@ if [[ "$(uname -s)" == "Linux" ]]; then
   fi
   export platform="linux"
   install_swift_for_linux
-
-  # GHA's Ubuntu runner already had Swift installed, but in a way that is problematic.
-  # (maybe we can fix this with them in the future):
-  # https://github.com/actions/runner-images/blob/a76eae469e4c8c16b0f91c38e17f9e1ffb5c633d/images/ubuntu/scripts/build/install-swift.sh#L50-L56
-  if [ -n "${GITHUB_ACTION}" ]; then
-    sudo rm -f /usr/local/bin/swift*
-    unset SWIFT_PATH
-  fi
 fi
 
 if [[ "${platform}" == "macos" ]]; then
