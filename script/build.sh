@@ -5,19 +5,18 @@ set -euo pipefail
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-query_linux="kind(.*_binary, //src/... except //src/swift/...)"
-query_macos="kind(.*_binary, //src/...)"
+query="kind(.*_binary, //src/...)"
 
 if [[ "${platform}" == "linux" ]]; then
-    # Note, on Linux we may need to set a couple extra things here to support ruby-build:
-    export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
-    # export LANG="en_US.UTF-8"
-    query="${query_linux}"
+    # Note, on Linux we may need to set a couple extra things here to support ruby-build
+    if [ -z "${JAVA_HOME:-}" ]; then
+        # shellcheck disable=SC2155
+        export JAVA_HOME="$(dirname "$(dirname "$(realpath "$(which javac)")")")"
+    fi
+    export LANG="en_US.UTF-8"
 fi
 
-if [[ "${platform}" == "macos" ]]; then
-    query="${query_macos}"
-fi
+bazel info
 
 bazel query "${query}" | xargs bazel build --compilation_mode=opt
 
