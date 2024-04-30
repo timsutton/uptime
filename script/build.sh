@@ -32,11 +32,7 @@ bazel info
 
 bazel query "${query}" | xargs bazel build \
     --compilation_mode=opt \
-    --worker_sandboxing \
-    --action_env=PATH \
-    --action_env=CC=clang \
-    --action_env=SWIFT_HOME \
-    --action_env=SWIFT_PATH="${SWIFT_HOME}/usr/bin"
+    --action_env=PATH
 
 for tgt in $(bazel query "${query}"); do
     bazel run --config=quiet "${tgt}"
