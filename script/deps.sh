@@ -16,7 +16,10 @@ function install_swift_for_linux() {
     arch_url_fragment=""
   fi
 
-  install_dir=$(mktemp -d)
+  # install_dir=$(mktemp -d)
+  install_dir="${HOME}/.cache/swift-${swift_version}-${arch}"
+  mkdir -p "${install_dir}"
+
   pushd "${install_dir}" || exit
   url="https://download.swift.org/swift-${swift_version}-release/ubuntu$(echo "$ubuntu_version" | sed 's/\.//g')${arch_url_fragment}/swift-${swift_version}-RELEASE/swift-${swift_version}-RELEASE-ubuntu${ubuntu_version}${arch_url_fragment}.tar.gz"
   curl -sfL "${url}" | tar -xz --strip-components 1 -f -
