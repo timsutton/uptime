@@ -1,3 +1,6 @@
+# Note: The Bazel build doesn't itself actually consume Cargo/Cargo.lock,
+# it's just here as a reference
+
 [package]
 name = "uptime"
 version = "0.1.0"
