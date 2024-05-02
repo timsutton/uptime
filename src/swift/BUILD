@@ -21,8 +21,10 @@ config_setting(
 # deployment targets, etc. But also that'd (probably?) mean defining bundle ID and all that.
 swift_binary(
     name = "uptime",
-    # There's also an `uptime_c.swift` with an alternate implementation
-    srcs = ["uptime_processinfo.swift"],
+    # There's also an `uptime_processinfo.swift` with a simpler implementation,
+    # although it can be inaccurate on macOS 14.4.x on Apple Silicon because Apple broke
+    # clock_gettime in this release.
+    srcs = ["uptime_c.swift"],
     copts = select({
         ":macos_apple_silicon": ["--target=arm64-apple-macosx13"],
         ":macos_intel": ["--target=x86_64-apple-macosx13"],
