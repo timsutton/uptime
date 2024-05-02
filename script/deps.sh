@@ -66,6 +66,7 @@ function install_swift_for_linux() {
   mkdir -p "${install_dir}"
 
   pushd "${install_dir}" || exit
+  # shellcheck disable=SC2001
   url="https://download.swift.org/swift-${swift_version}-release/ubuntu$(echo "$ubuntu_version" | sed 's/\.//g')${arch_url_fragment}/swift-${swift_version}-RELEASE/swift-${swift_version}-RELEASE-ubuntu${ubuntu_version}${arch_url_fragment}.tar.gz"
   curl -sfL "${url}" | tar -xz --strip-components 1 -f -
   popd || exit
@@ -84,7 +85,7 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 
   # A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
   # case this looks like some other Ubuntu host, then run some additional required apt installs.
-  if [[ -z "${CI:-}" ]]; then
+  if [ -z "${CI:-}" ]; then
     install_apt_packages
   fi
 
