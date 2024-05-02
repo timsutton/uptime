@@ -9,6 +9,9 @@ if [ "$(uname -s)" = "Linux" ]; then
   export platform="linux"
 fi
 
+# hack
+bazel build --compilation_mode=opt //src/kt:uptime
+
 # List of langs which should produce static, relocatable binaries
 # which we can stage and test on a different worker
 for lang in c go kt rs swift zig; do
