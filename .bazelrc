@@ -1,3 +1,5 @@
+build --compilation_mode=opt
+
 build:quiet --ui_event_filters=-info,-stdout,-stderr
 build:quiet --noshow_progress
 build:quiet --noshow_loading_progress
