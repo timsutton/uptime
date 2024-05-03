@@ -22,12 +22,16 @@ for lang in c go kt rs swift zig; do
   #
   # We also grep for an output exe that exactly matches 'uptime', because at least the kt
   # target can have multiple executables.
-  echo "DEBUG: cquery output"
-  bazel cquery \
-    --noshow_progress \
-    --output=starlark \
-    --starlark:expr='target.files_to_run.executable.path' \
-    //src/${lang}/...
+
+  # TODO: maybe this whole approach is flawed, and instead of doing //src/${lang} loop, we should
+  #       just take the same target list from our original build query!
+
+  # echo "DEBUG: cquery output"
+  # bazel cquery \
+  #   --noshow_progress \
+  #   --output=starlark \
+  #   --starlark:expr='target.files_to_run.executable.path' \
+  #   //src/${lang}/...
 
   output_exe_path=$(bazel cquery \
     --noshow_progress \
