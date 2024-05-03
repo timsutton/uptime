@@ -31,5 +31,8 @@ for lang in c go kt rs swift zig; do
     //src/${lang}/... |
     grep -e '^.*uptime$')
 
+  # debug
+  tree "bazel-out/k8-fastbuild/bin/src/${lang}"
+
   cp -v "${src_path}" "artifacts/${platform}/${lang}"
 done
