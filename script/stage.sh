@@ -10,7 +10,7 @@ if [ "$(uname -s)" = "Linux" ]; then
 fi
 
 # hack
-bazel build --compilation_mode=opt //src/kt:uptime
+# bazel build //src/kt:uptime
 
 # List of langs which should produce static, relocatable binaries
 # which we can stage and test on a different worker
@@ -32,7 +32,7 @@ for lang in c go kt rs swift zig; do
     grep -e '^.*uptime$')
 
   # debug
-  tree "bazel-out/k8-fastbuild/bin/src/${lang}"
+  # tree "bazel-out/k8-fastbuild/bin/src/${lang}"
 
   cp -v "${src_path}" "artifacts/${platform}/${lang}"
 done

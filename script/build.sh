@@ -20,7 +20,7 @@ bazel info
 
 # TODO: kt example seems like it doesn't stage due to the order in which we build things?
 
-bazel query "${query}" | xargs bazel build --compilation_mode=opt
+bazel query "${query}" | xargs bazel build
 
 for tgt in $(bazel query "${query}"); do
     bazel run --config=quiet "${tgt}"
