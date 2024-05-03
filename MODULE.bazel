@@ -1,29 +1,31 @@
 # we explicitly use platforms for //src/swift
 bazel_dep(name = "platforms", version = "0.0.10")
 
-# standalone LLVM
-bazel_dep(name = "toolchains_llvm", version = "1.0.0")
+bazel_dep(name = "apple_support", version = "1.15.1", repo_name = "build_bazel_apple_support")
 
-# Override toolchains_llvm to newer Git sha. Currently up in the air as to who will maintain
-# the module in BCR: https://github.com/bazel-contrib/toolchains_llvm/issues/298
-archive_override(
-    module_name = "toolchains_llvm",
-    integrity = "sha256-iMhJcaAL7BM1sioDuNroe/F+CYFstC8ICRkKDNhtzKo=",
-    strip_prefix = "toolchains_llvm-2f58ae4a90f9d1b2a359ba3636fc449ccf578bce",
-    urls = ["https://github.com/bazel-contrib/toolchains_llvm/archive/2f58ae4a90f9d1b2a359ba3636fc449ccf578bce.tar.gz"],
-)
+# # standalone LLVM
+# bazel_dep(name = "toolchains_llvm", version = "1.0.0")
 
-llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
-llvm.toolchain(
-    llvm_versions = {
-        "darwin-x86_64": "15.0.7",
-        "linux-aarch64": "18.1.2",
-        "": "17.0.6",
-    },
-)
-use_repo(llvm, "llvm_toolchain")
+# # Override toolchains_llvm to newer Git sha. Currently up in the air as to who will maintain
+# # the module in BCR: https://github.com/bazel-contrib/toolchains_llvm/issues/298
+# archive_override(
+#     module_name = "toolchains_llvm",
+#     integrity = "sha256-iMhJcaAL7BM1sioDuNroe/F+CYFstC8ICRkKDNhtzKo=",
+#     strip_prefix = "toolchains_llvm-2f58ae4a90f9d1b2a359ba3636fc449ccf578bce",
+#     urls = ["https://github.com/bazel-contrib/toolchains_llvm/archive/2f58ae4a90f9d1b2a359ba3636fc449ccf578bce.tar.gz"],
+# )
 
-register_toolchains("@llvm_toolchain//:all")
+# llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+# llvm.toolchain(
+#     llvm_versions = {
+#         "darwin-x86_64": "15.0.7",
+#         "linux-aarch64": "18.1.2",
+#         "": "17.0.6",
+#     },
+# )
+# use_repo(llvm, "llvm_toolchain")
+
+# register_toolchains("@llvm_toolchain//:all")
 
 # golang
 bazel_dep(name = "rules_go", version = "0.47.0")

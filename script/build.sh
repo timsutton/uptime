@@ -14,11 +14,12 @@ if [[ "${platform}" == "linux" ]]; then
         export JAVA_HOME="$(dirname "$(dirname "$(realpath "$(which javac)")")")"
     fi
     export LANG="en_US.UTF-8"
+    export CC=clang
 fi
 
 bazel info
 
-bazel query "${query}" | xargs bazel build --compilation_mode=opt
+bazel query "${query}" | xargs bazel build --compilation_mode=opt --action_env=CC
 
 for tgt in $(bazel query "${query}"); do
     bazel run --config=quiet "${tgt}"
