@@ -23,18 +23,17 @@ for lang in c go kt rs swift zig; do
   #
   # We also grep for an output exe that exactly matches 'uptime', because at least the kt
   # target can have multiple executables.
-  src_path=$(bazel cquery \
+  output_exe_path=$(bazel cquery \
     --noshow_progress \
     --ui_event_filters=-info,-error \
     --output=starlark \
-    --starlark:expr=target.files_to_run.executable.path \
-    //src/${lang}/... |
-    grep -e '^.*uptime$')
+    --starlark:expr='target.files_to_run.executable.path if target.files_to_run.executable.path.endswith("uptime") else ""' \
+    //src/${lang}/...)
 
   # debug
-  if [[ "${platform}" = "Linux" ]]; then
-    tree "bazel-out/k8-opt/bin/src/${lang}"
-  fi
+  # if [[ "${platform}" = "Linux" ]]; then
+  #   tree "bazel-out/k8-opt/bin/src/${lang}"
+  # fi
 
-  cp -v "${src_path}" "artifacts/${platform}/${lang}"
+  cp -v "${output_exe_path}" "artifacts/${platform}/${lang}"
 done
