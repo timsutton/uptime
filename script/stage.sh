@@ -5,7 +5,7 @@ set -euo pipefail
 set -x
 
 platform="macos"
-if [ "$(uname -s)" = "Linux" ]; then
+if [[ "$(uname -s)" = "Linux" ]]; then
   export platform="linux"
 fi
 
@@ -32,7 +32,7 @@ for lang in c go kt rs swift zig; do
     grep -e '^.*uptime$')
 
   # debug
-  if [ "$(uname -s)" = "Linux" ]; then
+  if [[ "${platform}" = "Linux" ]]; then
     tree "bazel-out/k8-opt/bin/src/${lang}"
   fi
 
