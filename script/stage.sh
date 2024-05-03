@@ -32,7 +32,9 @@ for lang in c go kt rs swift zig; do
     grep -e '^.*uptime$')
 
   # debug
-  tree "bazel-out/k8-opt/bin/src/${lang}"
+  if [ "$(uname -s)" = "Linux" ]; then
+    tree "bazel-out/k8-opt/bin/src/${lang}"
+  fi
 
   cp -v "${src_path}" "artifacts/${platform}/${lang}"
 done
