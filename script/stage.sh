@@ -2,20 +2,19 @@
 
 set -euo pipefail
 
-set -x
+STAGING_DIR="artifacts"
 
 platform="macos"
 if [[ "$(uname -s)" = "Linux" ]]; then
   export platform="linux"
 fi
 
-# hack
-# bazel build //src/kt:uptime
+rm -rf "${STAGING_DIR}"
 
 # List of langs which should produce static, relocatable binaries
 # which we can stage and test on a different worker
 for lang in c go kt rs swift zig; do
-  mkdir -p "artifacts/${platform}/${lang}"
+  mkdir -p "${STAGING_DIR}/${platform}/${lang}"
 
   # Run this query to just get the runnable executable path
   # we squelch progress output and even errors, because other lib type targets
@@ -23,6 +22,13 @@ for lang in c go kt rs swift zig; do
   #
   # We also grep for an output exe that exactly matches 'uptime', because at least the kt
   # target can have multiple executables.
+  echo "DEBUG: cquery output"
+  bazel cquery \
+    --noshow_progress \
+    --output=starlark \
+    --starlark:expr='target.files_to_run.executable.path' \
+    //src/${lang}/...
+
   output_exe_path=$(bazel cquery \
     --noshow_progress \
     --ui_event_filters=-info,-error \
@@ -30,10 +36,5 @@ for lang in c go kt rs swift zig; do
     --starlark:expr='target.files_to_run.executable.path if target.files_to_run.executable.path.endswith("uptime") else ""' \
     //src/${lang}/...)
 
-  # debug
-  # if [[ "${platform}" = "Linux" ]]; then
-  #   tree "bazel-out/k8-opt/bin/src/${lang}"
-  # fi
-
-  cp -v "${output_exe_path}" "artifacts/${platform}/${lang}"
+  cp -v "${output_exe_path}" "${STAGING_DIR}/${platform}/${lang}"
 done
