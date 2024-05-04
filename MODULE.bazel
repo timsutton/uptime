@@ -36,8 +36,6 @@ go_sdk.download(version = "1.22.2")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "1.9.5")
-kotlin = use_extension("@rules_kotlin//kotlin:extensions.bzl", "kotlin")
-
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
 # rules_graalvm hasn't yet published 0.11.2 to BCR
@@ -51,15 +49,18 @@ archive_override(
 gvm = use_extension("@rules_graalvm//:extensions.bzl", "graalvm")
 gvm.graalvm(
     name = "graalvm",
-    version = "24.0.1",  # gvm sdk version format like `24.x.x` also supported
     distribution = "ce",  # `oracle`, `ce`, or `community`
     java_version = "22",  # `17`, `20`, `21`, or `22` as supported by the version provided
+    version = "24.0.1",  # gvm sdk version format like `24.x.x` also supported
 )
 use_repo(gvm, "graalvm")
+
 register_toolchains("@graalvm//:jvm")
+
 register_toolchains("@graalvm//:sdk")
 
 bazel_dep(name = "rules_jvm_external", version = "6.1")
+
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
