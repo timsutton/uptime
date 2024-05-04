@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# shellcheck source=common.sh
+source ./script/common.sh
+
 BAZELISK_VERSION=1.19.0
 SWIFT_VERSION=5.10
 
@@ -74,14 +77,11 @@ function install_swift_for_linux() {
   export PATH="${install_dir}/usr/bin:${PATH}"
 }
 
-export platform="macos"
-
-if [[ "$(uname -s)" == "Linux" ]]; then
+if [[ "${PLATFORM}" = "linux" ]]; then
   if [[ "$(awk -F= '/DISTRIB_ID/ {print $2}' /etc/lsb-release)" != "Ubuntu" ]]; then
     echo "On Linux, only Ubuntu platform is supported for building (for now)" >&2
     exit 1
   fi
-  export platform="linux"
 
   # A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
   # case this looks like some other Ubuntu host, then run some additional required apt installs.
@@ -93,6 +93,6 @@ if [[ "$(uname -s)" == "Linux" ]]; then
   install_swift_for_linux
 fi
 
-if [[ "${platform}" == "macos" ]]; then
+if [[ "${PLATFORM}" == "macos" ]]; then
   command -v bazelisk >/dev/null || brew install bazelisk
 fi
