@@ -41,7 +41,7 @@ elsif current_os == 'linux'
              :totalhigh, :ulong,
              :freehigh, :ulong,
              :mem_unit, :int,
-             :_f, [:char, 0]  # padding
+             :_f, [:char, 0] # padding
     end
 
     attach_function :sysinfo, [Sysinfo.by_ref], :int
@@ -50,5 +50,5 @@ elsif current_os == 'linux'
   info = Sys::Sysinfo.new
   Sys.sysinfo(info)
 
-  puts info[:uptime]  # system uptime in seconds
+  puts info[:uptime] # system uptime in seconds
 end

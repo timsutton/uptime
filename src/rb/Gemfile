@@ -1,4 +1,7 @@
+source 'https://rubygems.org'
 
-source "https://rubygems.org"
+gem 'ffi'
 
-gem "ffi"
+group 'development' do
+  gem 'rubocop'
+end
