@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import platform
-import sys
 
 import ctypes
 from ctypes import util, Structure, c_uint, c_ulonglong, sizeof, byref
@@ -44,7 +43,6 @@ if system == "Linux":
     with open('/proc/uptime', 'r') as f:
         uptime_seconds = int(float(f.readline().split()[0]))
         print(uptime_seconds)
-    sys.exit()
 
 if system == "Darwin":
     print(get_system_uptime_darwin())
