@@ -2,12 +2,13 @@
 
 set -euo pipefail
 
+# shellcheck source=common.sh
+source ./script/common.sh
+
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-query="kind(.*_binary, //src/... except //src/kt/...) +kind(native_image, //src/kt/...)"
-
-if [[ "${platform}" == "linux" ]]; then
+if [[ "${PLATFORM}" == "linux" ]]; then
     # Note, on Linux we may need to set a couple extra things here to support ruby-build
     if [ -z "${JAVA_HOME:-}" ]; then
         # shellcheck disable=SC2155
@@ -18,8 +19,8 @@ fi
 
 bazel info
 
-bazel query "${query}" | xargs bazel build
+bazel build //...
 
-for tgt in $(bazel query "${query}"); do
+for tgt in $(bazel query "${BINARIES_QUERY}"); do
     bazel run --config=quiet "${tgt}"
 done

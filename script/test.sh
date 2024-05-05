@@ -1,11 +1,9 @@
 #!/bin/bash
 
 set -euo pipefail
-STAGING_DIR="artifacts"
-platform="macos"
-if [[ "$(uname -s)" == "Linux" ]]; then
-  export platform="linux"
-fi
+
+# shellcheck source=common.sh
+source ./script/common.sh
 
 # For whatever reason, the archive tar process doesn't preserve executability on the mode
 chmod -R a+x "${STAGING_DIR}"
