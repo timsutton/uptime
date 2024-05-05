@@ -36,6 +36,11 @@ go_sdk.download(version = "1.22.2")
 
 # haskell
 bazel_dep(name = "rules_haskell", version = "0.19")
+ghc_version = use_extension("//extensions:ghc_version.bzl", "ghc_default_version")
+use_repo(
+    ghc_version,
+    "rules_haskell_ghc_version",
+)
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "1.9.5")
