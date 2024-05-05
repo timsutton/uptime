@@ -7,7 +7,7 @@ if current_os == 'darwin'
   module Sysctl
     extend FFI::Library
     ffi_lib FFI::Library::LIBC
-    attach_function :sysctlbyname, [:string, :pointer, :pointer, :pointer, :ulong], :int
+    attach_function :sysctlbyname, %i[string pointer pointer pointer ulong], :int
 
     class Timeval < FFI::Struct
       layout :tv_sec, :long,
