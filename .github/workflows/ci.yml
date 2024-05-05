@@ -19,6 +19,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: bazel-contrib/setup-bazel@0.8.2
+      with:
+        bazelisk-cache: true
+        disk-cache: ${{ github.workflow }}
+        repository-cache: true
     - name: Build
       run: ./script/build.sh
     - name: Stage compiled artifacts
