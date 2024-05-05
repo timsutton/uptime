@@ -3,6 +3,42 @@
 import platform
 import sys
 
+import ctypes
+from ctypes import util, Structure, c_uint, c_ulonglong, sizeof, byref
+
+# Load the libc library
+libc = ctypes.CDLL(util.find_library('c'))
+
+# Define the structure for timeval (used to store the uptime)
+
+
+class timeval(Structure):
+    _fields_ = [("tv_sec", c_ulonglong),  # seconds
+                ("tv_usec", c_ulonglong)]  # microseconds
+
+
+def get_system_uptime_darwin():
+    # Create an instance of timeval
+    tv = timeval()
+    # The size of the timeval structure
+    size = c_uint(sizeof(tv))
+
+    # Get the system uptime using sysctlbyname
+    result = libc.sysctlbyname(
+        b"kern.boottime", byref(tv), byref(size), None, 0)
+
+    if result != 0:
+        # If there is an error (non-zero result), raise an exception
+        raise OSError(ctypes.get_errno(), "Failed to get uptime")
+
+    # Calculate uptime in seconds (ignoring microseconds)
+    # Get current time in seconds
+    current_time = libc.time(None)
+    # Uptime is current time minus the boot time
+    uptime_seconds = current_time - tv.tv_sec
+    return uptime_seconds
+
+
 system = platform.uname().system
 if system == "Linux":
     with open('/proc/uptime', 'r') as f:
@@ -11,17 +47,4 @@ if system == "Linux":
     sys.exit()
 
 if system == "Darwin":
-    import subprocess
-    from datetime import datetime
-
-    now = datetime.now()
-    # hack that doesn't actually use sysctl natively at all – shells out to sysctl
-    # until we make this below module work or we do ctypes ourselves:
-    # uv pip install git+https://github.com/da4089/py-sysctl@3dadf5a4bc955a2eab3cea5a1f21143384a711f7
-    out, _ = subprocess.Popen(["/usr/sbin/sysctl", "-n", "kern.boottime"], stdout=subprocess.PIPE).communicate()
-
-    boottime_seconds = int(out.split()[3].decode().strip().strip(','))
-    boottime_time = datetime.fromtimestamp(boottime_seconds)
-
-    uptime_seconds = int((now - boottime_time).total_seconds())
-    print(uptime_seconds)
+    print(get_system_uptime_darwin())
