@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
 
+require 'ffi'
+
 current_os = Gem::Platform.local.os
 
 if current_os == 'darwin'
-  require 'ffi'
   module Sysctl
     extend FFI::Library
     ffi_lib FFI::Library::LIBC
-    attach_function :sysctlbyname, [:string, :pointer, :pointer, :pointer, :ulong], :int
+    attach_function :sysctlbyname, %i[string pointer pointer pointer ulong], :int
 
     class Timeval < FFI::Struct
       layout :tv_sec, :long,
@@ -22,5 +23,32 @@ if current_os == 'darwin'
   puts Time.now.to_i - boottime[:tv_sec]
 
 elsif current_os == 'linux'
-  puts File.read('/proc/uptime').split.first.to_i
+  module Sys
+    extend FFI::Library
+    ffi_lib FFI::Library::LIBC
+
+    class Sysinfo < FFI::Struct
+      layout :uptime, :long,
+             :loads, [:ulong, 3],
+             :totalram, :ulong,
+             :freeram, :ulong,
+             :sharedram, :ulong,
+             :bufferram, :ulong,
+             :totalswap, :ulong,
+             :freeswap, :ulong,
+             :procs, :ushort,
+             :pad, :ushort,
+             :totalhigh, :ulong,
+             :freehigh, :ulong,
+             :mem_unit, :int,
+             :_f, [:char, 0] # padding
+    end
+
+    attach_function :sysinfo, [Sysinfo.by_ref], :int
+  end
+
+  info = Sys::Sysinfo.new
+  Sys.sysinfo(info)
+
+  puts info[:uptime] # system uptime in seconds
 end
