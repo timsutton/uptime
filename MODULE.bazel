@@ -75,6 +75,13 @@ bazel_dep(name = "rules_rust", version = "0.42.1")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
+    sha256s = {
+        "rustc-1.78.0-aarch64-apple-darwin.tar.xz": "7f6e7e0800711aded0a35349bd2e1efcb1eaf8c2f080693a69f252195290c888",
+        "clippy-1.78.0-aarch64-apple-darwin.tar.xz": "6ed693740cd5e1546ff3e0d92279742e25fd3d8fcf566d0b3d12a1b3a3a39237",
+        "cargo-1.78.0-aarch64-apple-darwin.tar.xz": "76b9a39eea441b31c6b26cc58ebff7095a64bc60788254c2525e752a1149688d",
+        "llvm-tools-1.78.0-aarch64-apple-darwin.tar.xz": "491a52cddfb2121a2f5a450d0317e56150259d27ac47d7cb41471c3fe18d8e79",
+        "rust-std-1.78.0-aarch64-apple-darwin.tar.xz": "4ab399e983e6f4b21687010842774e5b7c679641360b0b85ac9b27a426bec4c1",
+    },
     versions = ["1.78.0"],
 )
 
