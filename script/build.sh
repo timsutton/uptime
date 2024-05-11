@@ -18,8 +18,9 @@ if [[ "${PLATFORM}" == "linux" ]]; then
 fi
 
 bazel info
-
 bazel build //...
+# At this point these are only lint-type checks
+bazel test --test_output=errors //...
 
 for tgt in $(bazel query "${BINARIES_QUERY}"); do
     bazel run --config=quiet "${tgt}"
