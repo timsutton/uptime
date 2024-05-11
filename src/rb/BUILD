@@ -31,5 +31,6 @@ rb_test(
     ],
     data = [".rubocop.yml"],
     main = "@bundle//bin:rubocop",
+    tags = ["no-sandbox"],
     deps = ["@bundle"],
 )
