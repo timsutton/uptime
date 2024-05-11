@@ -26,7 +26,8 @@ for lang in c go kt rs swift zig; do
     --ui_event_filters=-info,-error \
     --output=starlark \
     --starlark:expr='target.files_to_run.executable.path if target.files_to_run.executable.path.endswith("uptime") else ""' \
-    //src/${lang}/...)
+    //src/${lang}/... |
+    xargs)
 
   cp -v "${output_exe_path}" "${STAGING_DIR}/${PLATFORM}/${lang}"
 done
