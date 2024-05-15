@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# shellcheck source=common.sh
-source ./script/common.sh
+set -x
 
 BAZELISK_VERSION=1.19.0
 SWIFT_VERSION=5.10
