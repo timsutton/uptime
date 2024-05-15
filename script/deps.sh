@@ -49,6 +49,12 @@ install_apt_packages() {
 function install_swift_for_linux() {
   swift_version="${SWIFT_VERSION}"
   ubuntu_version=$(awk -F= '/DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)
+
+  # Hack to pretent Ubuntu 24.04 is actually 22.04, since Swift doesn't yet have a 24.04 release
+  if [[ "${ubuntu_version}" = "24.04" ]]; then
+    ubuntu_version="22.04"
+  fi
+
   # Because Swift Linux releases put a 'aarch64' in the URL for Arm releases, and nothing at all for x86_64
   arch="$(uname -m)"
   if [[ "${arch}" = "arm64" ]] || [[ "${arch}" = "aarch64" ]]; then
