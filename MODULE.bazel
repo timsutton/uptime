@@ -105,7 +105,8 @@ ruby.bundle_fetch(
     name = "bundle",
     gem_checksums = {
         "ast-2.4.2": "1e280232e6a33754cde542bc5ef85520b74db2aac73ec14acef453784447cc12",
-        "ffi-1.16.3": "6d3242ff10c87271b0675c58d68d3f10148fabc2ad6da52a18123f06078871fb",
+        "ffi-1.17.0": "51630e43425078311c056ca75f961bb3bda1641ab36e44ad4c455e0b0e4a231c",
+        "ffi-1.17.0-arm64-darwin": "609c874e76614542c6d485b0576e42a7a38ffcdf086612f9a300c4ec3fcd0d12",
         "json-2.7.2": "1898b5cbc81cd36c0fd4d0b7ad2682c39fb07c5ff682fc6265f678f550d4982c",
         "language_server-protocol-3.17.0.3": "3d5c58c02f44a20d972957a9febe386d7e7468ab3900ce6bd2b563dd910c6b3f",
         "parallel-1.24.0": "5bf38efb9b37865f8e93d7a762727f8c5fc5deb19949f4040c76481d5eee9397",
