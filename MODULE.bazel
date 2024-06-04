@@ -94,7 +94,7 @@ crate.from_specs(name = "crates")
 use_repo(crate, "crates")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.10.0")
+bazel_dep(name = "rules_ruby", version = "0.11.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
