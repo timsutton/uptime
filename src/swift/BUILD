@@ -31,3 +31,7 @@ swift_binary(
         "//conditions:default": [],
     }),
 )
+
+# TODO: for linux we need to provide different flags to ensure the included runtime
+#       libs are statically-linked:
+#       https://stackoverflow.com/a/78075257
