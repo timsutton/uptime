@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# debug
+set -x
+
 # shellcheck source=common.sh
 source ./script/common.sh
 
 BAZELISK_VERSION=1.19.0
-SWIFT_VERSION=5.10
+SWIFT_VERSION=5.10.1
 
 function install_bazelisk() {
   if command -v bazelisk >/dev/null; then
@@ -50,6 +53,7 @@ install_apt_packages() {
 function install_swift_for_linux() {
   swift_version="${SWIFT_VERSION}"
   ubuntu_version=$(awk -F= '/DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)
+
   # Because Swift Linux releases put a 'aarch64' in the URL for Arm releases, and nothing at all for x86_64
   arch="$(uname -m)"
   if [[ "${arch}" = "arm64" ]] || [[ "${arch}" = "aarch64" ]]; then
