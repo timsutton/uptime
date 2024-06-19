@@ -9,4 +9,5 @@ source ./script/common.sh
 # TODO: re-check this assumption, this seems like would be very wrong
 chmod -R a+x "${STAGING_DIR}"
 
-find "${STAGING_DIR}" -type f -name uptime -print -exec {} \;
+# We don't use `find -exec` here because we want the script to error immediately if any of them fail
+for bin in $(find "${STAGING_DIR}" -type f -name uptime); do $bin; done
