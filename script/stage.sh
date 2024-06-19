@@ -5,29 +5,17 @@ set -euo pipefail
 # shellcheck source=common.sh
 source ./script/common.sh
 
-rm -rf "${STAGING_DIR}"
+rm -rf "${STAGING_DIR}" && mkdir -p "${STAGING_DIR}"
 
-# List of langs which should produce static, relocatable binaries
-# which we can stage and test on a different worker
-mkdir -p "${STAGING_DIR}"
-
-# Run this query to just get the runnable executable path
-#
-# We squelch progress output and even errors, because other lib type targets
-# have no executable path which could get returned by `target.files_to_run.executable.path`
-#
-# TODO: instead of doing //src/${lang} loop, we should just take the same target list from our original build query in build.sh
-# also TODO: doing the above could probably allow us to remove the -error/info ui_event_filter because we wouldn't
-# be including other targets under ...
-
+# We assemble the output of a Bazel query into an array that holds all runnable executables.
+# See the referenced starlark details for more of the logic in the actual query.
 output_exes=()
+while IFS= read -r bazel_built_exe; do
+  output_exes+=("$bazel_built_exe")
+done < <(bazel cquery --output=starlark --starlark:file=script/util/runnable_exes.star //src/... | awk NF)
+echo "${output_exes[@]}"
 
-bazel cquery --output=starlark --starlark:file=script/util/runnable_exes.star //src/... |
-  awk NF |
-  while IFS= read -r line; do
-    output_exes+=("$line")
-  done
-
+# Copy all these exes into the staging directory
 for exe in "${output_exes[@]}"; do
   intermediate_path=$(dirname "$exe")
   mkdir -p "$STAGING_DIR/$intermediate_path"
