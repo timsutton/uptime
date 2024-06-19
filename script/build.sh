@@ -19,6 +19,7 @@ fi
 
 bazel info
 bazel build //...
+
 # At this point these are only lint-type checks
 bazel test --test_output=errors //...
 

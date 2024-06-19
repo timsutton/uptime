@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# debug
-set -x
-
 # shellcheck source=common.sh
 source ./script/common.sh
 
