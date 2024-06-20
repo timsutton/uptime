@@ -3,3 +3,10 @@ build --compilation_mode=opt
 build:quiet --ui_event_filters=-info,-stdout,-stderr
 build:quiet --noshow_progress
 build:quiet --noshow_loading_progress
+
+# Do Swift static linking on Linux
+# - relies currently on a handcrafted patch from
+#   https://github.com/bazelbuild/rules_swift/pull/706
+build:linux --features=swift.static_stdlib
+
+build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
