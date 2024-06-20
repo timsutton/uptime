@@ -38,7 +38,7 @@ jobs:
 
   test:
     needs: [build]
-    if: ${{ needs.build.outputs.build_status == 'success' }}
+    if: ${{ needs.build.outputs.status == 'success' }}
 
     strategy:
       fail-fast: false
