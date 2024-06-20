@@ -22,6 +22,7 @@ function install_bazelisk() {
   cp "${bazelisk_path}/bazelisk" "${bazelisk_path}/bazel"
   chmod +x "${bazelisk_path}"/*
   export PATH="${bazelisk_path}:${PATH}"
+  echo "Installed Bazelisk to ${bazelisk_path} and added to PATH"
 }
 
 install_apt_packages() {

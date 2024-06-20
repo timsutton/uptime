@@ -5,6 +5,11 @@ set -euo pipefail
 # shellcheck source=common.sh
 source ./script/common.sh
 
+# Because we still use bazel in this staging script, we still invoke deps.sh because it will
+# ensure that the PATH is updated to include the swift distribution's bin dirs.
+# shellcheck source=deps.sh
+source ./script/deps.sh
+
 rm -rf "${STAGING_DIR}" && mkdir -p "${STAGING_DIR}"
 
 # We assemble the output of a Bazel query into an array that holds all runnable executables.
