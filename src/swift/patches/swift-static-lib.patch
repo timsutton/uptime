@@ -1,0 +1,157 @@
+diff --git a/swift/internal/compiling.bzl b/swift/internal/compiling.bzl
+index 1f285a4..b5f9391 100644
+--- a/swift/internal/compiling.bzl
++++ b/swift/internal/compiling.bzl
+@@ -70,6 +70,7 @@ load(
+     "SWIFT_FEATURE_OPT_USES_WMO",
+     "SWIFT_FEATURE_REWRITE_GENERATED_HEADER",
+     "SWIFT_FEATURE_SPLIT_DERIVED_FILES_GENERATION",
++    "SWIFT_FEATURE_STATIC_STDLIB",
+     "SWIFT_FEATURE_SUPPORTS_BARE_SLASH_REGEX",
+     "SWIFT_FEATURE_SUPPORTS_LIBRARY_EVOLUTION",
+     "SWIFT_FEATURE_SUPPORTS_SYSTEM_MODULE_FLAG",
+@@ -1223,6 +1224,16 @@ def compile_action_configs(
+             configurators = [_conditional_compilation_flag_configurator],
+         ),
+ 
++        # Enable the built modules to reference static Swift standard libraries.
++        swift_toolchain_config.action_config(
++            actions = [
++                swift_action_names.COMPILE,
++                swift_action_names.DERIVE_FILES,
++            ],
++            configurators = [swift_toolchain_config.add_arg("-static-stdlib")],
++            features = [SWIFT_FEATURE_STATIC_STDLIB],
++        ),
++
+         # Disable auto-linking for prebuilt static frameworks.
+         swift_toolchain_config.action_config(
+             actions = [swift_action_names.COMPILE],
+diff --git a/swift/internal/feature_names.bzl b/swift/internal/feature_names.bzl
+index ebad02d..09986fc 100644
+--- a/swift/internal/feature_names.bzl
++++ b/swift/internal/feature_names.bzl
+@@ -155,6 +155,10 @@ SWIFT_FEATURE_OPT_USES_OSIZE = "swift.opt_uses_osize"
+ # place.
+ SWIFT_FEATURE_REWRITE_GENERATED_HEADER = "swift.rewrite_generated_header"
+ 
++# If enabled the built binary will statically link Swift standard libraries.
++# This requires Swift 5.3.1
++SWIFT_FEATURE_STATIC_STDLIB = "swift.static_stdlib"
++
+ # If enabled, Swift compiler invocations will use precompiled modules from
+ # dependencies instead of module maps and headers, if those dependencies provide
+ # them.
+diff --git a/swift/internal/swift_toolchain.bzl b/swift/internal/swift_toolchain.bzl
+index 328da2c..f531eae 100644
+--- a/swift/internal/swift_toolchain.bzl
++++ b/swift/internal/swift_toolchain.bzl
+@@ -39,6 +39,7 @@ load(
+     "SWIFT_FEATURE_MODULE_MAP_HOME_IS_CWD",
+     "SWIFT_FEATURE_NO_GENERATED_MODULE_MAP",
+     "SWIFT_FEATURE_OPT_USES_WMO",
++    "SWIFT_FEATURE_STATIC_STDLIB",
+     "SWIFT_FEATURE_USE_AUTOLINK_EXTRACT",
+     "SWIFT_FEATURE_USE_GLOBAL_INDEX_STORE",
+     "SWIFT_FEATURE_USE_GLOBAL_MODULE_CACHE",
+@@ -211,7 +212,8 @@ def _swift_unix_linkopts_cc_info(
+         cpu,
+         os,
+         toolchain_label,
+-        toolchain_root):
++        toolchain_root,
++        static_stdlib):
+     """Returns a `CcInfo` containing flags that should be passed to the linker.
+ 
+     The provider returned by this function will be used as an implicit
+@@ -225,6 +227,7 @@ def _swift_unix_linkopts_cc_info(
+         toolchain_label: The label of the Swift toolchain that will act as the
+             owner of the linker input propagating the flags.
+         toolchain_root: The toolchain's root directory.
++        static_stdlib: Whether to statically link Swift standard libraries.
+ 
+     Returns:
+         A `CcInfo` provider that will provide linker flags to binaries that
+@@ -232,20 +235,36 @@ def _swift_unix_linkopts_cc_info(
+     """
+ 
+     # TODO(#8): Support statically linking the Swift runtime.
+-    platform_lib_dir = "{toolchain_root}/lib/swift/{os}".format(
+-        os = os,
+-        toolchain_root = toolchain_root,
+-    )
++    if static_stdlib:
++        platform_lib_dir = "{toolchain_root}/lib/swift_static/{os}".format(
++            os = os,
++            toolchain_root = toolchain_root,
++        )
++    else:
++        platform_lib_dir = "{toolchain_root}/lib/swift/{os}".format(
++            os = os,
++            toolchain_root = toolchain_root,
++        )
++
++    linkopts = [
++        "-pie",
++        "-L{}".format(platform_lib_dir),
++        "-Wl,-rpath,{}".format(platform_lib_dir),
++    ]
++
++    # Appending generic linker args from Swift runtime.
++    if static_stdlib:
++        static_stdlib_args = "{platform_lib_dir}/static-stdlib-args.lnk".format(
++            platform_lib_dir = platform_lib_dir,
++        )
++        linkopts.append("@{}".format(static_stdlib_args))
+ 
+     runtime_object_path = "{platform_lib_dir}/{cpu}/swiftrt.o".format(
+         cpu = cpu,
+         platform_lib_dir = platform_lib_dir,
+     )
+ 
+-    linkopts = [
+-        "-pie",
+-        "-L{}".format(platform_lib_dir),
+-        "-Wl,-rpath,{}".format(platform_lib_dir),
++    linkopts += [
+         "-lm",
+         "-lstdc++",
+         "-lrt",
+@@ -293,6 +312,7 @@ def _swift_toolchain_impl(ctx):
+             ctx.attr.os,
+             ctx.label,
+             toolchain_root,
++            SWIFT_FEATURE_STATIC_STDLIB in ctx.features,
+         )
+ 
+     # TODO: Remove once we drop bazel 7.x support
+diff --git a/tools/worker/work_processor.cc b/tools/worker/work_processor.cc
+index eac88b4..d46e3ee 100644
+--- a/tools/worker/work_processor.cc
++++ b/tools/worker/work_processor.cc
+@@ -85,6 +85,7 @@ void WorkProcessor::ProcessWorkRequest(
+   std::string emit_module_path;
+   std::string emit_objc_header_path;
+   bool is_wmo = false;
++  bool is_static_stdlib = false;
+   bool is_dump_ast = false;
+ 
+   std::string prev_arg;
+@@ -101,6 +102,8 @@ void WorkProcessor::ProcessWorkRequest(
+       arg.clear();
+     } else if (prev_arg == "-emit-module-path") {
+       emit_module_path = arg;
++    } else if (arg == "-static-stdlib") {
++      is_static_stdlib = true;
+     } else if (prev_arg == "-emit-objc-header-path") {
+       emit_objc_header_path = arg;
+     } else if (ArgumentEnablesWMO(arg)) {
+@@ -114,7 +117,7 @@ void WorkProcessor::ProcessWorkRequest(
+     prev_arg = original_arg;
+   }
+ 
+-  bool is_incremental = !is_wmo && !is_dump_ast;
++  bool is_incremental = !is_wmo && !is_dump_ast && !is_static_stdlib;
+ 
+   if (!output_file_map_path.empty()) {
+     if (is_incremental) {
