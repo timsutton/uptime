@@ -25,27 +25,6 @@ function install_bazelisk() {
   echo "Installed Bazelisk to ${bazelisk_path} and added to PATH"
 }
 
-install_apt_packages() {
-  apt-get update
-  if ! command -v curl >/dev/null; then
-    apt-get install -y curl
-  fi
-
-  if ! command -v javac >/dev/null; then
-    apt-get install -y openjdk-17-jdk-headless
-  fi
-
-  # what's a good way to detect if we need basic things like libc6-dev?
-  # ..and could we get away with installing a lot fewer packages than all of build-essential?
-  # ..zlib1g-dev is needed for GraalVM native-image
-  # ..libffi/libyaml is needed for Ruby build
-  apt-get install -y \
-    build-essential \
-    libffi-dev \
-    libyaml-dev \
-    zlib1g-dev
-}
-
 # Can potentially optimize this based on what rules_swift's CI does for Linux:
 # https://github.com/bazelbuild/rules_swift/blob/master/.bazelci/presubmit.yml#L13-L19
 function install_swift_for_linux() {
@@ -83,12 +62,6 @@ if [[ "${PLATFORM}" = "linux" ]]; then
   if [[ "$(awk -F= '/DISTRIB_ID/ {print $2}' /etc/lsb-release)" != "Ubuntu" ]]; then
     echo "On Linux, only Ubuntu platform is supported for building (for now)" >&2
     exit 1
-  fi
-
-  # A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
-  # case this looks like some other Ubuntu host, then run some additional required apt installs.
-  if [ -z "${CI:-}" ]; then
-    install_apt_packages
   fi
 
   install_bazelisk
