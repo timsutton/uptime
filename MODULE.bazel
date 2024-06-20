@@ -96,10 +96,20 @@ use_repo(crate, "crates")
 # ruby
 bazel_dep(name = "rules_ruby", version = "0.11.0")
 
+# Remove after next rules_ruby release, improves rule setup time
+archive_override(
+    module_name = "rules_ruby",
+    integrity = "sha256-I92IccEW2bh22mUqO4/ZzmDO2p7bRey/GhNgtgHwug8=",
+    strip_prefix = "rules_ruby-95941212c6c63a9bc4e7b5723ffc281c30451ff6",
+    urls = ["https://github.com/bazel-contrib/rules_ruby/archive/95941212c6c63a9bc4e7b5723ffc281c30451ff6.tar.gz"],
+)
+
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
-    version = "3.3.2",
+    version = "3.3.3",
+    # Overridden for rb 3.3.3
+    ruby_build_version = "20240612",
 )
 ruby.bundle_fetch(
     name = "bundle",
