@@ -3,8 +3,8 @@
 # shellcheck source=common.sh
 source ./script/common.sh
 
-BAZELISK_VERSION=1.19.0
-SWIFT_VERSION=5.10
+BAZELISK_VERSION=1.20.0
+SWIFT_VERSION=5.10.1
 
 function install_bazelisk() {
   if command -v bazelisk >/dev/null; then
@@ -22,27 +22,7 @@ function install_bazelisk() {
   cp "${bazelisk_path}/bazelisk" "${bazelisk_path}/bazel"
   chmod +x "${bazelisk_path}"/*
   export PATH="${bazelisk_path}:${PATH}"
-}
-
-install_apt_packages() {
-  apt-get update
-  if ! command -v curl >/dev/null; then
-    apt-get install -y curl
-  fi
-
-  if ! command -v javac >/dev/null; then
-    apt-get install -y openjdk-17-jdk-headless
-  fi
-
-  # what's a good way to detect if we need basic things like libc6-dev?
-  # ..and could we get away with installing a lot fewer packages than all of build-essential?
-  # ..zlib1g-dev is needed for GraalVM native-image
-  # ..libffi/libyaml is needed for Ruby build
-  apt-get install -y \
-    build-essential \
-    libffi-dev \
-    libyaml-dev \
-    zlib1g-dev
+  echo "Installed Bazelisk to ${bazelisk_path} and added to PATH"
 }
 
 # Can potentially optimize this based on what rules_swift's CI does for Linux:
@@ -50,6 +30,7 @@ install_apt_packages() {
 function install_swift_for_linux() {
   swift_version="${SWIFT_VERSION}"
   ubuntu_version=$(awk -F= '/DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)
+
   # Because Swift Linux releases put a 'aarch64' in the URL for Arm releases, and nothing at all for x86_64
   arch="$(uname -m)"
   if [[ "${arch}" = "arm64" ]] || [[ "${arch}" = "aarch64" ]]; then
@@ -81,12 +62,6 @@ if [[ "${PLATFORM}" = "linux" ]]; then
   if [[ "$(awk -F= '/DISTRIB_ID/ {print $2}' /etc/lsb-release)" != "Ubuntu" ]]; then
     echo "On Linux, only Ubuntu platform is supported for building (for now)" >&2
     exit 1
-  fi
-
-  # A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
-  # case this looks like some other Ubuntu host, then run some additional required apt installs.
-  if [ -z "${CI:-}" ]; then
-    install_apt_packages
   fi
 
   install_bazelisk

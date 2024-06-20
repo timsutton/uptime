@@ -5,20 +5,22 @@ set -euo pipefail
 # shellcheck source=common.sh
 source ./script/common.sh
 
+if [[ "${PLATFORM}" == "linux" ]]; then
+    # A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
+    # case this looks like some other Ubuntu host, then run some additional required apt installs.
+    if [ -z "${CI:-}" ]; then
+        install_apt_packages
+    fi
+fi
+
+# TODO: deps.sh is down here because it needs curl. We could move the curl installation out of install_apt_packages
+#       and rename it to be just the stuff we need for build-essentials, etc.
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-if [[ "${PLATFORM}" == "linux" ]]; then
-    # Note, on Linux we may need to set a couple extra things here to support ruby-build
-    if [ -z "${JAVA_HOME:-}" ]; then
-        # shellcheck disable=SC2155
-        export JAVA_HOME="$(dirname "$(dirname "$(realpath "$(which javac)")")")"
-    fi
-    export LANG="en_US.UTF-8"
-fi
-
 bazel info
 bazel build //...
+
 # At this point these are only lint-type checks
 bazel test --test_output=errors //...
 

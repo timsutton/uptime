@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -19,19 +19,20 @@ jobs:
           - runner: macos-13
           - runner: macos-14
           - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
     runs-on: ${{ matrix.runner }}
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: ./script/build.sh
-    - name: Stage compiled artifacts
-      run: ./script/stage.sh
-    - name: Archive built artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: binaries-${{ matrix.runner }}
-        path: artifacts
+      - uses: actions/checkout@v4
+      - name: Build
+        run: ./script/build.sh
+      - name: Stage compiled artifacts
+        run: ./script/stage.sh
+      - name: Archive built artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.runner }}
+          path: artifacts
 
   test:
     needs: build
@@ -42,13 +43,14 @@ jobs:
           - runner: macos-13
           - runner: macos-14
           - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
     runs-on: ${{ matrix.runner }}
     steps:
-    - uses: actions/checkout@v4
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: binaries-${{ matrix.runner }}
-        path: artifacts
-    - name: Test
-      run: ./script/test.sh
+      - uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: binaries-${{ matrix.runner }}
+          path: artifacts
+      - name: Test
+        run: ./script/test.sh

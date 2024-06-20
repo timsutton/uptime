@@ -5,29 +5,24 @@ set -euo pipefail
 # shellcheck source=common.sh
 source ./script/common.sh
 
-rm -rf "${STAGING_DIR}"
+# Because we still use bazel in this staging script, we still invoke deps.sh because it will
+# ensure that the PATH is updated to include the swift distribution's bin dirs.
+# shellcheck source=deps.sh
+source ./script/deps.sh
 
-# List of langs which should produce static, relocatable binaries
-# which we can stage and test on a different worker
-for lang in c go kt rs swift zig; do
-  mkdir -p "${STAGING_DIR}/${PLATFORM}/${lang}"
+rm -rf "${STAGING_DIR}" && mkdir -p "${STAGING_DIR}"
 
-  # Run this query to just get the runnable executable path
-  #
-  # We squelch progress output and even errors, because other lib type targets
-  # have no executable path which could get returned by `target.files_to_run.executable.path`
-  #
-  # TODO: instead of doing //src/${lang} loop, we should just take the same target list from our original build query in build.sh
-  # also TODO: doing the above could probably allow us to remove the -error/info ui_event_filter because we wouldn't
-  # be including other targets under ...
+# We assemble the output of a Bazel query into an array that holds all runnable executables.
+# See the referenced starlark details for more of the logic in the actual query.
+output_exes=()
+while IFS= read -r bazel_built_exe; do
+  output_exes+=("$bazel_built_exe")
+done < <(bazel cquery --output=starlark --starlark:file=script/util/runnable_exes.star //src/... | awk NF)
+echo "${output_exes[@]}"
 
-  output_exe_path=$(bazel cquery \
-    --noshow_progress \
-    --ui_event_filters=-info,-error \
-    --output=starlark \
-    --starlark:expr='target.files_to_run.executable.path if target.files_to_run.executable.path.endswith("uptime") else ""' \
-    //src/${lang}/... |
-    xargs)
-
-  cp -v "${output_exe_path}" "${STAGING_DIR}/${PLATFORM}/${lang}"
+# Copy all these exes into the staging directory
+for exe in "${output_exes[@]}"; do
+  intermediate_path=$(dirname "$exe")
+  mkdir -p "$STAGING_DIR/$intermediate_path"
+  cp "$exe" "$STAGING_DIR/$intermediate_path/"
 done
