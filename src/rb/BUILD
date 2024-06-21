@@ -20,7 +20,7 @@ rb_binary(
 
 # inspired from https://github.com/SeleniumHQ/selenium/blob/67ba0054e34cff220e68b457e88a0859114ff250/rb/BUILD.bazel#L179
 rb_test(
-    name = "lint",
+    name = "rubocop",
     srcs = glob([
         "**/*.rb",
     ] + ["Gemfile"]),
