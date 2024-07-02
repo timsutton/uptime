@@ -64,7 +64,7 @@ bazel_dep(name = "rules_jvm_external", version = "6.1")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
-        "com.github.oshi:oshi-core:6.6.0",
+        "com.github.oshi:oshi-core:6.6.1",
     ],
 )
 use_repo(maven, "maven")
@@ -76,13 +76,13 @@ rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
     sha256s = {
-        "rustc-1.78.0-aarch64-apple-darwin.tar.xz": "7f6e7e0800711aded0a35349bd2e1efcb1eaf8c2f080693a69f252195290c888",
-        "clippy-1.78.0-aarch64-apple-darwin.tar.xz": "6ed693740cd5e1546ff3e0d92279742e25fd3d8fcf566d0b3d12a1b3a3a39237",
-        "cargo-1.78.0-aarch64-apple-darwin.tar.xz": "76b9a39eea441b31c6b26cc58ebff7095a64bc60788254c2525e752a1149688d",
-        "llvm-tools-1.78.0-aarch64-apple-darwin.tar.xz": "491a52cddfb2121a2f5a450d0317e56150259d27ac47d7cb41471c3fe18d8e79",
-        "rust-std-1.78.0-aarch64-apple-darwin.tar.xz": "4ab399e983e6f4b21687010842774e5b7c679641360b0b85ac9b27a426bec4c1",
+        "rustc-1.79.0-aarch64-apple-darwin.tar.xz": "0d7890d57a879fdde1866049beb5d47319d9d7acc1968ec0b92d719917c137b3",
+        "clippy-1.79.0-aarch64-apple-darwin.tar.xz": "33e8feb81e31b991ad0e934c83ccd2b1acdafd944a3203e4afb7c7cbacbe41fc",
+        "cargo-1.79.0-aarch64-apple-darwin.tar.xz": "2cc674f17c18b0c01e0e5a8e5caedc26b0f499d2cc10605cf1a838e2cad9ef7d",
+        "llvm-tools-1.79.0-aarch64-apple-darwin.tar.xz": "326166f8862d2ecc10198f9c8bba89dfe64028187ddf417e916dc08c5d3deac7",
+        "rust-std-1.79.0-aarch64-apple-darwin.tar.xz": "89f16f3a6e8705c314c2f59186e0f8695ba43a58805c8450825888371fceaa25",
     },
-    versions = ["1.78.0"],
+    versions = ["1.79.0"],
 )
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
@@ -107,9 +107,9 @@ archive_override(
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
-    version = "3.3.3",
     # Overridden for rb 3.3.3
     ruby_build_version = "20240612",
+    version = "3.3.3",
 )
 ruby.bundle_fetch(
     name = "bundle",
@@ -119,12 +119,12 @@ ruby.bundle_fetch(
         "ffi-1.17.0-arm64-darwin": "609c874e76614542c6d485b0576e42a7a38ffcdf086612f9a300c4ec3fcd0d12",
         "json-2.7.2": "1898b5cbc81cd36c0fd4d0b7ad2682c39fb07c5ff682fc6265f678f550d4982c",
         "language_server-protocol-3.17.0.3": "3d5c58c02f44a20d972957a9febe386d7e7468ab3900ce6bd2b563dd910c6b3f",
-        "parallel-1.24.0": "5bf38efb9b37865f8e93d7a762727f8c5fc5deb19949f4040c76481d5eee9397",
-        "parser-3.3.2.0": "085d6ff5de3db7fa8ce1298abdb08750ccd7c96d0fcb95a90437b6d851378249",
+        "parallel-1.25.1": "12e089b9aa36ea2343f6e93f18cfcebd031798253db8260590d26a7f70b1ab90",
+        "parser-3.3.3.0": "a2e23c90918d9b7e866b18dca2b6835f227769dd2fa8e59c5841f3389cf53eeb",
         "racc-1.8.0": "09349a65c37c4fe710a435f25c9f1652e39f29ad6b1fa08d4a8d30c0553d3a08",
         "rainbow-3.1.1": "039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a",
         "regexp_parser-2.9.2": "5a27e767ad634f8a4b544520d5cd28a0db7aa1198a5d7c9d7e11d7b3d9066446",
-        "rexml-3.2.8": "0908a86381d9f973824680df4e0a75422766272f03b1c0e49db7e79c23db1135",
+        "rexml-3.3.1": "34af9fb38eff6c451abd187c53fded98378aa91766d4c62fbbce10e40ed7c325",
         "rubocop-1.64.1": "3145bf1863771e400a1c041060e751e5ff0edd9ceb99d01df36db1902f611f3b",
         "rubocop-ast-1.31.3": "1b07d618d8776993ec6053a706d1c09f0bf15139fd69415924656cbff07e7818",
         "ruby-progressbar-1.13.0": "80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33",
