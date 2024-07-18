@@ -108,8 +108,8 @@ ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
     # Overridden for rb 3.3.3
-    ruby_build_version = "20240612",
-    version = "3.3.3",
+    ruby_build_version = "20240709.1",
+    version = "3.3.4",
 )
 ruby.bundle_fetch(
     name = "bundle",
