@@ -1,52 +1,64 @@
 diff --git a/swift/internal/compiling.bzl b/swift/internal/compiling.bzl
-index 1f285a4..b5f9391 100644
+index 27a892b..7ce3b7e 100644
 --- a/swift/internal/compiling.bzl
 +++ b/swift/internal/compiling.bzl
-@@ -70,6 +70,7 @@ load(
+@@ -44,6 +44,7 @@ load(
      "SWIFT_FEATURE_OPT_USES_WMO",
-     "SWIFT_FEATURE_REWRITE_GENERATED_HEADER",
+     "SWIFT_FEATURE_PROPAGATE_GENERATED_MODULE_MAP",
      "SWIFT_FEATURE_SPLIT_DERIVED_FILES_GENERATION",
 +    "SWIFT_FEATURE_STATIC_STDLIB",
-     "SWIFT_FEATURE_SUPPORTS_BARE_SLASH_REGEX",
-     "SWIFT_FEATURE_SUPPORTS_LIBRARY_EVOLUTION",
-     "SWIFT_FEATURE_SUPPORTS_SYSTEM_MODULE_FLAG",
-@@ -1223,6 +1224,16 @@ def compile_action_configs(
-             configurators = [_conditional_compilation_flag_configurator],
-         ),
- 
-+        # Enable the built modules to reference static Swift standard libraries.
-+        swift_toolchain_config.action_config(
-+            actions = [
-+                swift_action_names.COMPILE,
-+                swift_action_names.DERIVE_FILES,
-+            ],
-+            configurators = [swift_toolchain_config.add_arg("-static-stdlib")],
-+            features = [SWIFT_FEATURE_STATIC_STDLIB],
-+        ),
-+
-         # Disable auto-linking for prebuilt static frameworks.
-         swift_toolchain_config.action_config(
-             actions = [swift_action_names.COMPILE],
+     "SWIFT_FEATURE_SYSTEM_MODULE",
+     "SWIFT_FEATURE_THIN_LTO",
+     "SWIFT_FEATURE_USE_EXPLICIT_SWIFT_MODULE_MAP",
 diff --git a/swift/internal/feature_names.bzl b/swift/internal/feature_names.bzl
-index ebad02d..09986fc 100644
+index 5d38fd3..a9a269f 100644
 --- a/swift/internal/feature_names.bzl
 +++ b/swift/internal/feature_names.bzl
-@@ -155,6 +155,10 @@ SWIFT_FEATURE_OPT_USES_OSIZE = "swift.opt_uses_osize"
- # place.
- SWIFT_FEATURE_REWRITE_GENERATED_HEADER = "swift.rewrite_generated_header"
+@@ -281,6 +281,10 @@ SWIFT_FEATURE_ENABLE_SKIP_FUNCTION_BODIES = "swift.skip_function_bodies_for_deri
+ # swift.coverage_prefix_map also remap the path in coverage data.
+ SWIFT_FEATURE_REMAP_XCODE_PATH = "swift.remap_xcode_path"
  
 +# If enabled the built binary will statically link Swift standard libraries.
 +# This requires Swift 5.3.1
 +SWIFT_FEATURE_STATIC_STDLIB = "swift.static_stdlib"
 +
- # If enabled, Swift compiler invocations will use precompiled modules from
- # dependencies instead of module maps and headers, if those dependencies provide
- # them.
-diff --git a/swift/internal/swift_toolchain.bzl b/swift/internal/swift_toolchain.bzl
-index 328da2c..f531eae 100644
---- a/swift/internal/swift_toolchain.bzl
-+++ b/swift/internal/swift_toolchain.bzl
-@@ -39,6 +39,7 @@ load(
+ # A private feature that is set by the toolchain if a flag enabling WMO was
+ # passed on the command line using `--swiftcopt`. Users should never manually
+ # enable, disable, or query this feature.
+diff --git a/swift/toolchains/config/compile_config.bzl b/swift/toolchains/config/compile_config.bzl
+index a6d630d..843bf5d 100644
+--- a/swift/toolchains/config/compile_config.bzl
++++ b/swift/toolchains/config/compile_config.bzl
+@@ -63,6 +63,7 @@ load(
+     "SWIFT_FEATURE_OPT_USES_WMO",
+     "SWIFT_FEATURE_REWRITE_GENERATED_HEADER",
+     "SWIFT_FEATURE_SPLIT_DERIVED_FILES_GENERATION",
++    "SWIFT_FEATURE_STATIC_STDLIB",
+     "SWIFT_FEATURE_SUPPORTS_BARE_SLASH_REGEX",
+     "SWIFT_FEATURE_SYSTEM_MODULE",
+     "SWIFT_FEATURE_THIN_LTO",
+@@ -1042,6 +1043,16 @@ def compile_action_configs(
+             configurators = [_frameworks_disable_autolink_configurator],
+         ),
+ 
++        # Enable the built modules to reference static Swift standard libraries.
++        ActionConfigInfo(
++            actions = [
++                SWIFT_ACTION_COMPILE,
++                SWIFT_ACTION_DERIVE_FILES,
++            ],
++            configurators = [add_arg("-static-stdlib")],
++            features = [SWIFT_FEATURE_STATIC_STDLIB],
++        ),
++
+         # User-defined conditional compilation flags (defined for Swift; those
+         # passed directly to ClangImporter are handled above).
+         ActionConfigInfo(
+diff --git a/swift/toolchains/swift_toolchain.bzl b/swift/toolchains/swift_toolchain.bzl
+index 64a8e2b..88d4e8b 100644
+--- a/swift/toolchains/swift_toolchain.bzl
++++ b/swift/toolchains/swift_toolchain.bzl
+@@ -57,6 +57,7 @@ load(
      "SWIFT_FEATURE_MODULE_MAP_HOME_IS_CWD",
      "SWIFT_FEATURE_NO_GENERATED_MODULE_MAP",
      "SWIFT_FEATURE_OPT_USES_WMO",
@@ -54,7 +66,7 @@ index 328da2c..f531eae 100644
      "SWIFT_FEATURE_USE_AUTOLINK_EXTRACT",
      "SWIFT_FEATURE_USE_GLOBAL_INDEX_STORE",
      "SWIFT_FEATURE_USE_GLOBAL_MODULE_CACHE",
-@@ -211,7 +212,8 @@ def _swift_unix_linkopts_cc_info(
+@@ -335,7 +336,8 @@ def _swift_unix_linkopts_cc_info(
          cpu,
          os,
          toolchain_label,
@@ -64,7 +76,7 @@ index 328da2c..f531eae 100644
      """Returns a `CcInfo` containing flags that should be passed to the linker.
  
      The provider returned by this function will be used as an implicit
-@@ -225,6 +227,7 @@ def _swift_unix_linkopts_cc_info(
+@@ -349,27 +351,43 @@ def _swift_unix_linkopts_cc_info(
          toolchain_label: The label of the Swift toolchain that will act as the
              owner of the linker input propagating the flags.
          toolchain_root: The toolchain's root directory.
@@ -72,10 +84,10 @@ index 328da2c..f531eae 100644
  
      Returns:
          A `CcInfo` provider that will provide linker flags to binaries that
-@@ -232,20 +235,36 @@ def _swift_unix_linkopts_cc_info(
+         depend on Swift targets.
      """
  
-     # TODO(#8): Support statically linking the Swift runtime.
+-    # TODO(#8): Support statically linking the Swift runtime.
 -    platform_lib_dir = "{toolchain_root}/lib/swift/{os}".format(
 -        os = os,
 -        toolchain_root = toolchain_root,
@@ -117,7 +129,7 @@ index 328da2c..f531eae 100644
          "-lm",
          "-lstdc++",
          "-lrt",
-@@ -293,6 +312,7 @@ def _swift_toolchain_impl(ctx):
+@@ -436,6 +454,7 @@ def _swift_toolchain_impl(ctx):
              ctx.attr.os,
              ctx.label,
              toolchain_root,
