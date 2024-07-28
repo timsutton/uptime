@@ -70,19 +70,19 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.47.1")
+bazel_dep(name = "rules_rust", version = "0.48.0")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
     sha256s = {
-        "rustc-1.79.0-aarch64-apple-darwin.tar.xz": "0d7890d57a879fdde1866049beb5d47319d9d7acc1968ec0b92d719917c137b3",
-        "clippy-1.79.0-aarch64-apple-darwin.tar.xz": "33e8feb81e31b991ad0e934c83ccd2b1acdafd944a3203e4afb7c7cbacbe41fc",
-        "cargo-1.79.0-aarch64-apple-darwin.tar.xz": "2cc674f17c18b0c01e0e5a8e5caedc26b0f499d2cc10605cf1a838e2cad9ef7d",
-        "llvm-tools-1.79.0-aarch64-apple-darwin.tar.xz": "326166f8862d2ecc10198f9c8bba89dfe64028187ddf417e916dc08c5d3deac7",
-        "rust-std-1.79.0-aarch64-apple-darwin.tar.xz": "89f16f3a6e8705c314c2f59186e0f8695ba43a58805c8450825888371fceaa25",
+        "rustc-1.80.0-aarch64-apple-darwin.tar.xz": "367d9cf73cc4f4b719c843b81a241f5c68a41f798b781026606703d166265a87",
+        "clippy-1.80.0-aarch64-apple-darwin.tar.xz": "57637a2277e2daa21eeb8bb468ed1fde788de121682a04d07a5d416f33b0db38",
+        "cargo-1.80.0-aarch64-apple-darwin.tar.xz": "517950591429dbc2bca8efb9f94e1a9dda9f1d16392f7885e3f81ddd31525659",
+        "llvm-tools-1.80.0-aarch64-apple-darwin.tar.xz": "12b209304b19c50494d628a608c680521d3836133f00fbd479d2ac49b9a2c3b8",
+        "rust-std-1.80.0-aarch64-apple-darwin.tar.xz": "d2f124d495ed92715ebcb21ba6677b304472098427f21795aacdbd4b24f04808",
     },
-    versions = ["1.79.0"],
+    versions = ["1.80.0"],
 )
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
