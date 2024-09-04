@@ -88,7 +88,7 @@ rust.toolchain(
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 crate.spec(
     package = "libc",
-    version = "0.2.155",
+    version = "0.2.158",
 )
 crate.from_specs(name = "crates")
 use_repo(crate, "crates")
@@ -107,9 +107,9 @@ archive_override(
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
-    # Overridden for rb 3.3.3
-    ruby_build_version = "20240709.1",
-    version = "3.3.4",
+    # Overridden for rb 3.3.5
+    ruby_build_version = "20240903",
+    version = "3.3.5",
 )
 ruby.bundle_fetch(
     name = "bundle",
