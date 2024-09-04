@@ -2,23 +2,26 @@
 bazel_dep(name = "platforms", version = "0.0.10")
 
 # standalone LLVM
-bazel_dep(name = "toolchains_llvm", version = "1.0.0")
+bazel_dep(name = "toolchains_llvm", version = "1.1.2")
 
 # Override toolchains_llvm to newer Git sha. Currently up in the air as to who will maintain
 # the module in BCR: https://github.com/bazel-contrib/toolchains_llvm/issues/298
 archive_override(
     module_name = "toolchains_llvm",
-    integrity = "sha256-iMhJcaAL7BM1sioDuNroe/F+CYFstC8ICRkKDNhtzKo=",
-    strip_prefix = "toolchains_llvm-2f58ae4a90f9d1b2a359ba3636fc449ccf578bce",
-    urls = ["https://github.com/bazel-contrib/toolchains_llvm/archive/2f58ae4a90f9d1b2a359ba3636fc449ccf578bce.tar.gz"],
+    integrity = "sha256-1SXIvezw090Cfbxfto5ldOpnGO1pxbfUW2yX66iG158=",
+    strip_prefix = "toolchains_llvm-a1a5013732b30b1c0b03e904726106a301913ec0",
+    urls = ["https://github.com/bazel-contrib/toolchains_llvm/archive/a1a5013732b30b1c0b03e904726106a301913ec0.tar.gz"],
 )
 
 llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
 llvm.toolchain(
+    # We just use the newest ones we can pick out of https://github.com/bazel-contrib/toolchains_llvm/blob/master/toolchain/internal/llvm_distributions.bzl
     llvm_versions = {
+        "darwin-aarch64": "18.1.8",
         "darwin-x86_64": "15.0.7",
         "linux-aarch64": "18.1.2",
-        "": "17.0.6",
+        "linux-x86_64": "17.0.6",
+        "": "15.0.7",
     },
 )
 use_repo(llvm, "llvm_toolchain")
