@@ -15,9 +15,13 @@ archive_override(
 
 llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
 llvm.toolchain(
+    # We just use the newest ones we can pick out of https://github.com/bazel-contrib/toolchains_llvm/blob/master/toolchain/internal/llvm_distributions.bzl
     llvm_versions = {
+        "darwin-aarch64": "18.1.8",
         "darwin-x86_64": "15.0.7",
-        "": "18.1.8",
+        "linux-aarch64": "18.1.2",
+        "linux-x86_64": "17.0.6",
+        "": "15.0.7",
     },
 )
 use_repo(llvm, "llvm_toolchain")
