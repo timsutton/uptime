@@ -2,7 +2,7 @@
 bazel_dep(name = "platforms", version = "0.0.10")
 
 # standalone LLVM
-bazel_dep(name = "toolchains_llvm", version = "1.0.0")
+bazel_dep(name = "toolchains_llvm", version = "1.1.2")
 
 # Override toolchains_llvm to newer Git sha. Currently up in the air as to who will maintain
 # the module in BCR: https://github.com/bazel-contrib/toolchains_llvm/issues/298
