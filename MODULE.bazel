@@ -76,13 +76,13 @@ rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
     sha256s = {
-        "rustc-1.80.0-aarch64-apple-darwin.tar.xz": "367d9cf73cc4f4b719c843b81a241f5c68a41f798b781026606703d166265a87",
-        "clippy-1.80.0-aarch64-apple-darwin.tar.xz": "57637a2277e2daa21eeb8bb468ed1fde788de121682a04d07a5d416f33b0db38",
-        "cargo-1.80.0-aarch64-apple-darwin.tar.xz": "517950591429dbc2bca8efb9f94e1a9dda9f1d16392f7885e3f81ddd31525659",
-        "llvm-tools-1.80.0-aarch64-apple-darwin.tar.xz": "12b209304b19c50494d628a608c680521d3836133f00fbd479d2ac49b9a2c3b8",
-        "rust-std-1.80.0-aarch64-apple-darwin.tar.xz": "d2f124d495ed92715ebcb21ba6677b304472098427f21795aacdbd4b24f04808",
+        "rustc-1.80.1-aarch64-apple-darwin.tar.xz": "b22ac69b19de26fed67634379ae72cbc8fcc2ad1b1d97c4fbcb747264e69f13c",
+        "clippy-1.80.1-aarch64-apple-darwin.tar.xz": "c413198c1b2e1981123a482944da16c295bc732f48c5b23477da2455347aeca1",
+        "cargo-1.80.1-aarch64-apple-darwin.tar.xz": "81e5940945d4e5ab698aa9e2a8a6655295963decbdd5cb9cae8a04acf0472d39",
+        "llvm-tools-1.80.1-aarch64-apple-darwin.tar.xz": "dacca6024516e9854e8043f75a3223b67fd1c23c8c213952e49dfb98bb428b8d",
+        "rust-std-1.80.1-aarch64-apple-darwin.tar.xz": "b64f95fd458f3fbb6bf006da87762b9cf2f7ed6dae6e33a272851e8162f0b64f",
     },
-    versions = ["1.80.0"],
+    versions = ["1.80.1"],
 )
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
