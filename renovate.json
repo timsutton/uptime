@@ -1,7 +1,21 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
-        "config:recommended",
-        "schedule:automergeWeekends"
-    ]
+        "config:base"
+    ],
+    "schedule": [
+        "every 2 weeks"
+    ],
+    "group": {
+        "allNonMajor": {
+            "groupName": "All updates",
+            "groupSlug": "all-updates",
+            "matchUpdateTypes": [
+                "minor",
+                "patch",
+                "pin",
+                "digest"
+            ]
+        }
+    }
 }
