@@ -18,6 +18,7 @@ jobs:
         include:
           - runner: macos-13
           - runner: macos-14
+          - runner: macos-15
           - runner: ubuntu-22.04
           - runner: ubuntu-24.04
     runs-on: ${{ matrix.runner }}
@@ -42,6 +43,7 @@ jobs:
         include:
           - runner: macos-13
           - runner: macos-14
+          - runner: macos-15
           - runner: ubuntu-22.04
           - runner: ubuntu-24.04
     runs-on: ${{ matrix.runner }}
