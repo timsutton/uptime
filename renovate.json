@@ -6,10 +6,9 @@
     "schedule": [
         "every 2 weeks on Monday"
     ],
-    "group": {
-        "allNonMajor": {
+    "packageRules": [
+        {
             "groupName": "All updates",
-            "groupSlug": "all-updates",
             "matchUpdateTypes": [
                 "minor",
                 "patch",
@@ -17,5 +16,5 @@
                 "digest"
             ]
         }
-    }
+    ]
 }
