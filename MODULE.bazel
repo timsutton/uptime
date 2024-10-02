@@ -35,7 +35,7 @@ bazel_dep(name = "gazelle", version = "0.38.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
 # Download an SDK for the host OS & architecture as well as common remote execution platforms.
-go_sdk.download(version = "1.22.3")
+go_sdk.download(version = "1.23.1")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.0.0")
@@ -78,20 +78,13 @@ bazel_dep(name = "rules_rust", version = "0.51.0")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
-    sha256s = {
-        "rustc-1.80.1-aarch64-apple-darwin.tar.xz": "b22ac69b19de26fed67634379ae72cbc8fcc2ad1b1d97c4fbcb747264e69f13c",
-        "clippy-1.80.1-aarch64-apple-darwin.tar.xz": "c413198c1b2e1981123a482944da16c295bc732f48c5b23477da2455347aeca1",
-        "cargo-1.80.1-aarch64-apple-darwin.tar.xz": "81e5940945d4e5ab698aa9e2a8a6655295963decbdd5cb9cae8a04acf0472d39",
-        "llvm-tools-1.80.1-aarch64-apple-darwin.tar.xz": "dacca6024516e9854e8043f75a3223b67fd1c23c8c213952e49dfb98bb428b8d",
-        "rust-std-1.80.1-aarch64-apple-darwin.tar.xz": "b64f95fd458f3fbb6bf006da87762b9cf2f7ed6dae6e33a272851e8162f0b64f",
-    },
-    versions = ["1.80.1"],
+    versions = ["1.81.0"],
 )
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 crate.spec(
     package = "libc",
-    version = "0.2.158",
+    version = "0.2.159",
 )
 crate.from_specs(name = "crates")
 use_repo(crate, "crates")
@@ -115,14 +108,14 @@ ruby.bundle_fetch(
         "json-2.7.2": "1898b5cbc81cd36c0fd4d0b7ad2682c39fb07c5ff682fc6265f678f550d4982c",
         "language_server-protocol-3.17.0.3": "3d5c58c02f44a20d972957a9febe386d7e7468ab3900ce6bd2b563dd910c6b3f",
         "parallel-1.26.3": "d86babb7a2b814be9f4b81587bf0b6ce2da7d45969fab24d8ae4bf2bb4d4c7ef",
-        "parser-3.3.4.2": "71efa8690c2a1ff8937258ff5713add4894dcea8b4ba19055692e28a2469c9e6",
+        "parser-3.3.5.0": "f30ebb71b7830c2e7cdc4b2b0e0ec2234900e3fca3fe2fba47f78be759181ab3",
         "racc-1.8.1": "4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f",
         "rainbow-3.1.1": "039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a",
         "regexp_parser-2.9.2": "5a27e767ad634f8a4b544520d5cd28a0db7aa1198a5d7c9d7e11d7b3d9066446",
         "rubocop-1.66.1": "0679c263b1164fd003b8590ae83b3e9e9bf72282d411755f227f1d6268ee5ee7",
-        "rubocop-ast-1.32.2": "8ef87dd10dccce68b86dc41ab4f0926dbc0e6dd61d848fd806681aeb92fd2e6b",
+        "rubocop-ast-1.32.3": "40201e861c73a3c2d59428c7627828ef81fb2f8a306bc4a1c1801452afe3fe0f",
         "ruby-progressbar-1.13.0": "80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33",
-        "unicode-display_width-2.5.0": "7e7681dcade1add70cb9fda20dd77f300b8587c81ebbd165d14fd93144ff0ab4",
+        "unicode-display_width-2.6.0": "12279874bba6d5e4d2728cef814b19197dbb10d7a7837a869bab65da943b7f5a",
     },
     gemfile = "//src/rb:Gemfile",
     gemfile_lock = "//src/rb:Gemfile.lock",
@@ -142,7 +135,6 @@ python.toolchain(
 )
 
 # swift
-
 bazel_dep(name = "rules_swift", version = "2.1.1", repo_name = "build_bazel_rules_swift")
 single_version_override(
     module_name = "rules_swift",
