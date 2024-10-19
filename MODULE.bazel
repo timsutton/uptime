@@ -30,7 +30,7 @@ register_toolchains("@llvm_toolchain//:all")
 
 # golang
 bazel_dep(name = "rules_go", version = "0.50.1")
-bazel_dep(name = "gazelle", version = "0.38.0")
+bazel_dep(name = "gazelle", version = "0.39.1")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
@@ -73,7 +73,7 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.51.0")
+bazel_dep(name = "rules_rust", version = "0.53.0")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -90,7 +90,7 @@ crate.from_specs(name = "crates")
 use_repo(crate, "crates")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.12.1")
+bazel_dep(name = "rules_ruby", version = "0.12.2")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
@@ -125,13 +125,13 @@ use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 register_toolchains("@ruby_toolchains//:all")
 
 # python
-bazel_dep(name = "rules_python", version = "0.35.0")
+bazel_dep(name = "rules_python", version = "0.37.0")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
     ignore_root_user_error = True,
     is_default = True,
-    python_version = "3.12",
+    python_version = "3.13",
 )
 
 # swift
