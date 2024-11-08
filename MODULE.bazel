@@ -62,7 +62,7 @@ register_toolchains("@graalvm//:jvm")
 
 register_toolchains("@graalvm//:sdk")
 
-bazel_dep(name = "rules_jvm_external", version = "6.4")
+bazel_dep(name = "rules_jvm_external", version = "6.5")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
@@ -73,7 +73,7 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.53.0")
+bazel_dep(name = "rules_rust", version = "0.54.1")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -91,7 +91,7 @@ crate.from_specs(name = "crates")
 use_repo(crate, "crates")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.12.2")
+bazel_dep(name = "rules_ruby", version = "0.13.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
@@ -126,7 +126,7 @@ use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 register_toolchains("@ruby_toolchains//:all")
 
 # python
-bazel_dep(name = "rules_python", version = "0.37.0")
+bazel_dep(name = "rules_python", version = "0.38.0")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
@@ -136,7 +136,7 @@ python.toolchain(
 )
 
 # swift
-bazel_dep(name = "rules_swift", version = "2.1.1", repo_name = "build_bazel_rules_swift")
+bazel_dep(name = "rules_swift", version = "2.2.3", repo_name = "build_bazel_rules_swift")
 single_version_override(
     module_name = "rules_swift",
     patch_strip = 1,
@@ -147,7 +147,7 @@ single_version_override(
 )
 
 # zig
-bazel_dep(name = "rules_zig", version = "0.5.0")
+bazel_dep(name = "rules_zig", version = "0.6.0")
 
 zig = use_extension(
     "@rules_zig//zig:extensions.bzl",
