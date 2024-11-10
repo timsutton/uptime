@@ -162,7 +162,7 @@ index eac88b4..0e0a9fe 100644
    }
  
 -  bool is_incremental = !is_wmo && !is_dump_ast;
-+  bool is_incremental = !is_wmo && !is_dump_ast && !is_static_stdlib;;
++  bool is_incremental = !is_wmo && !is_dump_ast && !is_static_stdlib;
  
    if (!output_file_map_path.empty()) {
      if (is_incremental) {
