@@ -10,7 +10,7 @@ llvm.toolchain(
     llvm_versions = {
         # 19+ versions of darwin aarch64 llvm has issues with graalvm build
         "darwin-aarch64": "18.1.8",
-        "darwin-x86_64": "19.1.0",
+        "darwin-x86_64": "18.1.8",
         "linux-aarch64": "18.1.2",
         "linux-x86_64": "19.1.0",
         "": "15.0.7",
