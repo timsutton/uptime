@@ -8,7 +8,8 @@ llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
 llvm.toolchain(
     # We just use the newest ones we can pick out of https://github.com/bazel-contrib/toolchains_llvm/blob/master/toolchain/internal/llvm_distributions.bzl
     llvm_versions = {
-        "darwin-aarch64": "19.1.0",
+        # 19+ versions of darwin aarch64 llvm has issues with graalvm build
+        "darwin-aarch64": "18.1.8",
         "darwin-x86_64": "19.1.0",
         "linux-aarch64": "18.1.2",
         "linux-x86_64": "19.1.0",
@@ -35,17 +36,17 @@ bazel_dep(name = "rules_graalvm", version = "0.11.1")
 # rules_graalvm hasn't yet published 0.11.2 to BCR
 archive_override(
     module_name = "rules_graalvm",
-    integrity = "sha256-JweZfVu+CFIYM0Q78qJpUbyj+uBbb/l8983xDK0/vCA=",
-    strip_prefix = "rules_graalvm-7c53c1a1ddf82fd775be2fc62d22783ec2ba4326",
-    urls = ["https://github.com/sgammon/rules_graalvm/archive/7c53c1a1ddf82fd775be2fc62d22783ec2ba4326.tar.gz"],
+    integrity = "sha256-m1H6AYvsmJEvSWJdoD3qwD69kpygrY0rD8WLfxBp4BQ=",
+    strip_prefix = "rules_graalvm-977aa70cc358e84f72f92c93a69ed040e7c293bc",
+    urls = ["https://github.com/sgammon/rules_graalvm/archive/977aa70cc358e84f72f92c93a69ed040e7c293bc.tar.gz"],
 )
 
 gvm = use_extension("@rules_graalvm//:extensions.bzl", "graalvm")
 gvm.graalvm(
     name = "graalvm",
     distribution = "ce",  # `oracle`, `ce`, or `community`
-    java_version = "22",  # `17`, `20`, `21`, or `22` as supported by the version provided
-    version = "24.0.1",  # gvm sdk version format like `24.x.x` also supported
+    java_version = "23",  # `17`, `20`, `21`, or `22` as supported by the version provided
+    version = "23.0.0",  # gvm sdk version format like `24.x.x` also supported
 )
 use_repo(gvm, "graalvm")
 
