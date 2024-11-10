@@ -47,6 +47,7 @@ jobs:
       - name: Save repo cache
         uses: actions/cache/save@v4
         id: cache
+        if: steps.restore-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: ${{ matrix.runner }}-${{ hashFiles('MODULE.bazel') }}
