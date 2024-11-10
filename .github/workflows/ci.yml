@@ -33,7 +33,7 @@ jobs:
         id: restore-cache
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: ${{ runner.os }}-${{ hashFiles('MODULE.bazel') }}
+          key: ${{ runner.name }}-${{ hashFiles('MODULE.bazel') }}
       - name: Build
         run: ./script/build.sh
       - name: Stage compiled artifacts
@@ -47,7 +47,7 @@ jobs:
         id: cache
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: ${{ runner.os }}-${{ hashFiles('MODULE.bazel') }}
+          key: ${{ runner.name }}-${{ hashFiles('MODULE.bazel') }}
 
   test:
     needs: build
