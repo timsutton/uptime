@@ -25,6 +25,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Get cache path
+        id: get-cache-path
+        run: |
+          echo "bazel_repo_cache_path=$(bazel info repository_cache)" >>"$GITHUB_OUTPUT"
+      - name: Restore repo cache
+        uses: actions/cache/restore@v4
+        id: restore-cache
+        with:
+          path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
+          key: ${{ matrix.runner }}
       - name: Build
         run: ./script/build.sh
       - name: Stage compiled artifacts
@@ -34,6 +44,13 @@ jobs:
         with:
           name: binaries-${{ matrix.runner }}
           path: artifacts
+      - name: Save repo cache
+        uses: actions/cache/save@v4
+        id: cache
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
+          key: ${{ matrix.runner }}
 
   test:
     needs: build
