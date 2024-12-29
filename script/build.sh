@@ -11,9 +11,6 @@ if [[ "${PLATFORM}" == "linux" ]]; then
     if [ -z "${CI:-}" ]; then
         install_apt_packages
     fi
-    # For Swift only:
-    # Since we aren't currently using a LLVM CC toolchain, we have to set CC=clang to specify a locally-installed LLVM
-    export CC=clang
 fi
 
 # TODO: deps.sh is down here because it needs curl. We could move the curl installation out of install_apt_packages
