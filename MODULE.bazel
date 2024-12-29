@@ -31,7 +31,7 @@ use_repo(llvm, "llvm_toolchain")
 register_toolchains("@llvm_toolchain//:all")
 
 # golang
-bazel_dep(name = "rules_go", version = "0.50.1")
+bazel_dep(name = "rules_go", version = "0.51.0")
 bazel_dep(name = "gazelle", version = "0.40.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
@@ -64,7 +64,7 @@ register_toolchains("@graalvm//:jvm")
 
 register_toolchains("@graalvm//:sdk")
 
-bazel_dep(name = "rules_jvm_external", version = "6.5")
+bazel_dep(name = "rules_jvm_external", version = "6.6")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
@@ -75,7 +75,7 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.54.1")
+bazel_dep(name = "rules_rust", version = "0.56.0")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -93,7 +93,7 @@ crate.from_specs(name = "crates")
 use_repo(crate, "crates")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.13.0")
+bazel_dep(name = "rules_ruby", version = "0.16.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
@@ -149,7 +149,7 @@ single_version_override(
 )
 
 # zig
-bazel_dep(name = "rules_zig", version = "0.6.0")
+bazel_dep(name = "rules_zig", version = "0.6.1")
 
 zig = use_extension(
     "@rules_zig//zig:extensions.bzl",
