@@ -34,9 +34,13 @@ jobs:
         with:
           name: binaries-${{ matrix.runner }}
           path: artifacts
+      - name: Set build status
+        run: echo "::set-output name=status::success"
 
   test:
-    needs: build
+    needs: [build]
+    if: ${{ needs.build.outputs.status == 'success' }}
+
     strategy:
       fail-fast: false
       matrix:
