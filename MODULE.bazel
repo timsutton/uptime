@@ -1,34 +1,10 @@
 # we explicitly use platforms for //src/swift
 bazel_dep(name = "platforms", version = "0.0.10")
 
-# standalone LLVM
-bazel_dep(name = "toolchains_llvm", version = "1.1.2")
-
+# apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
+# https://github.com/bazelbuild/rules_cc/pull/199
+bazel_dep(name = "apple_support", version = "1.17.1", repo_name = "build_bazel_apple_support")
 bazel_dep(name = "rules_cc", version = "0.1.0")
-
-# Override toolchains_llvm to newer Git sha. Currently up in the air as to who will maintain
-# the module in BCR: https://github.com/bazel-contrib/toolchains_llvm/issues/298
-archive_override(
-    module_name = "toolchains_llvm",
-    integrity = "sha256-1SXIvezw090Cfbxfto5ldOpnGO1pxbfUW2yX66iG158=",
-    strip_prefix = "toolchains_llvm-a1a5013732b30b1c0b03e904726106a301913ec0",
-    urls = ["https://github.com/bazel-contrib/toolchains_llvm/archive/a1a5013732b30b1c0b03e904726106a301913ec0.tar.gz"],
-)
-
-llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
-llvm.toolchain(
-    # We just use the newest ones we can pick out of https://github.com/bazel-contrib/toolchains_llvm/blob/master/toolchain/internal/llvm_distributions.bzl
-    llvm_versions = {
-        "darwin-aarch64": "18.1.8",
-        "darwin-x86_64": "15.0.7",
-        "linux-aarch64": "18.1.2",
-        "linux-x86_64": "17.0.6",
-        "": "15.0.7",
-    },
-)
-use_repo(llvm, "llvm_toolchain")
-
-register_toolchains("@llvm_toolchain//:all")
 
 # golang
 bazel_dep(name = "rules_go", version = "0.51.0")
@@ -80,8 +56,13 @@ bazel_dep(name = "rules_rust", version = "0.56.0")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
+    sha256s = {
+        "rustc-1.82.0-aarch64-apple-darwin.tar.xz": "ca9b9cab552c86ac7a28d8fb757c95a363bb5d6413b854b19472950eab2a9fa4",
+        "clippy-1.82.0-aarch64-apple-darwin.tar.xz": "bd1ba77f237df9e9dac704d5195281e0baec4509facd347ff716d793b131bbaa",
+        "cargo-1.82.0-aarch64-apple-darwin.tar.xz": "66b9acc4629a21896ebd96076016263461567b8faf4eb0b76d0a72614790f29a",
+        "rust-std-1.82.0-aarch64-apple-darwin.tar.xz": "8b0786c55e02f3adc5df030861b6b60bc336326b9e372f6b1bf3040257621a90",
+    },
     versions = ["1.82.0"],
-    sha256s = {"rustc-1.82.0-aarch64-apple-darwin.tar.xz": "ca9b9cab552c86ac7a28d8fb757c95a363bb5d6413b854b19472950eab2a9fa4", "clippy-1.82.0-aarch64-apple-darwin.tar.xz": "bd1ba77f237df9e9dac704d5195281e0baec4509facd347ff716d793b131bbaa", "cargo-1.82.0-aarch64-apple-darwin.tar.xz": "66b9acc4629a21896ebd96076016263461567b8faf4eb0b76d0a72614790f29a", "llvm-tools-1.82.0-aarch64-apple-darwin.tar.xz": "c663c58ef50ac4cad10e6fabe276bc4b1421821553464150dc8b97908605a5a8", "rust-std-1.82.0-aarch64-apple-darwin.tar.xz": "8b0786c55e02f3adc5df030861b6b60bc336326b9e372f6b1bf3040257621a90"},
 )
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
