@@ -1,5 +1,9 @@
 build --compilation_mode=opt
 
+# rules_graalvm needs this for now for native_image:
+# "Pass an executable or tools argument to ctx.actions.run or ctx.actions.run_shell instead of calling ctx.resolve_tools"
+build --noincompatible_disallow_ctx_resolve_tools
+
 build:quiet --ui_event_filters=-info,-stdout,-stderr
 build:quiet --noshow_progress
 build:quiet --noshow_loading_progress
