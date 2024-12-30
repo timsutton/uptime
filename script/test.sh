@@ -11,7 +11,7 @@ chmod -R a+x "${STAGING_DIR}"
 
 # We don't use `find -exec` here because we want the script to error immediately if any of them fail
 for bin in $(find "${STAGING_DIR}" -type f -name uptime); do
-    echo "Executing ${bin}"
-    $bin
-    echo ""
+	echo "Executing ${bin}"
+	$bin
+	echo ""
 done
