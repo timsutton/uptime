@@ -28,6 +28,8 @@ archive_override(
 )
 
 gvm = use_extension("@rules_graalvm//:extensions.bzl", "graalvm")
+
+# https://www.graalvm.org/release-calendar/
 gvm.graalvm(
     name = "graalvm",
     distribution = "ce",  # `oracle`, `ce`, or `community`
