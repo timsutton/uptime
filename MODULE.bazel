@@ -139,3 +139,12 @@ zig = use_extension(
     "zig",
 )
 zig.toolchain(zig_version = "0.13.0")
+
+# linting
+bazel_dep(name = "aspect_rules_lint", version = "1.0.8")
+
+bazel_dep(
+    name = "buildifier_prebuilt",
+    version = "7.3.1",
+    dev_dependency = True,
+)
