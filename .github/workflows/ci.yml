@@ -15,8 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Lint
-        run: bazelisk run format
+      - name: Format
+        run: |
+          bazelisk run format
+          git diff-files --quiet
   build:
     strategy:
       fail-fast: false
