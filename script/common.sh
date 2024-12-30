@@ -16,10 +16,6 @@ export STAGING_DIR="artifacts"
 PLATFORM="macos"
 if [[ "$(uname -s)" = "Linux" ]]; then
     PLATFORM="linux"
-
-    # For Swift only:
-    # Since we aren't currently using a LLVM CC toolchain, we have to set CC=clang to specify a locally-installed LLVM
-    export CC=clang
 fi
 export PLATFORM
 

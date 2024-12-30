@@ -13,4 +13,8 @@ build:quiet --noshow_loading_progress
 #   https://github.com/bazelbuild/rules_swift/pull/706
 build:linux --features=swift.static_stdlib
 
+# For Swift only:
+# Since we aren't currently using a LLVM CC toolchain, we have to set CC=clang to specify a locally-installed LLVM
+common:linux --action_env=CC=clang
+
 build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
