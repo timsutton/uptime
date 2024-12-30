@@ -1,3 +1,4 @@
+# buildifier: disable=module-docstring
 # we explicitly use platforms for //src/swift
 bazel_dep(name = "platforms", version = "0.0.10")
 

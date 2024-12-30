@@ -6,11 +6,11 @@ set -euo pipefail
 source ./script/common.sh
 
 if [[ "${PLATFORM}" == "linux" ]]; then
-    # A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
-    # case this looks like some other Ubuntu host, then run some additional required apt installs.
-    if [ -z "${CI:-}" ]; then
-        install_apt_packages
-    fi
+	# A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
+	# case this looks like some other Ubuntu host, then run some additional required apt installs.
+	if [ -z "${CI:-}" ]; then
+		install_apt_packages
+	fi
 fi
 
 # TODO: deps.sh is down here because it needs curl. We could move the curl installation out of install_apt_packages
@@ -25,5 +25,5 @@ bazel build --config="${PLATFORM}" //...
 bazel test --config="${PLATFORM}" --test_output=errors //...
 
 for tgt in $(bazel query "${BINARIES_QUERY}"); do
-    bazel run --config=quiet --config="${PLATFORM}" "${tgt}"
+	bazel run --config=quiet --config="${PLATFORM}" "${tgt}"
 done

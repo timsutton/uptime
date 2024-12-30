@@ -16,13 +16,13 @@ rm -rf "${STAGING_DIR}" && mkdir -p "${STAGING_DIR}"
 # See the referenced starlark details for more of the logic in the actual query.
 output_exes=()
 while IFS= read -r bazel_built_exe; do
-  output_exes+=("$bazel_built_exe")
+	output_exes+=("$bazel_built_exe")
 done < <(bazel cquery --output=starlark --starlark:file=script/util/runnable_exes.star //src/... | awk NF)
 echo "${output_exes[@]}"
 
 # Copy all these exes into the staging directory
 for exe in "${output_exes[@]}"; do
-  intermediate_path=$(dirname "$exe")
-  mkdir -p "$STAGING_DIR/$intermediate_path"
-  cp "$exe" "$STAGING_DIR/$intermediate_path/"
+	intermediate_path=$(dirname "$exe")
+	mkdir -p "$STAGING_DIR/$intermediate_path"
+	cp "$exe" "$STAGING_DIR/$intermediate_path/"
 done
