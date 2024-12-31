@@ -2,9 +2,21 @@ load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
 
 package(default_visibility = ["//:__subpackages__"])
 
+alias(
+    name = "swiftformat",
+    actual = select({
+        "@bazel_tools//src/conditions:linux": "@swiftformat",
+        "@bazel_tools//src/conditions:darwin": "@swiftformat_mac",
+    }),
+)
+
 format_multirun(
     name = "format",
+    go = "@aspect_rules_lint//format:gofumpt",
+    python = "@aspect_rules_lint//format:ruff",
+    rust = "@rules_rust//rust/toolchain:current_rustfmt_toolchain",
     shell = "@aspect_rules_lint//format:shfmt",
     starlark = "@buildifier_prebuilt//:buildifier",
+    swift = ":swiftformat",
     yaml = "@aspect_rules_lint//format:yamlfmt",
 )
