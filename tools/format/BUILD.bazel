@@ -4,6 +4,7 @@ package(default_visibility = ["//:__subpackages__"])
 
 format_multirun(
     name = "format",
+    python = "@aspect_rules_lint//format:ruff",
     rust = "@rules_rust//rust/toolchain:current_rustfmt_toolchain",
     shell = "@aspect_rules_lint//format:shfmt",
     starlark = "@buildifier_prebuilt//:buildifier",
