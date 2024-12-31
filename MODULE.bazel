@@ -149,3 +149,20 @@ bazel_dep(
     version = "7.3.1",
     dev_dependency = True,
 )
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "swiftformat_mac",
+    build_file_content = "filegroup(name = \"swiftformat_mac\", srcs=[\"swiftformat\"], visibility=[\"//visibility:public\"])",
+    sha256 = "c252ba7109b247ad4e172a7a20ced02f0f9132ffdf379ca1cd8e360272950836",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.4/swiftformat.zip",
+)
+
+http_archive(
+    name = "swiftformat",
+    build_file_content = "filegroup(name = \"swiftformat\", srcs=[\"swiftformat_linux\"], visibility=[\"//visibility:public\"])",
+    patch_cmds = ["chmod u+x swiftformat_linux"],
+    sha256 = "f62813980c2848cb1941f1456a2a06251c2e2323183623760922058b98c70745",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.4/swiftformat_linux.zip",
+)
