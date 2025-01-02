@@ -141,16 +141,22 @@ zig = use_extension(
 )
 zig.toolchain(zig_version = "0.13.0")
 
-# linting
+# formatting
+# (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
+#  these out into their own non-root modules since they are used only for formatting or linting)
 bazel_dep(name = "aspect_rules_lint", version = "1.0.8")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_jar = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 
 bazel_dep(
     name = "buildifier_prebuilt",
     version = "7.3.1",
     dev_dependency = True,
 )
-
-http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "swiftformat_mac",
@@ -168,7 +174,6 @@ http_archive(
 
 # Note that we intentionally don't fetch clang-format from the llvm_toolchains repo, because the llvm archives
 # are very time-consuming to download and extract.
-http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 # On Mac, mirror an arm64 copy from homebrew, which happens to build it portably
 # - Note, this repo has Mac binaries but (1) the architectures can be not matching the filename, and (2) they depend on dylibs
@@ -186,4 +191,10 @@ http_file(
     executable = True,
     sha256 = "8a933fe6eaac72f115d98ab56dc6e1b22af4dc53d32119108ebfd0b8e71ab6e1",
     url = "https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-46b8640/clang-format-19_linux-amd64",
+)
+
+http_jar(
+    name = "ktfmt",
+    integrity = "sha256-dtBcYU/hhkeIVXFw/olBD3UTSGap+EAR+b1XDKElJrE=",
+    url = "https://github.com/facebook/ktfmt/releases/download/v0.53/ktfmt-0.53-jar-with-dependencies.jar",
 )
