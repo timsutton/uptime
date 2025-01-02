@@ -166,6 +166,8 @@ http_archive(
     url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.4/swiftformat_linux.zip",
 )
 
+# Note that we intentionally don't fetch clang-format from the llvm_toolchains repo, because the llvm archives
+# are very time-consuming to download and extract.
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 # On Mac, mirror an arm64 copy from homebrew, which happens to build it portably
