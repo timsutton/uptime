@@ -1,4 +1,5 @@
 load("@rules_graalvm//graalvm:defs.bzl", "native_image")
+load("@rules_jvm_external//:defs.bzl", "artifact")
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
 
 config_setting(
@@ -26,17 +27,10 @@ kt_jvm_binary(
         ":macos": "MainDarwinKt",
     }),
     visibility = ["//visibility:private"],
-    # deps = [
-    #     "@maven//:com_github_oshi",
-    # ],
+    deps = [
+        artifact("com.github.oshi:oshi-core:6.6.5"),
+    ],
 )
-
-# java_library(
-#     name = "my_lib",
-#     exports = [
-#         "@maven//:com_github_oshi",
-#     ],
-# )
 
 native_image(
     name = "uptime",

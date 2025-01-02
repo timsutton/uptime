@@ -48,7 +48,7 @@ bazel_dep(name = "rules_jvm_external", version = "6.6")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
-        "com.github.oshi:oshi-core:6.6.1",
+        "com.github.oshi:oshi-core:6.6.5",
     ],
 )
 use_repo(maven, "maven")
