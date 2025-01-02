@@ -165,3 +165,19 @@ http_archive(
     sha256 = "0ac3533402fb091ad88774a1117548344851c39bff6bac97460e97fa957b6e7c",
     url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.4/swiftformat_linux.zip",
 )
+
+http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_file(
+    name = "clang_format_mac",
+    executable = True,
+    sha256 = "ea8f6231e4f75362fa6d61135cb89f541c7821ac0edc7525c77ea91ba49b12bd",
+    url = "https://github.com/timsutton/clang-format-binaries/releases/download/19.1.6/clang-format-darwin-arm64",
+)
+
+http_file(
+    name = "clang_format_linux",
+    executable = True,
+    sha256 = "23f0acfed63816bb68a34371318e2c0f9b1772c9d080c98d523d7cbeb6d57671",
+    url = "https://github.com/timsutton/clang-format-binaries/releases/download/19.1.6/clang-format-linux-x86_64",
+)
