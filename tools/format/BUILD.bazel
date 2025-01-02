@@ -6,6 +6,7 @@ format_multirun(
     name = "format",
     c = ":clang_format",
     go = "@aspect_rules_lint//format:gofumpt",
+    kotlin = ":ktfmt",
     python = "@aspect_rules_lint//format:ruff",
     rust = "@rules_rust//rust/toolchain:current_rustfmt_toolchain",
     shell = "@aspect_rules_lint//format:shfmt",
@@ -42,4 +43,10 @@ alias(
         "@bazel_tools//src/conditions:linux": "@swiftformat",
         "@bazel_tools//src/conditions:darwin": "@swiftformat_mac",
     }),
+)
+
+java_binary(
+    name = "ktfmt",
+    main_class = "com.facebook.ktfmt.cli.Main",
+    runtime_deps = ["@ktfmt//jar"],
 )
