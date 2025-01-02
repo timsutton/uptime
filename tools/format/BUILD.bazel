@@ -29,6 +29,12 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "clang_format_linux",
+    srcs = ["@clang_format_linux//file"],
+    visibility = ["//visibility:public"],
+)
+
 # Swift
 alias(
     name = "swiftformat",
