@@ -31,7 +31,17 @@ jobs:
     runs-on: ${{ matrix.runner }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          version: latest
+        # Tailscale will probably never be able to auto-install on GitHub's macOS runners
+        if: runner.os == 'Linux'
+      - name: Git clone
+        uses: actions/checkout@v4
       - name: Get cache path
         id: get-cache-path
         run: |
