@@ -12,6 +12,7 @@ build:quiet --noshow_loading_progress
 # - relies currently on a handcrafted patch from
 #   https://github.com/bazelbuild/rules_swift/pull/706
 build:linux --features=swift.static_stdlib
-build:linux --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
+# Use my Tailnet's remote cache on Linux, fall back to local if it has errors
+build:linux --remote_local_fallback --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
 
 build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
