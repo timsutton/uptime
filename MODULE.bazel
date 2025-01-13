@@ -154,7 +154,7 @@ http_jar = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_j
 
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "7.3.1",
+    version = "8.0.0",
     dev_dependency = True,
 )
 
