@@ -22,14 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - runner: macos-13
-          - runner: macos-14
-          - runner: macos-15
-          - runner: ubuntu-22.04
-          - runner: ubuntu-24.04
-          - runner: ubuntu-22.04-arm
-          - runner: ubuntu-24.04-arm
+        runner: [macos-13, macos-14, macos-15, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm]
     runs-on: ${{ matrix.runner }}
 
     steps:
@@ -76,14 +69,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - runner: macos-13
-          - runner: macos-14
-          - runner: macos-15
-          - runner: ubuntu-22.04
-          - runner: ubuntu-24.04
-          - runner: ubuntu-22.04-arm
-          - runner: ubuntu-24.04-arm
+        runner: [macos-13, macos-14, macos-15, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm]
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
