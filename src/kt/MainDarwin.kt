@@ -1,19 +1,9 @@
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import oshi.SystemInfo
 
 fun main() {
   try {
-    // TODO: don't use shell out, actually use the sysctl C API
-    // or try out OSHI: https://github.com/oshi/oshi
-    val process = ProcessBuilder("sysctl", "kern.boottime").redirectErrorStream(true).start()
-
-    val input = BufferedReader(InputStreamReader(process.inputStream))
-    val output = input.readText()
-    input.close()
-
-    val bootTime = output.substringAfter("sec = ").substringBefore(",")
-    var currentTime = System.currentTimeMillis() / 1000
-    println("%s".format(currentTime - bootTime.toLong()))
+    val si = SystemInfo()
+    println(si.operatingSystem.systemUptime)
   } catch (e: Exception) {
     e.printStackTrace()
   }
