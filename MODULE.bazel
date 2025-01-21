@@ -54,7 +54,7 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.56.0")
+bazel_dep(name = "rules_rust", version = "0.57.0")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -112,7 +112,7 @@ use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 register_toolchains("@ruby_toolchains//:all")
 
 # python
-bazel_dep(name = "rules_python", version = "1.0.0")
+bazel_dep(name = "rules_python", version = "1.1.0")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
@@ -122,7 +122,7 @@ python.toolchain(
 )
 
 # swift
-bazel_dep(name = "rules_swift", version = "2.3.1", repo_name = "build_bazel_rules_swift")
+bazel_dep(name = "rules_swift", version = "2.4.0", repo_name = "build_bazel_rules_swift")
 single_version_override(
     module_name = "rules_swift",
     patch_strip = 1,
