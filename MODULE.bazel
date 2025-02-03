@@ -60,18 +60,29 @@ rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
     sha256s = {
-        "rustc-1.82.0-aarch64-apple-darwin.tar.xz": "ca9b9cab552c86ac7a28d8fb757c95a363bb5d6413b854b19472950eab2a9fa4",
-        "clippy-1.82.0-aarch64-apple-darwin.tar.xz": "bd1ba77f237df9e9dac704d5195281e0baec4509facd347ff716d793b131bbaa",
-        "cargo-1.82.0-aarch64-apple-darwin.tar.xz": "66b9acc4629a21896ebd96076016263461567b8faf4eb0b76d0a72614790f29a",
-        "rust-std-1.82.0-aarch64-apple-darwin.tar.xz": "8b0786c55e02f3adc5df030861b6b60bc336326b9e372f6b1bf3040257621a90",
+        "rustc-1.84.1-aarch64-apple-darwin.tar.xz": "08923de98c4ee89c816844a0e37e8be40a6cf81ed29c7a734f137d2ecc044730",
+        "clippy-1.84.1-aarch64-apple-darwin.tar.xz": "fcd4630c34691c37199bd62fff9670bbb5d48b3c8aa16fbfe153cdcf1d56f635",
+        "cargo-1.84.1-aarch64-apple-darwin.tar.xz": "61b459defb45a51d6c52cb1f5dbe915a9b99ca4c4bf291e4e33798ceb0ff5b90",
+        "llvm-tools-1.84.1-aarch64-apple-darwin.tar.xz": "add6069ceaedcfb49aab007b0e8e17b9cde9226c31f3d00e5edcdd9b05e58fde",
+        "rust-std-1.84.1-aarch64-apple-darwin.tar.xz": "f5ce8aa9a64e9e5429e552fd058d1046871b15b2fc248b4992a649d8a8eaf239",
+        "rustc-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "f4241e0d8b38789f1d99603b5fd1a307d6946a1eac18b80938b804da99bf105e",
+        "clippy-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "5e0c53401590fc3e117a9276d8f2e9b16f47e5ad5bbc176fc6d11d6d0b27514a",
+        "cargo-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "51455991bb2c3246af7312712e130313ed7969eb4befd5a50baf285bf21e8f46",
+        "llvm-tools-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "f3d405cc95e71421e13307d4d499b4dd9ca2bab5e32c864e7f5c5f7b74941661",
+        "rust-std-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "fac5c60fa657975860c9947dc1638f8b8a21e6492c9218433e3116d4a6e1ed97",
+        "rustc-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "ae9e4c996707a7152443639bd09de49afdcc37830ff8561872e718b0600a4fcf",
+        "clippy-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "94a6c434a3552b5e4ca6201c81f49009b316e3a41e5efb8868d16ce1a0185417",
+        "cargo-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "792214e185297d8a3fa65949f9f3001ddd7cc06e1e8afd2a042f7ca5a8af727b",
+        "llvm-tools-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "34eb0bb3586e32e7026f22b809d163fb4c007a23f246cfc803ba6f7c13245742",
+        "rust-std-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "553727eeee81f1b1e7f3c7b7fd023abfb62fe5aff7fe0b1c81d3b5b92ab8a474",
     },
-    versions = ["1.82.0"],
+    versions = ["1.84.1"],
 )
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 crate.spec(
     package = "libc",
-    version = "0.2.159",
+    version = "0.2.169",
 )
 crate.from_specs(name = "crates")
 use_repo(crate, "crates")
@@ -93,16 +104,17 @@ ruby.bundle_fetch(
         "ffi-1.17.1": "26f6b0dbd1101e6ffc09d3ca640b2a21840cc52731ad8a7ded9fb89e5fb0fc39",
         "ffi-1.17.1-arm64-darwin": "a8e04f79d375742c54ee7f9fff4b4022b87200a4ec0eb082128d3b6559e67b4d",
         "json-2.9.1": "d2bdef4644052fad91c1785d48263756fe32fcac08b96a20bb15840e96550d11",
-        "language_server-protocol-3.17.0.3": "3d5c58c02f44a20d972957a9febe386d7e7468ab3900ce6bd2b563dd910c6b3f",
+        "language_server-protocol-3.17.0.4": "c484626478664fd13482d8180947c50a8590484b1258b99b7aedb3b69df89669",
         "parallel-1.26.3": "d86babb7a2b814be9f4b81587bf0b6ce2da7d45969fab24d8ae4bf2bb4d4c7ef",
-        "parser-3.3.6.0": "25d4e67cc4f0f7cab9a2ae1f38e2005b6904d2ea13c34734511d0faad038bc3b",
+        "parser-3.3.7.0": "7449011771e3e7881297859b849de26a6f4fccd515bece9520a87e7d2116119b",
         "racc-1.8.1": "4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f",
         "rainbow-3.1.1": "039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a",
         "regexp_parser-2.10.0": "cb6f0ddde88772cd64bff1dbbf68df66d376043fe2e66a9ef77fcb1b0c548c61",
-        "rubocop-1.69.2": "762fb0f30a379bf6054588d39f1815a2a1df8f067bc0337d3fe500e346924bb8",
-        "rubocop-ast-1.37.0": "9513ac88aaf113d04b52912533ffe46475de1362d4aa41141b51b2455827c080",
+        "rubocop-1.71.1": "d3dfd1e484a3a619dcf76c6a4fba694cd833921e4fd254d111845c26bcecfcfa",
+        "rubocop-ast-1.38.0": "4fdf6792fe443a9a18acb12dbc8225d0d64cd1654e41fedb30e79c18edbb26ae",
         "ruby-progressbar-1.13.0": "80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33",
-        "unicode-display_width-2.6.0": "12279874bba6d5e4d2728cef814b19197dbb10d7a7837a869bab65da943b7f5a",
+        "unicode-display_width-3.1.4": "8caf2af1c0f2f07ec89ef9e18c7d88c2790e217c482bfc78aaa65eadd5415ac1",
+        "unicode-emoji-4.0.4": "2c2c4ef7f353e5809497126285a50b23056cc6e61b64433764a35eff6c36532a",
     },
     gemfile = "//src/rb:Gemfile",
     gemfile_lock = "//src/rb:Gemfile.lock",
@@ -161,15 +173,15 @@ bazel_dep(
 http_archive(
     name = "swiftformat_mac",
     build_file_content = "filegroup(name = \"swiftformat_mac\", srcs=[\"swiftformat\"], visibility=[\"//visibility:public\"])",
-    sha256 = "c252ba7109b247ad4e172a7a20ced02f0f9132ffdf379ca1cd8e360272950836",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.4/swiftformat.zip",
+    sha256 = "efdd7bde8a3989070d50b41f05745b2af6f771506f6a8317351b5c177a7e9732",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.5/swiftformat.zip",
 )
 
 http_archive(
     name = "swiftformat",
     build_file_content = "filegroup(name = \"swiftformat\", srcs=[\"swiftformat_linux\"], visibility=[\"//visibility:public\"])",
-    sha256 = "0ac3533402fb091ad88774a1117548344851c39bff6bac97460e97fa957b6e7c",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.4/swiftformat_linux.zip",
+    sha256 = "c1cea7b6490f398377d6dbd76fa2740ce7434c1ec803deebad3367a57d119d0a",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.5/swiftformat_linux.zip",
 )
 
 # Note that we intentionally don't fetch clang-format from the llvm_toolchains repo, because the llvm archives
