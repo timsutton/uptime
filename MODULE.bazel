@@ -170,7 +170,7 @@ http_archive(
 http_archive(
     name = "swiftformat",
     build_file_content = "filegroup(name = \"swiftformat\", srcs=[\"swiftformat_linux\"], visibility=[\"//visibility:public\"])",
-    sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    sha256 = "c1cea7b6490f398377d6dbd76fa2740ce7434c1ec803deebad3367a57d119d0a",
     url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.5/swiftformat_linux.zip",
 )
 
