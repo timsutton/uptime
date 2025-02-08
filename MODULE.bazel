@@ -54,13 +54,13 @@ register_toolchains("@graalvm//:sdk")
 
 bazel_dep(name = "rules_jvm_external", version = "6.6")
 
-maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven_jvm_external")
 maven.install(
     artifacts = [
         "com.github.oshi:oshi-core:6.6.1",
     ],
 )
-use_repo(maven, "maven")
+use_repo(maven, "maven_jvm_external")
 
 # rust
 bazel_dep(name = "rules_rust", version = "0.57.1")
