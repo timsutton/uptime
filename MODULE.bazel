@@ -18,6 +18,7 @@ go_sdk.download(version = "1.23.1")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.1.0")
+
 # override here is to just pull in https://github.com/bazelbuild/rules_kotlin/pull/1270 temporarily
 archive_override(
     module_name = "rules_kotlin",
