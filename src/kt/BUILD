@@ -27,14 +27,14 @@ kt_jvm_binary(
     }),
     visibility = ["//visibility:private"],
     # deps = [
-    #     "@maven//:com_github_oshi",
+    #     "@maven_jvm_external//:com_github_oshi",
     # ],
 )
 
 # java_library(
 #     name = "my_lib",
 #     exports = [
-#         "@maven//:com_github_oshi",
+#         "@maven_jvm_external//:com_github_oshi",
 #     ],
 # )
 

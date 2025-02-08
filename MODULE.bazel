@@ -18,6 +18,15 @@ go_sdk.download(version = "1.23.1")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.1.0")
+
+# override here is to just pull in https://github.com/bazelbuild/rules_kotlin/pull/1270 temporarily
+archive_override(
+    module_name = "rules_kotlin",
+    integrity = "sha256-Gd1MgwBPTv7PlepIpi2hmk2XrBamousYD4NBE7q3unA=",
+    strip_prefix = "rules_kotlin-pull-java_stub_template.txt-as-an-http_file",
+    urls = ["https://github.com/bazelbuild/rules_kotlin/archive/refs/heads/pull-java_stub_template.txt-as-an-http_file.tar.gz"],
+)
+
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
 # rules_graalvm hasn't yet published 0.11.2 to BCR
@@ -45,13 +54,13 @@ register_toolchains("@graalvm//:sdk")
 
 bazel_dep(name = "rules_jvm_external", version = "6.6")
 
-maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven_jvm_external")
 maven.install(
     artifacts = [
         "com.github.oshi:oshi-core:6.6.1",
     ],
 )
-use_repo(maven, "maven")
+use_repo(maven, "maven_jvm_external")
 
 # rust
 bazel_dep(name = "rules_rust", version = "0.57.1")
