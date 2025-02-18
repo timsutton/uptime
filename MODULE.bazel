@@ -22,7 +22,7 @@ bazel_dep(name = "rules_kotlin", version = "2.1.0")
 # override here is to just pull in https://github.com/bazelbuild/rules_kotlin/pull/1270 temporarily
 archive_override(
     module_name = "rules_kotlin",
-    integrity = "sha256-Gd1MgwBPTv7PlepIpi2hmk2XrBamousYD4NBE7q3unA=",
+    integrity = "sha256-lwrHtwM7O3gUn++uZPZkyiyi04XIcCwTHXmnA34mJ3A=",
     strip_prefix = "rules_kotlin-pull-java_stub_template.txt-as-an-http_file",
     urls = ["https://github.com/bazelbuild/rules_kotlin/archive/refs/heads/pull-java_stub_template.txt-as-an-http_file.tar.gz"],
 )
