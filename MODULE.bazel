@@ -22,9 +22,9 @@ bazel_dep(name = "rules_kotlin", version = "2.1.0")
 # override here is to just pull in https://github.com/bazelbuild/rules_kotlin/pull/1270 temporarily
 archive_override(
     module_name = "rules_kotlin",
-    integrity = "sha256-lwrHtwM7O3gUn++uZPZkyiyi04XIcCwTHXmnA34mJ3A=",
-    strip_prefix = "rules_kotlin-pull-java_stub_template.txt-as-an-http_file",
-    urls = ["https://github.com/bazelbuild/rules_kotlin/archive/refs/heads/pull-java_stub_template.txt-as-an-http_file.tar.gz"],
+    integrity = "sha256-bt6o7ohETB6mGqUB4AKX9GrxRFGAk3kUtY8zI4Lz+t0=",
+    strip_prefix = "rules_kotlin-master",
+    urls = ["https://github.com/bazelbuild/rules_kotlin/archive/refs/heads/master.zip"],
 )
 
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
@@ -67,25 +67,8 @@ bazel_dep(name = "rules_rust", version = "0.57.1")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
-    edition = "2021",
-    sha256s = {
-        "rustc-1.84.1-aarch64-apple-darwin.tar.xz": "08923de98c4ee89c816844a0e37e8be40a6cf81ed29c7a734f137d2ecc044730",
-        "clippy-1.84.1-aarch64-apple-darwin.tar.xz": "fcd4630c34691c37199bd62fff9670bbb5d48b3c8aa16fbfe153cdcf1d56f635",
-        "cargo-1.84.1-aarch64-apple-darwin.tar.xz": "61b459defb45a51d6c52cb1f5dbe915a9b99ca4c4bf291e4e33798ceb0ff5b90",
-        "llvm-tools-1.84.1-aarch64-apple-darwin.tar.xz": "add6069ceaedcfb49aab007b0e8e17b9cde9226c31f3d00e5edcdd9b05e58fde",
-        "rust-std-1.84.1-aarch64-apple-darwin.tar.xz": "f5ce8aa9a64e9e5429e552fd058d1046871b15b2fc248b4992a649d8a8eaf239",
-        "rustc-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "f4241e0d8b38789f1d99603b5fd1a307d6946a1eac18b80938b804da99bf105e",
-        "clippy-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "5e0c53401590fc3e117a9276d8f2e9b16f47e5ad5bbc176fc6d11d6d0b27514a",
-        "cargo-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "51455991bb2c3246af7312712e130313ed7969eb4befd5a50baf285bf21e8f46",
-        "llvm-tools-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "f3d405cc95e71421e13307d4d499b4dd9ca2bab5e32c864e7f5c5f7b74941661",
-        "rust-std-1.84.1-aarch64-unknown-linux-gnu.tar.xz": "fac5c60fa657975860c9947dc1638f8b8a21e6492c9218433e3116d4a6e1ed97",
-        "rustc-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "ae9e4c996707a7152443639bd09de49afdcc37830ff8561872e718b0600a4fcf",
-        "clippy-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "94a6c434a3552b5e4ca6201c81f49009b316e3a41e5efb8868d16ce1a0185417",
-        "cargo-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "792214e185297d8a3fa65949f9f3001ddd7cc06e1e8afd2a042f7ca5a8af727b",
-        "llvm-tools-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "34eb0bb3586e32e7026f22b809d163fb4c007a23f246cfc803ba6f7c13245742",
-        "rust-std-1.84.1-x86_64-unknown-linux-gnu.tar.xz": "553727eeee81f1b1e7f3c7b7fd023abfb62fe5aff7fe0b1c81d3b5b92ab8a474",
-    },
-    versions = ["1.84.1"],
+    edition = "2024",
+    versions = ["1.85.0"],
 )
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
