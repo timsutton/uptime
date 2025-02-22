@@ -4,11 +4,11 @@ bazel_dep(name = "platforms", version = "0.0.11")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
-bazel_dep(name = "apple_support", version = "1.18.0", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "apple_support", version = "1.18.1", repo_name = "build_bazel_apple_support")
 bazel_dep(name = "rules_cc", version = "0.1.1")
 
 # golang
-bazel_dep(name = "rules_go", version = "0.52.0")
+bazel_dep(name = "rules_go", version = "0.53.0")
 bazel_dep(name = "gazelle", version = "0.42.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
@@ -52,7 +52,7 @@ register_toolchains("@graalvm//:jvm")
 
 register_toolchains("@graalvm//:sdk")
 
-bazel_dep(name = "rules_jvm_external", version = "6.6")
+bazel_dep(name = "rules_jvm_external", version = "6.7")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven_jvm_external")
 maven.install(
@@ -80,7 +80,7 @@ crate.from_specs(name = "crates")
 use_repo(crate, "crates")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.17.0")
+bazel_dep(name = "rules_ruby", version = "0.17.3")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
@@ -148,7 +148,7 @@ zig.toolchain(zig_version = "0.13.0")
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
 #  these out into their own non-root modules since they are used only for formatting or linting)
-bazel_dep(name = "aspect_rules_lint", version = "1.1.0")
+bazel_dep(name = "aspect_rules_lint", version = "1.2.0")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
