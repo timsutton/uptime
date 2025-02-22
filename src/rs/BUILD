@@ -3,7 +3,7 @@ load("@rules_rust//rust:defs.bzl", "rust_binary")
 rust_binary(
     name = "uptime",
     srcs = ["uptime.rs"],
-    edition = "2021",
+    edition = "2024",
     deps = [
         "@crates//:libc",
     ],
