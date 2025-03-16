@@ -126,7 +126,7 @@ python.toolchain(
 )
 
 # swift
-bazel_dep(name = "rules_swift", version = "2.5.0", repo_name = "build_bazel_rules_swift")
+bazel_dep(name = "rules_swift", version = "2.7.0", repo_name = "build_bazel_rules_swift")
 single_version_override(
     module_name = "rules_swift",
     patch_strip = 1,
