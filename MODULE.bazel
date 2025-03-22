@@ -137,13 +137,13 @@ single_version_override(
 )
 
 # zig
-bazel_dep(name = "rules_zig", version = "0.7.0")
+bazel_dep(name = "rules_zig", version = "0.8.0")
 
 zig = use_extension(
     "@rules_zig//zig:extensions.bzl",
     "zig",
 )
-zig.toolchain(zig_version = "0.13.0")
+zig.toolchain(zig_version = "0.14.0")
 
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
