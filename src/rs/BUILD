@@ -1,12 +1,10 @@
+load("@crates//:defs.bzl", "all_crate_deps")
 load("@rules_rust//rust:defs.bzl", "rust_binary")
 
 rust_binary(
     name = "uptime",
     srcs = ["uptime.rs"],
-    edition = "2024",
-    deps = [
-        "@crates//:libc",
-    ],
+    deps = all_crate_deps(normal = True),
 )
 
 # cloudflare/workerd repo is a good example of a Rust Bazel project:

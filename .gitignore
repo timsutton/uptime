@@ -1,4 +1,6 @@
+src/rs/target
 /target
+src/zig/zig-out
 uptime
 bazel-*
 MODULE.bazel.lock
