@@ -1,0 +1,12 @@
+[package]
+name = "uptime"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc = "^0.2"
+# sysctl = "0.6.0"
+
+[[bin]]
+name = "uptime"
+path = "uptime.rs"
