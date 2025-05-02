@@ -4,12 +4,12 @@ bazel_dep(name = "platforms", version = "0.0.11")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
-bazel_dep(name = "apple_support", version = "1.19.0", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "apple_support", version = "1.21.1", repo_name = "build_bazel_apple_support")
 bazel_dep(name = "rules_cc", version = "0.1.1")
 
 # golang
-bazel_dep(name = "rules_go", version = "0.53.0")
-bazel_dep(name = "gazelle", version = "0.42.0")
+bazel_dep(name = "rules_go", version = "0.54.0")
+bazel_dep(name = "gazelle", version = "0.43.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
@@ -63,7 +63,7 @@ maven.install(
 use_repo(maven, "maven_jvm_external")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.57.1")
+bazel_dep(name = "rules_rust", version = "0.61.0")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -83,7 +83,7 @@ crate.from_cargo(
 use_repo(crate, "crates")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.17.3")
+bazel_dep(name = "rules_ruby", version = "0.18.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
@@ -119,7 +119,7 @@ use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 register_toolchains("@ruby_toolchains//:all")
 
 # python
-bazel_dep(name = "rules_python", version = "1.2.0")
+bazel_dep(name = "rules_python", version = "1.3.0")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
@@ -129,7 +129,7 @@ python.toolchain(
 )
 
 # swift
-bazel_dep(name = "rules_swift", version = "2.7.0", repo_name = "build_bazel_rules_swift")
+bazel_dep(name = "rules_swift", version = "2.8.1", repo_name = "build_bazel_rules_swift")
 single_version_override(
     module_name = "rules_swift",
     patch_strip = 1,
@@ -151,7 +151,7 @@ zig.toolchain(zig_version = "0.14.0")
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
 #  these out into their own non-root modules since they are used only for formatting or linting)
-bazel_dep(name = "aspect_rules_lint", version = "1.2.2")
+bazel_dep(name = "aspect_rules_lint", version = "1.3.5")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -161,7 +161,7 @@ http_jar = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_j
 
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "8.0.1",
+    version = "8.0.3",
     dev_dependency = True,
 )
 
