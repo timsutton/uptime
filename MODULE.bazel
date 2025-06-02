@@ -1,6 +1,6 @@
 # buildifier: disable=module-docstring
 # we explicitly use platforms for //src/swift
-bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "platforms", version = "1.0.0")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
