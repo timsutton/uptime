@@ -7,6 +7,7 @@ current_os = Gem::Platform.local.os
 if current_os == 'darwin'
   module Sysctl
     extend FFI::Library
+
     ffi_lib FFI::Library::LIBC
     attach_function :sysctlbyname, %i[string pointer pointer pointer ulong], :int
 
@@ -25,6 +26,7 @@ if current_os == 'darwin'
 elsif current_os == 'linux'
   module Sys
     extend FFI::Library
+
     ffi_lib FFI::Library::LIBC
 
     class Sysinfo < FFI::Struct
