@@ -10,14 +10,6 @@ config_setting(
 )
 
 config_setting(
-    name = "platform_macos_intel",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:macos",
-    ],
-)
-
-config_setting(
     name = "platform_linux",
     constraint_values = ["@platforms//os:linux"],
 )
@@ -32,7 +24,6 @@ swift_binary(
     srcs = ["uptime_c.swift"],
     copts = select({
         ":platform_macos_apple_silicon": ["--target=arm64-apple-macosx13"],
-        ":platform_macos_intel": ["--target=x86_64-apple-macosx13"],
         "//conditions:default": [],
     }),
 )
