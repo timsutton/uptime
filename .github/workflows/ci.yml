@@ -52,7 +52,7 @@ jobs:
       - name: Stage compiled artifacts
         run: ./script/stage.sh
       - name: Archive built artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: binaries-${{ matrix.runner }}
           path: artifacts
@@ -74,7 +74,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: binaries-${{ matrix.runner }}
           path: artifacts
