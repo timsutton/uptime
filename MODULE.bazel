@@ -1,6 +1,6 @@
 # buildifier: disable=module-docstring
 # we explicitly use platforms for //src/swift
-bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "platforms", version = "1.0.0")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
@@ -63,7 +63,7 @@ maven.install(
 use_repo(maven, "maven_jvm_external")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.67.0")
+bazel_dep(name = "rules_rust", version = "0.57.1")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -142,11 +142,8 @@ single_version_override(
 # zig
 bazel_dep(name = "rules_zig", version = "0.12.1")
 
-zig = use_extension(
-    "@rules_zig//zig:extensions.bzl",
-    "zig",
-)
-zig.toolchain(zig_version = "0.14.0")
+zig = use_extension("//zig:extensions.bzl", "zig")
+zig.toolchain(zig_version = "0.15.1")
 
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
