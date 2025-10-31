@@ -4,12 +4,12 @@ bazel_dep(name = "platforms", version = "1.0.0")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
-bazel_dep(name = "apple_support", version = "1.24.1", repo_name = "build_bazel_apple_support")
-bazel_dep(name = "rules_cc", version = "0.2.11")
+bazel_dep(name = "apple_support", version = "1.24.3", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "rules_cc", version = "0.2.13")
 
 # golang
-bazel_dep(name = "rules_go", version = "0.58.2")
-bazel_dep(name = "gazelle", version = "0.45.0")
+bazel_dep(name = "rules_go", version = "0.58.3")
+bazel_dep(name = "gazelle", version = "0.46.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
@@ -140,7 +140,7 @@ single_version_override(
 )
 
 # zig
-bazel_dep(name = "rules_zig", version = "0.12.1")
+bazel_dep(name = "rules_zig", version = "0.12.2")
 
 zig = use_extension("//zig:extensions.bzl", "zig")
 zig.toolchain(zig_version = "0.15.1")
