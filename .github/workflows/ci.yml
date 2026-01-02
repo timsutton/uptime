@@ -14,7 +14,7 @@ jobs:
   lint:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Format
         run: bazel run //tools/format:format.check
 
@@ -36,7 +36,7 @@ jobs:
         # Tailscale will probably never be able to auto-install on GitHub's macOS runners
         if: runner.os == 'Linux'
       - name: Git clone
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Get cache path
         id: get-cache-path
         run: |
@@ -72,7 +72,7 @@ jobs:
         runner: [macos-14, macos-15, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm]
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download artifacts
         uses: actions/download-artifact@v6
         with:
