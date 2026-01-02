@@ -4,7 +4,7 @@ bazel_dep(name = "platforms", version = "1.0.0")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
-bazel_dep(name = "apple_support", version = "1.24.1", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "apple_support", version = "2.1.0", repo_name = "build_bazel_apple_support")
 bazel_dep(name = "rules_cc", version = "0.2.11")
 
 # golang
