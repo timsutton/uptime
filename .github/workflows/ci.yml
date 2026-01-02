@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "bazel_repo_cache_path=$(bazel info repository_cache)" >>"$GITHUB_OUTPUT"
       - name: Restore repo cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: restore-cache
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
@@ -57,7 +57,7 @@ jobs:
           name: binaries-${{ matrix.runner }}
           path: artifacts
       - name: Save repo cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         id: cache
         if: github.ref == 'refs/heads/main'
         with:
