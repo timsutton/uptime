@@ -4,6 +4,9 @@ build --compilation_mode=opt
 # "Pass an executable or tools argument to ctx.actions.run or ctx.actions.run_shell instead of calling ctx.resolve_tools"
 build --noincompatible_disallow_ctx_resolve_tools
 
+build --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
+build --remote_local_fallback
+
 build:quiet --ui_event_filters=-info,-stdout,-stderr
 build:quiet --noshow_progress
 build:quiet --noshow_loading_progress
@@ -12,11 +15,5 @@ build:quiet --noshow_loading_progress
 # - relies currently on a handcrafted patch from
 #   https://github.com/bazelbuild/rules_swift/pull/706
 build:linux --features=swift.static_stdlib
-
-# Remote cache
-# Use my Tailnet's remote cache on Linux, fall back to local if it has errors
-build:linux --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
-build:linux --remote_local_fallback
-build:linux --remote_download_outputs=minimal
 
 build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
