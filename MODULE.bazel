@@ -17,16 +17,7 @@ go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.23.1")
 
 # kotlin
-bazel_dep(name = "rules_kotlin", version = "2.1.0")
-
-# override here is to just pull in https://github.com/bazelbuild/rules_kotlin/pull/1270 temporarily
-archive_override(
-    module_name = "rules_kotlin",
-    integrity = "sha256-4TNx2A21MXc0pJp7Pcc6z1CldIfdkRJmgp+Dt9L3t+4=",
-    strip_prefix = "rules_kotlin-f6de6274430e8a6e1acd153ad02fb45ce911e0db",
-    urls = ["https://github.com/bazelbuild/rules_kotlin/archive/f6de6274430e8a6e1acd153ad02fb45ce911e0db.zip"],
-)
-
+bazel_dep(name = "rules_kotlin", version = "2.2.2")
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
 # rules_graalvm hasn't yet published 0.11.2 to BCR
