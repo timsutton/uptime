@@ -19,11 +19,11 @@ fi
 source ./script/deps.sh
 
 bazel info
-bazel build --config="${PLATFORM}" //...
+bazel build //...
 
 # At this point these are only lint-type checks
-bazel test --config="${PLATFORM}" --test_output=errors //...
+bazel test --test_output=errors //...
 
 for tgt in $(bazel query "${BINARIES_QUERY}"); do
-	bazel run --config=quiet --config="${PLATFORM}" "${tgt}"
+	bazel run --config=quiet "${tgt}"
 done
