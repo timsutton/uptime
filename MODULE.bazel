@@ -142,8 +142,6 @@ archive_override(
     patches = [
         # Based on https://github.com/bazelbuild/rules_swift/pull/706
         "//src/swift/patches:swift-static-lib.patch",
-        # Remove swift_argument_parser dependency which causes compatibility issues
-        "//src/swift/patches:remove-swift-argument-parser.patch",
     ],
     urls = ["https://github.com/bazelbuild/rules_swift/releases/download/3.4.1/rules_swift.3.4.1.tar.gz"],
 )
