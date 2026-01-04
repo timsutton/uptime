@@ -18,7 +18,7 @@ jobs:
       - name: Format
         run: bazel run //tools/format:format.check
 
-  build:
+  build-and-test:
     strategy:
       fail-fast: false
       matrix:
@@ -56,6 +56,8 @@ jobs:
         with:
           name: binaries-${{ matrix.runner }}
           path: artifacts
+      - name: Test
+        run: ./script/test.sh
       - name: Save repo cache
         uses: actions/cache/save@v5
         id: cache
@@ -63,20 +65,3 @@ jobs:
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: ${{ matrix.runner }}
-
-  test:
-    needs: build
-    strategy:
-      fail-fast: false
-      matrix:
-        runner: [macos-14, macos-15, macos-26, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm]
-    runs-on: ${{ matrix.runner }}
-    steps:
-      - uses: actions/checkout@v6
-      - name: Download artifacts
-        uses: actions/download-artifact@v7
-        with:
-          name: binaries-${{ matrix.runner }}
-          path: artifacts
-      - name: Test
-        run: ./script/test.sh
