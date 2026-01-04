@@ -4,7 +4,7 @@
 source ./script/common.sh
 
 BAZELISK_VERSION=1.25.0
-SWIFT_VERSION=6.1
+SWIFT_VERSION=6.2.3
 
 function install_bazelisk() {
 	if command -v bazelisk >/dev/null; then
