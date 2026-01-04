@@ -14,7 +14,7 @@ bazel_dep(name = "gazelle", version = "0.47.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
 # Download an SDK for the host OS & architecture as well as common remote execution platforms.
-go_sdk.download(version = "1.23.1")
+go_sdk.download(version = "1.25.5")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.2.2")
@@ -148,7 +148,7 @@ single_version_override(
 bazel_dep(name = "rules_zig", version = "0.12.3")
 
 zig = use_extension("//zig:extensions.bzl", "zig")
-zig.toolchain(zig_version = "0.15.1")
+zig.toolchain(zig_version = "0.15.2")
 
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
