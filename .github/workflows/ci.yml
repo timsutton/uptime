@@ -23,45 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         runner: [macos-14, macos-15, macos-26, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm]
-    runs-on: ${{ matrix.runner }}
-
-    steps:
-      - name: Tailscale
-        uses: tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-          version: latest
-        # Tailscale will probably never be able to auto-install on GitHub's macOS runners
-        if: runner.os == 'Linux'
-      - name: Git clone
-        uses: actions/checkout@v6
-      - name: Get cache path
-        id: get-cache-path
-        run: |
-          echo "bazel_repo_cache_path=$(bazel info repository_cache)" >>"$GITHUB_OUTPUT"
-      - name: Restore repo cache
-        uses: actions/cache/restore@v5
-        id: restore-cache
-        with:
-          path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: ${{ matrix.runner }}
-      - name: Build
-        run: ./script/build.sh
-      - name: Stage compiled artifacts
-        run: ./script/stage.sh
-      - name: Archive built artifacts
-        uses: actions/upload-artifact@v6
-        with:
-          name: binaries-${{ matrix.runner }}
-          path: artifacts
-      - name: Test
-        run: ./script/test.sh
-      - name: Save repo cache
-        uses: actions/cache/save@v5
-        id: cache
-        if: github.ref == 'refs/heads/main'
-        with:
-          path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: ${{ matrix.runner }}
+    uses: ./.github/workflows/build-test.yml
+    with:
+      runner: ${{ matrix.runner }}
+    secrets: inherit
