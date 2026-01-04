@@ -47,10 +47,6 @@ function install_apt_packages() {
 	# ..zlib1g-dev is needed for GraalVM native-image
 	# ..libffi/libyaml is needed for Ruby build
 	apt-get install -y \
-		build-essential \
-		libffi-dev \
-		libncurses6 \
-		libyaml-dev \
 		zlib1g-dev
 }
 export -f install_apt_packages
