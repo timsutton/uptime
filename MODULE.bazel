@@ -135,13 +135,18 @@ python.toolchain(
 
 # swift
 bazel_dep(name = "rules_swift", version = "3.4.1", repo_name = "build_bazel_rules_swift")
-single_version_override(
+
+archive_override(
     module_name = "rules_swift",
+    integrity = "sha256-YwnSJkdMa5KT95DT2kPTsE3Apxt1uH3zEHhxoOpZ1fY=",
     patch_strip = 1,
     patches = [
         # Based on https://github.com/bazelbuild/rules_swift/pull/706
         "//src/swift/patches:swift-static-lib.patch",
+        # Remove swift_argument_parser dependency which causes compatibility issues
+        "//src/swift/patches:remove-swift-argument-parser.patch",
     ],
+    urls = ["https://github.com/bazelbuild/rules_swift/releases/download/3.4.1/rules_swift.3.4.1.tar.gz"],
 )
 
 # zig
