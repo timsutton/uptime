@@ -130,7 +130,7 @@ python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
     ignore_root_user_error = True,
     is_default = True,
-    python_version = "3.13",
+    python_version = "3.15",
 )
 
 # swift
