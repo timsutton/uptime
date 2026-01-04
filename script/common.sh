@@ -36,17 +36,9 @@ function install_apt_packages() {
 		apt-get install -y openjdk-17-jdk-headless
 	fi
 
-	# Note, on Linux we may need to set a couple extra things here to support ruby-build
 	if [ -z "${JAVA_HOME:-}" ]; then
 		# shellcheck disable=SC2155
 		export JAVA_HOME="$(dirname "$(dirname "$(realpath "$(which javac)")")")"
 	fi
-
-	# what's a good way to detect if we need basic things like libc6-dev?
-	# ..and could we get away with installing a lot fewer packages than all of build-essential?
-	# ..zlib1g-dev is needed for GraalVM native-image
-	# ..libffi/libyaml is needed for Ruby build
-	apt-get install -y \
-		zlib1g-dev
 }
 export -f install_apt_packages
