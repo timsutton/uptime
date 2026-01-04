@@ -18,8 +18,24 @@ fi
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
+# Detect the highest available Xcode version on macOS
+XCODE_VERSION_FLAG=""
+if [[ "${PLATFORM}" == "macos" ]]; then
+	highest_version=""
+	while IFS= read -r xcode_path; do
+		plist_path="${xcode_path}/Contents/Info.plist"
+		version=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${plist_path}" 2>/dev/null || true)
+		if [[ -z "${highest_version}" ]] || [[ "$(printf '%s\n%s' "${version}" "${highest_version}" | sort -V | tail -n1)" == "${version}" ]]; then
+			highest_version="${version}"
+		fi
+	done < <(mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'" 2>/dev/null)
+
+	XCODE_VERSION_FLAG="--xcode_version=${highest_version}"
+	echo "Detected Xcode version: ${highest_version}"
+fi
+
 bazel info
-bazel build --config="${PLATFORM}" //...
+bazel build --config="${PLATFORM}" ${XCODE_VERSION_FLAG:+"${XCODE_VERSION_FLAG}"} //...
 
 # At this point these are only lint-type checks
 bazel test --config="${PLATFORM}" --test_output=errors //...
