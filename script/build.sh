@@ -24,20 +24,14 @@ if [[ "${PLATFORM}" == "macos" ]]; then
 	highest_version=""
 	while IFS= read -r xcode_path; do
 		plist_path="${xcode_path}/Contents/Info.plist"
-		if [[ -f "${plist_path}" ]]; then
-			version=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${plist_path}" 2>/dev/null || true)
-			if [[ -n "${version}" ]]; then
-				if [[ -z "${highest_version}" ]] || [[ "$(printf '%s\n%s' "${version}" "${highest_version}" | sort -V | tail -n1)" == "${version}" ]]; then
-					highest_version="${version}"
-				fi
-			fi
+		version=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${plist_path}" 2>/dev/null || true)
+		if [[ -z "${highest_version}" ]] || [[ "$(printf '%s\n%s' "${version}" "${highest_version}" | sort -V | tail -n1)" == "${version}" ]]; then
+			highest_version="${version}"
 		fi
 	done < <(mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'" 2>/dev/null)
 
-	if [[ -n "${highest_version}" ]]; then
-		XCODE_VERSION_FLAG="--xcode_version=${highest_version}"
-		echo "Detected Xcode version: ${highest_version}"
-	fi
+	XCODE_VERSION_FLAG="--xcode_version=${highest_version}"
+	echo "Detected Xcode version: ${highest_version}"
 fi
 
 bazel info
