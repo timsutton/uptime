@@ -3,7 +3,7 @@
 # shellcheck source=common.sh
 source ./script/common.sh
 
-BAZELISK_VERSION=1.25.0
+BAZELISK_VERSION=1.27.0
 SWIFT_VERSION=6.2.3
 
 function install_bazelisk() {
