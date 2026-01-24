@@ -1,0 +1,123 @@
+diff --git a/internal/native_image/common.bzl b/internal/native_image/common.bzl
+--- a/internal/native_image/common.bzl
++++ b/internal/native_image/common.bzl
+@@ -1,5 +1,7 @@
+ "Defines common properties shared by modern and legacy Native Image rules."
+ 
++load("@rules_java//java/common:java_info.bzl", "JavaInfo")
++load("@rules_cc//cc:defs.bzl", "CcInfo")
+ load(
+     "//internal/native_image:builder.bzl",
+     _assemble_native_build_options = "assemble_native_build_options",
+
+diff --git a/internal/native_image/rules.bzl b/internal/native_image/rules.bzl
+--- a/internal/native_image/rules.bzl
++++ b/internal/native_image/rules.bzl
+@@ -4,6 +4,7 @@
+     "@build_bazel_apple_support//lib:apple_support.bzl",
+     "apple_support",
+ )
++load("@rules_java//java/common:java_info.bzl", "JavaInfo")
+ load(
+     "//internal/native_image:common.bzl",
+     _BAZEL_CPP_TOOLCHAIN_TYPE = "BAZEL_CPP_TOOLCHAIN_TYPE",
+
+diff --git a/internal/native_image/builder.bzl b/internal/native_image/builder.bzl
+--- a/internal/native_image/builder.bzl
++++ b/internal/native_image/builder.bzl
+@@ -1,4 +1,6 @@
+ "Logic to assemble `native-image` options."
++
++load("@rules_cc//cc:defs.bzl", "CcInfo")
+ 
+ def _configure_static_zlib_compile(ctx, args, direct_inputs):
+     """Configure a static image compile against hermetic/static zlib.
+
+diff --git a/internal/native_image/toolchain.bzl b/internal/native_image/toolchain.bzl
+--- a/internal/native_image/toolchain.bzl
++++ b/internal/native_image/toolchain.bzl
+@@ -19,7 +19,31 @@
+     "@bazel_tools//tools/cpp:toolchain_utils.bzl",
+     "find_cpp_toolchain",
+ )
++load(
++    "@rules_cc//cc/common:cc_common.bzl",
++    "cc_common",
++)
++load(
++    "@rules_cc//cc/private/toolchain_config:configure_features.bzl",
++    "configure_features",
++)
+ 
++def _configure_features(ctx, cc_toolchain):
++    if hasattr(cc_common, "configure_features"):
++        return cc_common.configure_features(
++            ctx = ctx,
++            cc_toolchain = cc_toolchain,
++            requested_features = ctx.features,
++            unsupported_features = ctx.disabled_features,
++        )
++    return configure_features(
++        ctx = ctx,
++        cc_toolchain = cc_toolchain,
++        requested_features = ctx.features,
++        unsupported_features = ctx.disabled_features,
++    )
++
++
+ def resolve_cc_toolchain(ctx, transitive_inputs, *, is_windows):
+     """Build a context struct for accessing the native C toolchain.
+ 
+@@ -40,12 +64,7 @@
+     cc_toolchain = find_cpp_toolchain(ctx)
+     transitive_inputs.append(cc_toolchain.all_files)
+ 
+-    feature_configuration = cc_common.configure_features(
+-        ctx = ctx,
+-        cc_toolchain = cc_toolchain,
+-        requested_features = ctx.features,
+-        unsupported_features = ctx.disabled_features,
+-    )
++    feature_configuration = _configure_features(ctx, cc_toolchain)
+     c_compiler_path = cc_common.get_tool_for_action(
+         feature_configuration = feature_configuration,
+         action_name = C_COMPILE_ACTION_NAME,
+
+diff --git a/MODULE.bazel b/MODULE.bazel
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -58,7 +58,6 @@
+ bazel_dep(
+     name = "rules_cc",
+     version = "0.0.9",
+-    dev_dependency = True,
+ )
+ bazel_dep(
+     name = "rules_testing",
+@@ -200,26 +199,3 @@
+     "@graalvm//:bootstrap_runtime_toolchain",
+     dev_dependency = True,
+ )
+-
+-################################################################################
+-# rules_js
+-################################################################################
+-
+-node = use_extension(
+-    "@rules_nodejs//nodejs:extensions.bzl",
+-    "node",
+-    dev_dependency = True,
+-)
+-node.toolchain(node_version = NODE_VERSION)
+-
+-npm = use_extension(
+-    "@aspect_rules_js//npm:extensions.bzl",
+-    "npm",
+-    dev_dependency = True,
+-)
+-npm.npm_translate_lock(
+-    name = "npm",
+-    pnpm_lock = "//:pnpm-lock.yaml",
+-    verify_node_modules_ignored = "//:.bazelignore",
+-)
+-use_repo(npm, "npm")

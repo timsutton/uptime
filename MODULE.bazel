@@ -18,12 +18,17 @@ go_sdk.download(version = "1.25.5")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.2.2")
+bazel_dep(name = "rules_android", version = "0.7.1")
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
 # rules_graalvm hasn't yet published 0.11.2 to BCR
 archive_override(
     module_name = "rules_graalvm",
     integrity = "sha256-JweZfVu+CFIYM0Q78qJpUbyj+uBbb/l8983xDK0/vCA=",
+    patch_strip = 1,
+    patches = [
+        "//tools/patches:rules_graalvm-java_info.patch",
+    ],
     strip_prefix = "rules_graalvm-7c53c1a1ddf82fd775be2fc62d22783ec2ba4326",
     urls = ["https://github.com/sgammon/rules_graalvm/archive/7c53c1a1ddf82fd775be2fc62d22783ec2ba4326.tar.gz"],
 )
@@ -43,15 +48,16 @@ register_toolchains("@graalvm//:jvm")
 
 register_toolchains("@graalvm//:sdk")
 
+bazel_dep(name = "rules_java", version = "9.0.3")
 bazel_dep(name = "rules_jvm_external", version = "6.9")
 
-maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven_jvm_external")
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
         "com.github.oshi:oshi-core:6.6.1",
     ],
 )
-use_repo(maven, "maven_jvm_external")
+use_repo(maven, "maven")
 
 # rust
 bazel_dep(name = "rules_rust", version = "0.68.1")
@@ -154,13 +160,13 @@ archive_override(
 # zig
 bazel_dep(name = "rules_zig", version = "0.12.3")
 
-zig = use_extension("//zig:extensions.bzl", "zig")
+zig = use_extension("@rules_zig//zig:extensions.bzl", "zig")
 zig.toolchain(zig_version = "0.15.2")
 
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
 #  these out into their own non-root modules since they are used only for formatting or linting)
-bazel_dep(name = "aspect_rules_lint", version = "1.13.0")
+bazel_dep(name = "aspect_rules_lint", version = "2.0.0-rc0")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
