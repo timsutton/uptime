@@ -11,14 +11,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  Lint:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
       - name: Format
         run: bazel run //tools/format:format.check
 
-  build-and-test:
+  CI:
     strategy:
       fail-fast: false
       matrix:
