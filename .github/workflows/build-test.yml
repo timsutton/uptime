@@ -1,10 +1,8 @@
-name: Build and Test
-
 on:
   workflow_call:
     inputs:
       runner:
-        description: 'The runner to use for build and test'
+        description: 'Runner image to use'
         required: true
         type: string
 
