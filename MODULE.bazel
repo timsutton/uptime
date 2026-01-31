@@ -85,9 +85,9 @@ bazel_dep(name = "rules_ruby", version = "0.21.1")
 # Override to use the WIP rv-provided Rubies support
 archive_override(
     module_name = "rules_ruby",
-    integrity = "sha256-XueVNNTTFhka6AXfefTv8rRA2boSNj53oh4uDWLulCk=",
-    strip_prefix = "rules_ruby-867796ef2b2597ac12ee0bf7c3860e96c9bd3052",
-    urls = ["https://github.com/bazel-contrib/rules_ruby/archive/867796ef2b2597ac12ee0bf7c3860e96c9bd3052.tar.gz"],
+    integrity = "sha256-kUeo/4CO/MNe0/iqA48WDSL2/jIqy3EgWzVTSNTP0VI=",
+    strip_prefix = "rules_ruby-68950e44f132dfd22799c5d1af33c053b79461d8",
+    urls = ["https://github.com/bazel-contrib/rules_ruby/archive/68950e44f132dfd22799c5d1af33c053b79461d8.tar.gz"],
 )
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
