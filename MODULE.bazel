@@ -79,6 +79,22 @@ crate.from_cargo(
 )
 use_repo(crate, "crates")
 
+# dotnet
+bazel_dep(name = "rules_dotnet", version = "0.21.5")
+
+dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
+dotnet.toolchain(dotnet_version = "10.0.100")
+use_repo(
+    dotnet,
+    "dotnet_aarch64-apple-darwin",
+    "dotnet_arm64-unknown-linux-gnu",
+    "dotnet_toolchains",
+    "dotnet_x86_64-apple-darwin",
+    "dotnet_x86_64-unknown-linux-gnu",
+)
+
+register_toolchains("@dotnet_toolchains//:all")
+
 # ruby
 bazel_dep(name = "rules_ruby", version = "0.21.1")
 
