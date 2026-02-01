@@ -26,8 +26,8 @@ config_setting(
 
 dotnet_singlefile_binary(
     name = "uptime",
-    project = "uptime.csproj",
     srcs = ["Program.cs"],
+    project = "uptime.csproj",
     runtime_identifier = select({
         ":macos_arm64": "osx-arm64",
         ":linux_arm64": "linux-arm64",
