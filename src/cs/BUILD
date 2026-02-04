@@ -1,4 +1,4 @@
-load(":defs.bzl", "dotnet_singlefile_binary")
+load(":defs.bzl", "dotnet_nativeaot_binary", "dotnet_singlefile_binary")
 
 config_setting(
     name = "macos_arm64",
@@ -26,6 +26,33 @@ config_setting(
 
 dotnet_singlefile_binary(
     name = "uptime",
+    srcs = ["Program.cs"],
+    project = "uptime.csproj",
+    runtime_identifier = select({
+        ":macos_arm64": "osx-arm64",
+        ":linux_arm64": "linux-arm64",
+        ":linux_x86_64": "linux-x64",
+        "//conditions:default": "unsupported",
+    }),
+    target_compatible_with = select({
+        ":macos_arm64": [
+            "@platforms//os:macos",
+            "@platforms//cpu:aarch64",
+        ],
+        ":linux_arm64": [
+            "@platforms//os:linux",
+            "@platforms//cpu:arm64",
+        ],
+        ":linux_x86_64": [
+            "@platforms//os:linux",
+            "@platforms//cpu:x86_64",
+        ],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+)
+
+dotnet_nativeaot_binary(
+    name = "uptime_aot",
     srcs = ["Program.cs"],
     project = "uptime.csproj",
     runtime_identifier = select({
