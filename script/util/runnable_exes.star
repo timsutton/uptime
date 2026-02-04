@@ -4,7 +4,11 @@ def format(target):
     #
     # TODO: improve this Starlark so that we can filter out the non-applicable targets for this
     #       query before we try and access any executable-related attributes
-    if target.files_to_run.executable.path.endswith("uptime") and "py" not in str(target.label):
-        return target.files_to_run.executable.path
-    else:
+    exe = target.files_to_run.executable
+    if exe == None:
         return ""
+    if "py" in str(target.label):
+        return ""
+    if exe.path.endswith("uptime") or exe.path.endswith("uptime_aot"):
+        return exe.path
+    return ""

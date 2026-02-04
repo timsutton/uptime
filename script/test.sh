@@ -11,7 +11,7 @@ chmod -R a+x "${STAGING_DIR}"
 
 # We don't use `find -exec` here because we want the script to error immediately if any of them fail
 # shellcheck disable=SC2044
-for bin in $(find "${STAGING_DIR}" -type f -name uptime); do
+for bin in $(find "${STAGING_DIR}" -type f \( -name uptime -o -name uptime_aot \)); do
 	echo "Executing ${bin}"
 	$bin
 	echo ""
