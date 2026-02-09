@@ -182,7 +182,7 @@ zig.toolchain(zig_version = "0.15.2")
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
 #  these out into their own non-root modules since they are used only for formatting or linting)
-bazel_dep(name = "aspect_rules_lint", version = "2.0.0")
+bazel_dep(name = "aspect_rules_lint", version = "2.1.0")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
