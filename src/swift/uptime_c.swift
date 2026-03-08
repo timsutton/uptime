@@ -11,7 +11,8 @@ enum Main {
             sysctl(&mib, u_int(mib.count), &boottime, &size, nil, 0)
             let bootDate = Date(
                 timeIntervalSince1970: TimeInterval(boottime.tv_sec) + TimeInterval(boottime.tv_usec)
-                    / 1_000_000)
+                    / 1_000_000
+            )
             let uptimeInSeconds = Int(Date().timeIntervalSince(bootDate))
         #endif
 
