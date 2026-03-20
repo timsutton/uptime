@@ -32,6 +32,8 @@ if [[ "${PLATFORM}" == "macos" ]]; then
 
 	XCODE_VERSION_FLAG="--xcode_version=${highest_version}"
 	echo "Detected Xcode version: ${highest_version}"
+
+	brew install java
 fi
 
 bazel info
