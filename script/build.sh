@@ -33,7 +33,8 @@ if [[ "${PLATFORM}" == "macos" ]]; then
 	XCODE_VERSION_FLAG="--xcode_version=${highest_version}"
 	echo "Detected Xcode version: ${highest_version}"
 
-	brew install java
+	brew install openjdk@21
+	export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
 bazel info
