@@ -22,7 +22,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [macos-14, macos-15, macos-26, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm, namespace-profile-mac-small, namespace-profile-default-arm64, namespace-profile-linux-amd64]
+        runner:
+          - macos-14
+          - macos-15
+          - macos-26
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - ubuntu-22.04-arm
+          - ubuntu-24.04-arm
+          - namespace-profile-mac-small
+          - namespace-profile-default-arm64
+          - namespace-profile-linux-amd64
     uses: ./.github/workflows/build-test.yml
     with:
       runner: ${{ matrix.runner }}
