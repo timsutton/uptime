@@ -8,6 +8,9 @@ build:quiet --ui_event_filters=-info,-stdout,-stderr
 build:quiet --noshow_progress
 build:quiet --noshow_loading_progress
 
+# Avoid requiring a Java runtime on macOS
+build:macos --java_runtime_version=remotejdk_21
+
 # Do Swift static linking on Linux
 # - relies currently on a handcrafted patch from
 #   https://github.com/bazelbuild/rules_swift/pull/706
@@ -19,4 +22,3 @@ build:linux --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
 build:linux --remote_local_fallback
 build:linux --remote_download_outputs=minimal
 
-build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
