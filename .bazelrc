@@ -19,4 +19,5 @@ build:linux --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
 build:linux --remote_local_fallback
 build:linux --remote_download_outputs=minimal
 
-build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
+# build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
+build:macos --java_runtime_version=remotejdk_21
