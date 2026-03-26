@@ -1,4 +1,5 @@
 build --compilation_mode=opt
+build --java_runtime_version=remotejdk_21
 
 # rules_graalvm needs this for now for native_image:
 # "Pass an executable or tools argument to ctx.actions.run or ctx.actions.run_shell instead of calling ctx.resolve_tools"
@@ -8,8 +9,8 @@ build:quiet --ui_event_filters=-info,-stdout,-stderr
 build:quiet --noshow_progress
 build:quiet --noshow_loading_progress
 
-# Avoid requiring a Java runtime on macOS
-build:macos --java_runtime_version=remotejdk_21
+# Keep --config=macos valid even when it doesn't need platform-specific flags.
+build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
 
 # Do Swift static linking on Linux
 # - relies currently on a handcrafted patch from
@@ -21,4 +22,3 @@ build:linux --features=swift.static_stdlib
 build:linux --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
 build:linux --remote_local_fallback
 build:linux --remote_download_outputs=minimal
-
