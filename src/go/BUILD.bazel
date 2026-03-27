@@ -6,7 +6,7 @@ go_library(
         "uptime_darwin.go",
         "uptime_linux.go",
     ],
-    importpath = "",
+    importpath = "github.com/timsutton/uptime/src/go",
     visibility = ["//visibility:private"],
 )
 
