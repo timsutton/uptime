@@ -1,28 +1,30 @@
 #!/usr/bin/env python
 
-import platform
-
 import ctypes
-from ctypes import util, Structure, c_uint, c_ulonglong, sizeof, byref
+import platform
+from ctypes import Structure, byref, c_int32, c_long, c_size_t, sizeof, util
 
 # Load the libc library
 libc = ctypes.CDLL(util.find_library("c"))
 
-# Define the structure for timeval (used to store the uptime)
-
-
 class timeval(Structure):
     _fields_ = [
-        ("tv_sec", c_ulonglong),  # seconds
-        ("tv_usec", c_ulonglong),
-    ]  # microseconds
+        ("tv_sec", c_long),
+        ("tv_usec", c_int32),
+    ]
+
+
+libc.sysctlbyname.argtypes = [ctypes.c_char_p, ctypes.c_void_p, ctypes.POINTER(c_size_t), ctypes.c_void_p, c_size_t]
+libc.sysctlbyname.restype = ctypes.c_int
+libc.time.argtypes = [ctypes.c_void_p]
+libc.time.restype = c_long
 
 
 def get_system_uptime_darwin():
     # Create an instance of timeval
     tv = timeval()
     # The size of the timeval structure
-    size = c_uint(sizeof(tv))
+    size = c_size_t(sizeof(tv))
 
     # Get the system uptime using sysctlbyname
     result = libc.sysctlbyname(b"kern.boottime", byref(tv), byref(size), None, 0)
