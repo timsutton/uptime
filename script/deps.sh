@@ -29,7 +29,7 @@ function install_bazelisk() {
 # https://github.com/bazelbuild/rules_swift/blob/master/.bazelci/presubmit.yml#L13-L19
 function install_swift_for_linux() {
 	swift_version="${SWIFT_VERSION}"
-	ubuntu_version=$(awk -F= '/DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)
+	ubuntu_version=$(awk -F= '/^VERSION_ID=/ {gsub(/"/, "", $2); print $2}' /etc/os-release)
 
 	# Because Swift Linux releases put a 'aarch64' in the URL for Arm releases, and nothing at all for x86_64
 	arch="$(uname -m)"
@@ -59,7 +59,7 @@ function install_swift_for_linux() {
 }
 
 if [[ "${PLATFORM}" = "linux" ]]; then
-	if [[ "$(awk -F= '/DISTRIB_ID/ {print $2}' /etc/lsb-release)" != "Ubuntu" ]]; then
+	if [[ "$(awk -F= '/^ID=/ {gsub(/"/, "", $2); print $2}' /etc/os-release)" != "ubuntu" ]]; then
 		echo "On Linux, only Ubuntu platform is supported for building (for now)" >&2
 		exit 1
 	fi
