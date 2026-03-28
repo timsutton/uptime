@@ -7,6 +7,7 @@ from ctypes import Structure, byref, c_int32, c_long, c_size_t, sizeof, util
 # Load the libc library
 libc = ctypes.CDLL(util.find_library("c"))
 
+
 class timeval(Structure):
     _fields_ = [
         ("tv_sec", c_long),
@@ -16,7 +17,13 @@ class timeval(Structure):
 
 def get_system_uptime_darwin():
     sysctlbyname = libc.sysctlbyname
-    sysctlbyname.argtypes = [ctypes.c_char_p, ctypes.c_void_p, ctypes.POINTER(c_size_t), ctypes.c_void_p, c_size_t]
+    sysctlbyname.argtypes = [
+        ctypes.c_char_p,
+        ctypes.c_void_p,
+        ctypes.POINTER(c_size_t),
+        ctypes.c_void_p,
+        c_size_t,
+    ]
     sysctlbyname.restype = ctypes.c_int
 
     libc.time.argtypes = [ctypes.c_void_p]
