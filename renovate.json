@@ -61,11 +61,11 @@
                 "/(^|/)MODULE\\.bazel$/"
             ],
             "matchStrings": [
-                "url\\s*=\\s*\"https://github\\.com/timsutton/clang-format-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-darwin-arm64\""
+                "url\\s*=\\s*\"https://github\\.com/muttleyxd/clang-tools-static-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-20_macos-arm-arm64\""
             ],
             "datasourceTemplate": "github-releases",
-            "depNameTemplate": "timsutton/clang-format-binaries",
-            "versioningTemplate": "semver"
+            "depNameTemplate": "muttleyxd/clang-tools-static-binaries",
+            "versioningTemplate": "loose"
         },
         {
             "customType": "regex",
@@ -73,7 +73,7 @@
                 "/(^|/)MODULE\\.bazel$/"
             ],
             "matchStrings": [
-                "url\\s*=\\s*\"https://github\\.com/muttleyxd/clang-tools-static-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-19_linux-amd64\""
+                "url\\s*=\\s*\"https://github\\.com/muttleyxd/clang-tools-static-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-20_linux-amd64\""
             ],
             "datasourceTemplate": "github-releases",
             "depNameTemplate": "muttleyxd/clang-tools-static-binaries",
