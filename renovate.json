@@ -61,6 +61,42 @@
                 "/(^|/)MODULE\\.bazel$/"
             ],
             "matchStrings": [
+                "url\\s*=\\s*\"https://github\\.com/timsutton/clang-format-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-darwin-arm64\""
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "timsutton/clang-format-binaries",
+            "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "url\\s*=\\s*\"https://github\\.com/muttleyxd/clang-tools-static-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-19_linux-amd64\""
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "muttleyxd/clang-tools-static-binaries",
+            "versioningTemplate": "loose"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "url\\s*=\\s*\"https://github\\.com/nicklockwood/SwiftFormat/releases/download/(?<currentValue>[^\"]+)/swiftformat(?:_linux)?\\.zip\""
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "nicklockwood/SwiftFormat",
+            "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
                 "zig\\.toolchain\\(zig_version\\s*=\\s*\"(?<currentValue>[^\"]+)\"\\)"
             ],
             "datasourceTemplate": "github-releases",

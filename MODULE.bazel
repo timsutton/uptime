@@ -214,8 +214,8 @@ http_file(
 http_file(
     name = "clang_format_linux",
     executable = True,
-    sha256 = "8a933fe6eaac72f115d98ab56dc6e1b22af4dc53d32119108ebfd0b8e71ab6e1",
-    url = "https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-46b8640/clang-format-19_linux-amd64",
+    sha256 = "8d0b2012a70032666cbc4503ff10b4a37aad556c24f5ab6a09f67e17c5b9c9c1",
+    url = "https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-796e77c/clang-format-19_linux-amd64",
 )
 
 http_jar(
