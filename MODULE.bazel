@@ -14,7 +14,7 @@ bazel_dep(name = "gazelle", version = "0.50.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
 # Download an SDK for the host OS & architecture as well as common remote execution platforms.
-go_sdk.download(version = "1.25.5")
+go_sdk.download(version = "1.26.2")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.3.20")
@@ -54,7 +54,7 @@ bazel_dep(name = "rules_jvm_external", version = "6.10")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
-        "com.github.oshi:oshi-core:6.6.1",
+        "com.github.oshi:oshi-core:6.11.1",
     ],
 )
 use_repo(maven, "maven")
@@ -65,7 +65,7 @@ bazel_dep(name = "rules_rust", version = "0.69.0")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2024",
-    versions = ["1.92.0"],
+    versions = ["1.94.1"],
 )
 use_repo(rust, "rust_toolchains")
 
@@ -191,15 +191,15 @@ bazel_dep(
 http_archive(
     name = "swiftformat_mac",
     build_file_content = "filegroup(name = \"swiftformat_mac\", srcs=[\"swiftformat\"], visibility=[\"//visibility:public\"])",
-    sha256 = "23b50c75f4223c477e822833c4cf819a1c9abbb6d00e892900bda1c3a8231afd",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.60.1/swiftformat.zip",
+    sha256 = "0356130b976e0cc1022dd6712da7a23319203125ba208fad9f37b06e9feca994",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.0/swiftformat.zip",
 )
 
 http_archive(
     name = "swiftformat",
     build_file_content = "filegroup(name = \"swiftformat\", srcs=[\"swiftformat_linux\"], visibility=[\"//visibility:public\"])",
-    sha256 = "c23cb1a199313d063b1956e9ec589cc65f9f6268844a1875bbf8ac865b8de2d9",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.60.1/swiftformat_linux.zip",
+    sha256 = "43c2ff67470153e9bb96a9e7926a317e2d17988c8996a72a6e0ff211d8e8c092",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.0/swiftformat_linux.zip",
 )
 
 # Note that we intentionally don't fetch clang-format from the llvm_toolchains repo, because the llvm archives
@@ -225,6 +225,6 @@ http_file(
 
 http_jar(
     name = "ktfmt",
-    integrity = "sha256-dtBcYU/hhkeIVXFw/olBD3UTSGap+EAR+b1XDKElJrE=",
-    url = "https://github.com/facebook/ktfmt/releases/download/v0.53/ktfmt-0.53-jar-with-dependencies.jar",
+    integrity = "sha256-85v5ofUg0n+G8r301tuyV0wF6E9lYXHtZcTlNLhrmWU=",
+    url = "https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-with-dependencies.jar",
 )
