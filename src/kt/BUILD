@@ -26,9 +26,9 @@ kt_jvm_binary(
         ":macos": "MainDarwinKt",
     }),
     visibility = ["//visibility:private"],
-    # deps = [
-    #     "@maven_jvm_external//:com_github_oshi",
-    # ],
+    deps = [
+        "@maven//:com_github_oshi_oshi_core",
+    ],
 )
 
 # java_library(
@@ -41,10 +41,14 @@ kt_jvm_binary(
 native_image(
     name = "uptime",
     executable_name = "%target%",
+    include_resources = "com/sun/jna/.*",
     main_class = select({
         ":linux": "MainLinuxKt",
         ":macos": "MainDarwinKt",
     }),
     native_image_tool = "@graalvm//:native-image",
     deps = [":uptime_jar"],
+    jni_configuration = "jna-jni-config.json",
+    proxy_configuration = "jna-proxy-config.json",
+    reflection_configuration = "jna-reflection-config.json",
 )
