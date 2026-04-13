@@ -42,13 +42,13 @@ native_image(
     name = "uptime",
     executable_name = "%target%",
     include_resources = "com/sun/jna/.*",
+    jni_configuration = "jna-jni-config.json",
     main_class = select({
         ":linux": "MainLinuxKt",
         ":macos": "MainDarwinKt",
     }),
     native_image_tool = "@graalvm//:native-image",
-    deps = [":uptime_jar"],
-    jni_configuration = "jna-jni-config.json",
     proxy_configuration = "jna-proxy-config.json",
     reflection_configuration = "jna-reflection-config.json",
+    deps = [":uptime_jar"],
 )
