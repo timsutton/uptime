@@ -6,6 +6,93 @@
     "schedule": [
         "every 1 weeks on Monday"
     ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "go_sdk\\.download\\(version\\s*=\\s*\"(?<currentValue>[^\"]+)\"\\)"
+            ],
+            "datasourceTemplate": "golang-version",
+            "depNameTemplate": "go",
+            "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "gvm\\.graalvm\\([\\s\\S]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "graalvm/graalvm-ce-builds",
+            "extractVersionTemplate": "^jdk-(?<version>.*)$",
+            "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "rust\\.toolchain\\([\\s\\S]*?versions\\s*=\\s*\\[\"(?<currentValue>[^\"]+)\"\\]"
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "rust-lang/rust",
+            "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "dotnet\\.toolchain\\(dotnet_version\\s*=\\s*\"(?<currentValue>[^\"]+)\"\\)"
+            ],
+            "datasourceTemplate": "dotnet-version",
+            "depNameTemplate": "dotnet-sdk",
+            "versioningTemplate": "semver-coerced"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "ruby\\.toolchain\\([\\s\\S]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+            ],
+            "datasourceTemplate": "ruby-version",
+            "depNameTemplate": "ruby",
+            "versioningTemplate": "ruby"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "python\\.toolchain\\([\\s\\S]*?python_version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+            ],
+            "datasourceTemplate": "python-version",
+            "depNameTemplate": "python",
+            "versioningTemplate": "python"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
+                "zig\\.toolchain\\(zig_version\\s*=\\s*\"(?<currentValue>[^\"]+)\"\\)"
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "ziglang/zig",
+            "versioningTemplate": "semver"
+        }
+    ],
     "packageRules": [
         {
             "groupName": "All updates",
