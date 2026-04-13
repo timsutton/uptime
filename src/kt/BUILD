@@ -41,6 +41,7 @@ kt_jvm_binary(
 native_image(
     name = "uptime",
     executable_name = "%target%",
+    extra_args = ["-H:+AddAllCharsets"],
     include_resources = "com/sun/jna/.*",
     jni_configuration = "jna-jni-config.json",
     main_class = select({
