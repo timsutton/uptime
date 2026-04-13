@@ -31,13 +31,6 @@ kt_jvm_binary(
     ],
 )
 
-# java_library(
-#     name = "my_lib",
-#     exports = [
-#         "@maven_jvm_external//:com_github_oshi",
-#     ],
-# )
-
 native_image(
     name = "uptime",
     executable_name = "%target%",
