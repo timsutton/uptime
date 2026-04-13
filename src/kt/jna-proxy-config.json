@@ -1,0 +1,57 @@
+[
+  {
+    "interfaces": [
+      "oshi.jna.platform.mac.SystemB"
+    ]
+  },
+  {
+    "interfaces": [
+      "com.sun.jna.platform.mac.SystemB"
+    ]
+  },
+  {
+    "interfaces": [
+      "oshi.jna.platform.mac.IOKit"
+    ]
+  },
+  {
+    "interfaces": [
+      "com.sun.jna.platform.mac.IOKit"
+    ]
+  },
+  {
+    "interfaces": [
+      "oshi.jna.platform.mac.SystemConfiguration"
+    ]
+  },
+  {
+    "interfaces": [
+      "oshi.jna.platform.mac.CoreGraphics"
+    ]
+  },
+  {
+    "interfaces": [
+      "oshi.jna.platform.unix.CLibrary"
+    ]
+  },
+  {
+    "interfaces": [
+      "com.sun.jna.platform.unix.LibCAPI"
+    ]
+  },
+  {
+    "interfaces": [
+      "oshi.jna.platform.linux.LinuxLibc"
+    ]
+  },
+  {
+    "interfaces": [
+      "com.sun.jna.platform.linux.LibC"
+    ]
+  },
+  {
+    "interfaces": [
+      "com.sun.jna.platform.linux.Udev"
+    ]
+  }
+]
