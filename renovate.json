@@ -25,36 +25,11 @@
                 "/(^|/)MODULE\\.bazel$/"
             ],
             "matchStrings": [
-                "gvm\\.graalvm\\([\\s\\S]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
-            ],
-            "datasourceTemplate": "github-releases",
-            "depNameTemplate": "graalvm/graalvm-ce-builds",
-            "extractVersionTemplate": "^jdk-(?<version>.*)$",
-            "versioningTemplate": "semver"
-        },
-        {
-            "customType": "regex",
-            "managerFilePatterns": [
-                "/(^|/)MODULE\\.bazel$/"
-            ],
-            "matchStrings": [
                 "rust\\.toolchain\\([\\s\\S]*?versions\\s*=\\s*\\[\"(?<currentValue>[^\"]+)\"\\]"
             ],
             "datasourceTemplate": "github-releases",
             "depNameTemplate": "rust-lang/rust",
             "versioningTemplate": "semver"
-        },
-        {
-            "customType": "regex",
-            "managerFilePatterns": [
-                "/(^|/)MODULE\\.bazel$/"
-            ],
-            "matchStrings": [
-                "dotnet\\.toolchain\\(dotnet_version\\s*=\\s*\"(?<currentValue>[^\"]+)\"\\)"
-            ],
-            "datasourceTemplate": "dotnet-version",
-            "depNameTemplate": "dotnet-sdk",
-            "versioningTemplate": "semver-coerced"
         },
         {
             "customType": "regex",
