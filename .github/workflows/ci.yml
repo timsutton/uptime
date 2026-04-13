@@ -11,6 +11,48 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      markdown_only: ${{ steps.detect.outputs.markdown_only }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Detect changed files
+        id: detect
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            git fetch origin "$BASE_REF" --depth=1
+            mapfile -t files < <(git diff --name-only "origin/$BASE_REF"...HEAD)
+          elif [[ "$BEFORE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            mapfile -t files < <(git show --pretty='' --name-only "$HEAD_SHA")
+          else
+            mapfile -t files < <(git diff --name-only "$BEFORE_SHA" "$HEAD_SHA")
+          fi
+
+          markdown_only=true
+          if [[ "${#files[@]}" -eq 0 ]]; then
+            markdown_only=false
+          fi
+
+          for file in "${files[@]}"; do
+            echo "$file"
+            if [[ "$file" != *.md ]]; then
+              markdown_only=false
+            fi
+          done
+
+          echo "markdown_only=$markdown_only" >>"$GITHUB_OUTPUT"
+
   Lint:
     runs-on: ubuntu-24.04
     steps:
@@ -19,6 +61,8 @@ jobs:
         run: bazel run //tools/format:format.check
 
   CI:
+    needs: changes
+    if: needs.changes.outputs.markdown_only != 'true'
     strategy:
       fail-fast: false
       matrix:
