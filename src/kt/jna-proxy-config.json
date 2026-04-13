@@ -48,5 +48,10 @@
     "interfaces": [
       "com.sun.jna.platform.linux.LibC"
     ]
+  },
+  {
+    "interfaces": [
+      "com.sun.jna.platform.linux.Udev"
+    ]
   }
 ]
