@@ -24,7 +24,3 @@ build:ci --remote_cache=grpcs://bazel-remote-ci.fly.dev:9092
 build:ci --remote_local_fallback
 build:ci --incompatible_remote_local_fallback_for_remote_cache
 build:ci --remote_download_outputs=minimal
-
-# Per-user and CI secret settings such as remote cache auth belong in a local rc
-# file so credentials are not committed.
-try-import %workspace%/user.bazelrc

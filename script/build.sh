@@ -18,14 +18,6 @@ fi
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
-# If CI provides remote cache credentials, write them to the ignored local rc
-# file so Bazel can pick them up through the workspace try-import.
-if [[ -n "${CI:-}" && -n "${REMOTE_CACHE_BASIC_AUTH_BASE64:-}" ]]; then
-	cat <<EOF >user.bazelrc
-build:ci --remote_cache_header=Authorization=Basic ${REMOTE_CACHE_BASIC_AUTH_BASE64}
-EOF
-fi
-
 # Detect the highest available Xcode version on macOS
 XCODE_VERSION_FLAG=""
 if [[ "${PLATFORM}" == "macos" ]]; then
@@ -45,6 +37,9 @@ fi
 BAZEL_CONFIG_FLAGS=(--config="${PLATFORM}")
 if [[ -n "${CI:-}" ]]; then
 	BAZEL_CONFIG_FLAGS+=(--config=ci)
+fi
+if [[ -n "${CI:-}" && -n "${REMOTE_CACHE_BASIC_AUTH_BASE64:-}" ]]; then
+	BAZEL_CONFIG_FLAGS+=("--remote_cache_header=Authorization=Basic ${REMOTE_CACHE_BASIC_AUTH_BASE64}")
 fi
 
 bazel info "${BAZEL_CONFIG_FLAGS[@]}"
