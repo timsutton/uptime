@@ -3,3 +3,4 @@ src/rs/target
 src/zig/zig-out
 uptime
 bazel-*
+user.bazelrc

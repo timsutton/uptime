@@ -10,15 +10,15 @@ jobs:
   build:
     runs-on: ${{ inputs.runner }}
     steps:
-      - name: Tailscale
-        uses: tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-          version: latest
-        # Tailscale will probably never be able to auto-install on GitHub's macOS runners
-        if: runner.os == 'Linux'
+      # - name: Tailscale
+      #   uses: tailscale/github-action@v4
+      #   with:
+      #     oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      #     oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+      #     tags: tag:ci
+      #     version: latest
+      #   # Tailscale will probably never be able to auto-install on GitHub's macOS runners
+      #   if: runner.os == 'Linux'
       - name: Git clone
         uses: actions/checkout@v6
       - name: Get cache path
@@ -32,6 +32,8 @@ jobs:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: ${{ inputs.runner }}
       - name: Build
+        env:
+          REMOTE_CACHE_BASIC_AUTH_BASE64: ${{ secrets.REMOTE_CACHE_BASIC_AUTH_BASE64 }}
         run: ./script/build.sh
       - name: Stage compiled artifacts
         run: ./script/stage.sh
