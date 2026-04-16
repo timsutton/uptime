@@ -34,12 +34,20 @@ if [[ "${PLATFORM}" == "macos" ]]; then
 	echo "Detected Xcode version: ${highest_version}"
 fi
 
-bazel info
-bazel build --config="${PLATFORM}" ${XCODE_VERSION_FLAG:+"${XCODE_VERSION_FLAG}"} //...
+BAZEL_CONFIG_FLAGS=(--config="${PLATFORM}")
+if [[ -n "${CI:-}" ]]; then
+	BAZEL_CONFIG_FLAGS+=(--config=ci)
+fi
+if [[ -n "${CI:-}" && -n "${REMOTE_CACHE_BASIC_AUTH_BASE64:-}" ]]; then
+	BAZEL_CONFIG_FLAGS+=("--remote_cache_header=Authorization=Basic ${REMOTE_CACHE_BASIC_AUTH_BASE64}")
+fi
+
+bazel info "${BAZEL_CONFIG_FLAGS[@]}"
+bazel build "${BAZEL_CONFIG_FLAGS[@]}" ${XCODE_VERSION_FLAG:+"${XCODE_VERSION_FLAG}"} //...
 
 # At this point these are only lint-type checks
-bazel test --config="${PLATFORM}" --test_output=errors //...
+bazel test "${BAZEL_CONFIG_FLAGS[@]}" --test_output=errors //...
 
 for tgt in $(bazel query "${BINARIES_QUERY}"); do
-	bazel run --config=quiet --config="${PLATFORM}" "${tgt}"
+	bazel run --config=quiet "${BAZEL_CONFIG_FLAGS[@]}" "${tgt}"
 done
