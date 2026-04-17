@@ -11,7 +11,8 @@
         "schedule": [
             "every 1 weeks on Monday"
         ],
-        "groupName": "Lock file maintenance"
+        "groupName": "Lock file maintenance",
+        "automerge": true
     },
     "customManagers": [
         {
@@ -129,7 +130,8 @@
                 "patch",
                 "pin",
                 "digest"
-            ]
+            ],
+            "automerge": true
         }
     ]
 }
