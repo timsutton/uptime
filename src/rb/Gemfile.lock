@@ -4,7 +4,7 @@ GEM
     ast (2.4.3)
     ffi (1.17.4)
     ffi (1.17.4-arm64-darwin)
-    json (2.19.3)
+    json (2.19.4)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     parallel (2.0.1)
