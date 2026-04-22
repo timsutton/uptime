@@ -3,6 +3,8 @@
     "extends": [
         "config:recommended"
     ],
+    "automergeType": "pr",
+    "platformAutomerge": false,
     "schedule": [
         "every 1 weeks on Monday"
     ],
