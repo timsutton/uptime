@@ -21,16 +21,17 @@ bazel_dep(name = "rules_kotlin", version = "2.3.20")
 bazel_dep(name = "rules_android", version = "0.7.1")
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
-# rules_graalvm hasn't yet published 0.11.2 to BCR
+# rules_graalvm hasn't yet published a BCR release with
+# https://github.com/sgammon/rules_graalvm/pull/572
 archive_override(
     module_name = "rules_graalvm",
-    integrity = "sha256-JweZfVu+CFIYM0Q78qJpUbyj+uBbb/l8983xDK0/vCA=",
+    integrity = "sha256-4faitAEQIGrnObpPYObjWa366Da/AFiLQcsVPaPeWE8=",
     patch_strip = 1,
     patches = [
-        "//tools/patches:rules_graalvm-java_info.patch",
+        "//tools/patches:rules_graalvm-bazel_compat.patch",
     ],
-    strip_prefix = "rules_graalvm-7c53c1a1ddf82fd775be2fc62d22783ec2ba4326",
-    urls = ["https://github.com/sgammon/rules_graalvm/archive/7c53c1a1ddf82fd775be2fc62d22783ec2ba4326.tar.gz"],
+    strip_prefix = "rules_graalvm-edc8725a1a01337541b33e067f6ffbeb0e217c09",
+    urls = ["https://github.com/sgammon/rules_graalvm/archive/edc8725a1a01337541b33e067f6ffbeb0e217c09.tar.gz"],
 )
 
 gvm = use_extension("@rules_graalvm//:extensions.bzl", "graalvm")
