@@ -8,7 +8,7 @@
 	// And, it also handles installing enough libc headers to build other C/FFI things..?
 	// We should see if we can reduce it though.
 	"features": {
-		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/devcontainers/features/node:2": {},
 		"ghcr.io/audacioustux/devcontainers/bazel:1": {}
 	},
 	// Use 'postCreateCommand' to run commands after the container is created.
