@@ -18,9 +18,9 @@ build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-o
 build:linux --features=swift.static_stdlib
 
 # Remote cache
-# Use my Tailnet's remote cache on Linux, but keep builds working if the cache
-# endpoint is unavailable.
-build:linux --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
-build:linux --remote_local_fallback
-build:linux --incompatible_remote_local_fallback_for_remote_cache
-build:linux --remote_download_outputs=minimal
+# Only enable the internet-accessible remote cache in CI, but keep builds
+# working if the cache endpoint is unavailable.
+build:ci --remote_cache=grpcs://bazel-remote-ci.fly.dev:9092
+build:ci --remote_local_fallback
+build:ci --incompatible_remote_local_fallback_for_remote_cache
+build:ci --remote_download_outputs=minimal
