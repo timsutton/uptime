@@ -6,14 +6,6 @@
     "schedule": [
         "every 1 weeks on Monday"
     ],
-    "lockFileMaintenance": {
-        "enabled": true,
-        "schedule": [
-            "every 1 weeks on Monday"
-        ],
-        "groupName": "Lock file maintenance",
-        "automerge": true
-    },
     "customManagers": [
         {
             "customType": "regex",
@@ -113,16 +105,6 @@
         }
     ],
     "packageRules": [
-        {
-            "description": "Keep lock file maintenance isolated",
-            "matchUpdateTypes": [
-                "lockFileMaintenance"
-            ],
-            "branchTopic": "lock-file-maintenance-{{{manager}}}",
-            "addLabels": [
-                "lockfile-maintenance"
-            ]
-        },
         {
             "groupName": "All updates",
             "matchUpdateTypes": [
