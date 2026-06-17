@@ -96,16 +96,33 @@ use_repo(
 register_toolchains("@dotnet_toolchains//:all")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.24.0")
+bazel_dep(name = "rules_ruby", version = "0.27.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
     portable_ruby = True,
-    version = "4.0.3",
+    portable_ruby_checksums = {
+        "ruby-4.0.5.arm64_darwin.tar.gz": "92c3361a33bd2567e0e5a05c8211ffcbdea6482e5709dcdc60b051e193dbd95a",
+        "ruby-4.0.5.arm64_linux.tar.gz": "45e996359af5bd79de5d2a6400f91c10b21652b8ff52a1cb0b6c2b2f389cf231",
+        "ruby-4.0.5.x86_64_darwin.tar.gz": "ecf4ea1c3e71e5b6778827e501707eba67f604945262980b10538efe006c61cc",
+        "ruby-4.0.5.x86_64_linux.tar.gz": "f6040b39c66e4ada01df69fb41e670ff42124784062196fa294fa1eabfd18b61",
+    },
+    version = "4.0.5",
 )
 ruby.bundle_fetch(
     name = "bundle",
+    # macOS 14 CI needs this compatibility header when compiling native gems
+    # against the bazel-contrib portable Ruby 4.0.x Darwin headers.
+    srcs = [
+        "//src/rb:native_extension_compat/ruby_4_0_stdckdint.h",
+    ],
+    env = {
+        "BUNDLE_BUILD__FFI": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+        "BUNDLE_BUILD__JSON": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+        "BUNDLE_BUILD__PRISM": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+        "BUNDLE_BUILD__RACC": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+    },
     gem_checksums = {
         "ast-2.4.3": "954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383",
         "ffi-1.17.4": "bcd1642e06f0d16fc9e09ac6d49c3a7298b9789bcb58127302f934e437d60acf",
