@@ -203,15 +203,15 @@ bazel_dep(
 http_archive(
     name = "swiftformat_mac",
     build_file_content = "filegroup(name = \"swiftformat_mac\", srcs=[\"swiftformat\"], visibility=[\"//visibility:public\"])",
-    sha256 = "0356130b976e0cc1022dd6712da7a23319203125ba208fad9f37b06e9feca994",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.0/swiftformat.zip",
+    sha256 = "b990400779aceb7d7020796eb9ba814d4480543f671d38fc0ff48cb72f04c584",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.1/swiftformat.zip",
 )
 
 http_archive(
     name = "swiftformat",
     build_file_content = "filegroup(name = \"swiftformat\", srcs=[\"swiftformat_linux\"], visibility=[\"//visibility:public\"])",
-    sha256 = "43c2ff67470153e9bb96a9e7926a317e2d17988c8996a72a6e0ff211d8e8c092",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.0/swiftformat_linux.zip",
+    sha256 = "7bc8706e3fd51963f1f29eb99098ebdf482f3497fa527c68e6cf75cbee29c77a",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.1/swiftformat_linux.zip",
 )
 
 # Note that we intentionally don't fetch clang-format from the llvm_toolchains repo, because the llvm archives
