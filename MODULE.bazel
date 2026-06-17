@@ -112,6 +112,17 @@ ruby.toolchain(
 )
 ruby.bundle_fetch(
     name = "bundle",
+    # macOS 14 CI needs this compatibility header when compiling native gems
+    # against the bazel-contrib portable Ruby 4.0.x Darwin headers.
+    srcs = [
+        "//src/rb:native_extension_compat/ruby_4_0_stdckdint.h",
+    ],
+    env = {
+        "BUNDLE_BUILD__FFI": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+        "BUNDLE_BUILD__JSON": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+        "BUNDLE_BUILD__PRISM": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+        "BUNDLE_BUILD__RACC": "--with-cflags=-include$PWD/external/rules_ruby++ruby+bundle/src/rb/native_extension_compat/ruby_4_0_stdckdint.h",
+    },
     gem_checksums = {
         "ast-2.4.3": "954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383",
         "ffi-1.17.4": "bcd1642e06f0d16fc9e09ac6d49c3a7298b9789bcb58127302f934e437d60acf",
