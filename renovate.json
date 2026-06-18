@@ -99,8 +99,9 @@
             "matchStrings": [
                 "zig\\.toolchain\\(zig_version\\s*=\\s*\"(?<currentValue>[^\"]+)\"\\)"
             ],
-            "datasourceTemplate": "github-releases",
+            "datasourceTemplate": "forgejo-tags",
             "depNameTemplate": "ziglang/zig",
+            "registryUrlTemplate": "https://codeberg.org",
             "versioningTemplate": "semver"
         }
     ],
