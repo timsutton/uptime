@@ -16,7 +16,7 @@ jobs:
     outputs:
       markdown_only: ${{ steps.detect.outputs.markdown_only }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Detect changed files
@@ -56,7 +56,7 @@ jobs:
   Lint:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Format
         run: bazel run //tools/format:format.check
 
