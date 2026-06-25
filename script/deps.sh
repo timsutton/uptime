@@ -59,9 +59,8 @@ function install_swift_for_linux() {
 }
 
 function install_dust() {
-    curl -sSfL https://raw.githubusercontent.com/bootandy/dust/refs/heads/master/install.sh | sh
+	curl -sSfL https://raw.githubusercontent.com/bootandy/dust/refs/heads/master/install.sh | sh
 }
-
 
 if [[ "${PLATFORM}" = "linux" ]]; then
 	if [[ "$(awk -F= '/^ID=/ {gsub(/"/, "", $2); print $2}' /etc/os-release)" != "ubuntu" ]]; then
@@ -72,7 +71,7 @@ if [[ "${PLATFORM}" = "linux" ]]; then
 	install_bazelisk
 	install_swift_for_linux
 	install_dust
-	dust
+	dust /
 fi
 
 if [[ "${PLATFORM}" == "macos" ]]; then
