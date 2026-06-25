@@ -58,6 +58,16 @@ function install_swift_for_linux() {
 	export PATH="${install_dir}/usr/bin:${PATH}"
 }
 
+function report_disk_usage() {
+	curl -sSfL https://raw.githubusercontent.com/bootandy/dust/refs/heads/master/install.sh | sh
+	dust --no-progress /
+}
+
+function free_some_disk_space() {
+	sudo rm -rf /usr/share/dotnet
+	# Other potential candidates could be /usr/local/lib/android/sdk/...
+}
+
 if [[ "${PLATFORM}" = "linux" ]]; then
 	if [[ "$(awk -F= '/^ID=/ {gsub(/"/, "", $2); print $2}' /etc/os-release)" != "ubuntu" ]]; then
 		echo "On Linux, only Ubuntu platform is supported for building (for now)" >&2
@@ -66,6 +76,9 @@ if [[ "${PLATFORM}" = "linux" ]]; then
 
 	install_bazelisk
 	install_swift_for_linux
+	free_some_disk_space
+	# If there's disk space issues, then uncomment report_disk_usage below to see where space is being eaten up
+	# report_disk_usage
 fi
 
 if [[ "${PLATFORM}" == "macos" ]]; then
