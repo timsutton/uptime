@@ -4,7 +4,6 @@
 source ./script/common.sh
 
 BAZELISK_VERSION=1.27.0
-SWIFT_VERSION=6.3
 
 function install_bazelisk() {
 	if command -v bazelisk >/dev/null; then
@@ -25,39 +24,6 @@ function install_bazelisk() {
 	echo "Installed Bazelisk to ${bazelisk_path} and added to PATH"
 }
 
-# Can potentially optimize this based on what rules_swift's CI does for Linux:
-# https://github.com/bazelbuild/rules_swift/blob/master/.bazelci/presubmit.yml#L13-L19
-function install_swift_for_linux() {
-	swift_version="${SWIFT_VERSION}"
-	ubuntu_version=$(awk -F= '/^VERSION_ID=/ {gsub(/"/, "", $2); print $2}' /etc/os-release)
-
-	# Because Swift Linux releases put a 'aarch64' in the URL for Arm releases, and nothing at all for x86_64
-	arch="$(uname -m)"
-	if [[ "${arch}" = "arm64" ]] || [[ "${arch}" = "aarch64" ]]; then
-		arch_url_fragment="-aarch64"
-	fi
-
-	if [[ "${arch}" = "x86_64" ]]; then
-		arch_url_fragment=""
-	fi
-
-	install_dir="${HOME}/.cache/swift-${swift_version}-${arch}"
-	if [[ -d "${install_dir}" ]] && [[ -x "${install_dir}/usr/bin/swiftc" ]]; then
-		export PATH="${install_dir}/usr/bin:${PATH}"
-		return
-	fi
-
-	mkdir -p "${install_dir}"
-
-	pushd "${install_dir}" || exit
-	# shellcheck disable=SC2001
-	url="https://download.swift.org/swift-${swift_version}-release/ubuntu$(echo "$ubuntu_version" | sed 's/\.//g')${arch_url_fragment}/swift-${swift_version}-RELEASE/swift-${swift_version}-RELEASE-ubuntu${ubuntu_version}${arch_url_fragment}.tar.gz"
-	curl -sfL "${url}" | tar -xz --strip-components 1 -f -
-	popd || exit
-	# shellcheck disable=SC2155
-	export PATH="${install_dir}/usr/bin:${PATH}"
-}
-
 function report_disk_usage() {
 	curl -sSfL https://raw.githubusercontent.com/bootandy/dust/refs/heads/master/install.sh | sh
 	dust --no-progress /
@@ -75,7 +41,6 @@ if [[ "${PLATFORM}" = "linux" ]]; then
 	fi
 
 	install_bazelisk
-	install_swift_for_linux
 	free_some_disk_space
 	# If there's disk space issues, then uncomment report_disk_usage below to see where space is being eaten up
 	# report_disk_usage

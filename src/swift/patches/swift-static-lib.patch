@@ -71,6 +71,20 @@ index af31dce..e3eb181 100644
 +    linkopts += [
 @@ -519,0 +538 @@ def _swift_toolchain_impl(ctx):
 +            SWIFT_FEATURE_STATIC_STDLIB in ctx.features,
+diff --git a/swift/internal/extensions/BUILD.bazel.tpl b/swift/internal/extensions/BUILD.bazel.tpl
+index 4c78afa..4f147f5 100644
+--- a/swift/internal/extensions/BUILD.bazel.tpl
++++ b/swift/internal/extensions/BUILD.bazel.tpl
+@@ -125,6 +125,7 @@ swift_tools(
+     swift_autolink_extract = "usr/bin/swift-autolink-extract",
+     swift_symbolgraph_extract = "usr/bin/swift-symbolgraph-extract",
+     additional_inputs = glob([
+-        "usr/lib/swift/**"
++        "usr/lib/swift/**",
++        "usr/lib/swift_static/**",
+     ] + [
+         "usr/bin/swift",
+         "usr/bin/swift-frontend",
 diff --git a/tools/worker/work_processor.cc b/tools/worker/work_processor.cc
 index df6021c..9b21c20 100644
 --- a/tools/worker/work_processor.cc

@@ -21,8 +21,8 @@ if [[ "${PLATFORM}" == "linux" ]]; then
 	fi
 fi
 
-# TODO: deps.sh is down here because it needs curl. We could move the curl installation out of install_apt_packages
-#       and rename it to be just the stuff we need for build-essentials, etc.
+# TODO: deps.sh is down here because Linux Bazelisk installation needs curl. We could move
+#       the curl installation out of install_apt_packages.
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
