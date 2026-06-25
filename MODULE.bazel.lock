@@ -433,7 +433,7 @@
     "@@aspect_tools_telemetry+//:extension.bzl%telemetry": {
       "general": {
         "bzlTransitiveDigest": "cl5A2O84vDL6Tt+Qga8FCj1DUDGqn+e7ly5rZ+4xvcc=",
-        "usagesDigest": "tiZsmifkpLM+xnn6EXkTF48bYLsbvhr5rcGkv4SuImc=",
+        "usagesDigest": "YrfZ4bJpm8TElVj7Cl9MuPxrvXtxG3i75iLf1pGcdG8=",
         "recordedInputs": [
           "REPO_MAPPING:aspect_tools_telemetry+,bazel_lib bazel_lib+",
           "REPO_MAPPING:aspect_tools_telemetry+,bazel_skylib bazel_skylib+"
@@ -443,7 +443,7 @@
             "repoRuleId": "@@aspect_tools_telemetry+//:extension.bzl%tel_repository",
             "attributes": {
               "deps": {
-                "aspect_rules_lint": "2.7.1",
+                "aspect_rules_lint": "2.7.2",
                 "aspect_tools_telemetry": "0.3.3"
               }
             }

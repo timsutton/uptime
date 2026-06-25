@@ -18,6 +18,9 @@ go_sdk.download(version = "1.26.4")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.4.0")
+
+register_toolchains("//:kotlin_2_4_toolchain")
+
 bazel_dep(name = "rules_android", version = "0.7.3")
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
