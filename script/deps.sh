@@ -58,6 +58,11 @@ function install_swift_for_linux() {
 	export PATH="${install_dir}/usr/bin:${PATH}"
 }
 
+function install_dust() {
+    curl -sSfL https://raw.githubusercontent.com/bootandy/dust/refs/heads/master/install.sh | sh
+}
+
+
 if [[ "${PLATFORM}" = "linux" ]]; then
 	if [[ "$(awk -F= '/^ID=/ {gsub(/"/, "", $2); print $2}' /etc/os-release)" != "ubuntu" ]]; then
 		echo "On Linux, only Ubuntu platform is supported for building (for now)" >&2
@@ -66,6 +71,8 @@ if [[ "${PLATFORM}" = "linux" ]]; then
 
 	install_bazelisk
 	install_swift_for_linux
+	install_dust
+	dust
 fi
 
 if [[ "${PLATFORM}" == "macos" ]]; then
