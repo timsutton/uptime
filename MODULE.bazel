@@ -160,21 +160,17 @@ python.toolchain(
 )
 
 # swift
-bazel_dep(name = "rules_swift", version = "3.4.1", repo_name = "build_bazel_rules_swift")
-
-# for now we use archive_override to work around this:
-# Error computing the main repository mapping: swift_argument_parser@1.3.1.2 depends on
-# rules_swift@1.16.0 with compatibility level 1, but <root> depends on rules_swift@3.4.1
-# with compatibility level 3 which is different
+bazel_dep(name = "rules_swift", version = "4.0.0-rc4", repo_name = "build_bazel_rules_swift")
 archive_override(
     module_name = "rules_swift",
-    integrity = "sha256-YwnSJkdMa5KT95DT2kPTsE3Apxt1uH3zEHhxoOpZ1fY=",
+    integrity = "sha256-R57Pfs18RCvV+afeIMDGust1s8WFTOYsHVAPPVJ+W+U=",
     patch_strip = 1,
     patches = [
+        "//src/swift/patches:module-dot-bazel-version.patch",
         # Based on https://github.com/bazelbuild/rules_swift/pull/706
         "//src/swift/patches:swift-static-lib.patch",
     ],
-    urls = ["https://github.com/bazelbuild/rules_swift/releases/download/3.4.1/rules_swift.3.4.1.tar.gz"],
+    urls = ["https://github.com/bazelbuild/rules_swift/releases/download/4.0.0-rc4/rules_swift.4.0.0-rc4.tar.gz"],
 )
 
 # zig
