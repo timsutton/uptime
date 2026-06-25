@@ -38,8 +38,8 @@ index af31dce..e3eb181 100644
 +    "SWIFT_FEATURE_STATIC_STDLIB",
 @@ -386 +387,2 @@ def _swift_unix_linkopts_cc_info(
 -        additional_rpaths):
-+        additional_rpaths,
-+        static_stdlib):
++        static_stdlib,
++        additional_rpaths):
 @@ -401,0 +404 @@ def _swift_unix_linkopts_cc_info(
 +        static_stdlib: Whether to statically link Swift standard libraries.
 @@ -408,5 +411,10 @@ def _swift_unix_linkopts_cc_info(
