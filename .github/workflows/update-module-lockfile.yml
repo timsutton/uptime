@@ -1,0 +1,70 @@
+name: Update MODULE.bazel.lock
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - .bazelversion
+      - MODULE.bazel
+      - MODULE.bazel.lock
+      - src/rb/Gemfile
+      - src/rb/Gemfile.lock
+      - src/rs/Cargo.lock
+      - src/rs/Cargo.toml
+      - tools/patches/**
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  update-lockfile:
+    if: >
+      github.event.pull_request.user.login == 'renovate[bot]' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Get Bazel repository cache path
+        id: get-cache-path
+        run: |
+          echo "bazel_repo_cache_path=$(bazel info repository_cache)" >>"$GITHUB_OUTPUT"
+
+      - name: Restore repo cache
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
+          key: ubuntu-24.04
+
+      - name: Update lockfile
+        run: bazel mod deps --lockfile_mode=update --extension_info=all
+
+      - name: Commit lockfile update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          git add MODULE.bazel.lock
+          if git diff --cached --quiet; then
+            echo "MODULE.bazel.lock is already current."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update MODULE.bazel.lock"
+
+          git fetch "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$HEAD_REF"
+          git rebase FETCH_HEAD
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${HEAD_REF}"
