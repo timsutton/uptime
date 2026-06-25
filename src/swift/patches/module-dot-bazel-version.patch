@@ -1,0 +1,6 @@
+diff --git a/MODULE.bazel b/MODULE.bazel
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -5 +5 @@ module(
+-    version = "0",
++    version = "4.0.0-rc4",

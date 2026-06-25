@@ -1,0 +1,85 @@
+diff --git a/swift/internal/compiling.bzl b/swift/internal/compiling.bzl
+index 0db3d6b..e577365 100644
+--- a/swift/internal/compiling.bzl
++++ b/swift/internal/compiling.bzl
+@@ -61,0 +62 @@ load(
++    "SWIFT_FEATURE_STATIC_STDLIB",
+diff --git a/swift/internal/feature_names.bzl b/swift/internal/feature_names.bzl
+index e371f61..7f0760c 100644
+--- a/swift/internal/feature_names.bzl
++++ b/swift/internal/feature_names.bzl
+@@ -355,0 +356,4 @@ SWIFT_FEATURE_REMAP_XCODE_PATH = "swift.remap_xcode_path"
++# If enabled the built binary will statically link Swift standard libraries.
++# This requires Swift 5.3.1
++SWIFT_FEATURE_STATIC_STDLIB = "swift.static_stdlib"
++
+diff --git a/swift/toolchains/config/compile_config.bzl b/swift/toolchains/config/compile_config.bzl
+index 93aae50..cde93ed 100644
+--- a/swift/toolchains/config/compile_config.bzl
++++ b/swift/toolchains/config/compile_config.bzl
+@@ -82,0 +83 @@ load(
++    "SWIFT_FEATURE_STATIC_STDLIB",
+@@ -1289,0 +1291,10 @@ def compile_action_configs(
++        # Enable the built modules to reference static Swift standard libraries.
++        ActionConfigInfo(
++            actions = [
++                SWIFT_ACTION_COMPILE,
++                SWIFT_ACTION_DERIVE_FILES,
++            ],
++            configurators = [add_arg("-static-stdlib")],
++            features = [SWIFT_FEATURE_STATIC_STDLIB],
++        ),
++
+diff --git a/swift/toolchains/swift_toolchain.bzl b/swift/toolchains/swift_toolchain.bzl
+index af31dce..e3eb181 100644
+--- a/swift/toolchains/swift_toolchain.bzl
++++ b/swift/toolchains/swift_toolchain.bzl
+@@ -53,0 +54 @@ load(
++    "SWIFT_FEATURE_STATIC_STDLIB",
+@@ -386 +387,2 @@ def _swift_unix_linkopts_cc_info(
+-        additional_rpaths):
++        additional_rpaths,
++        static_stdlib):
+@@ -401,0 +404 @@ def _swift_unix_linkopts_cc_info(
++        static_stdlib: Whether to statically link Swift standard libraries.
+@@ -408,5 +411,10 @@ def _swift_unix_linkopts_cc_info(
+-    # TODO(#8): Support statically linking the Swift runtime.
+-    platform_lib_dir = "{toolchain_root}/lib/swift/{os}".format(
+-        os = os,
+-        toolchain_root = toolchain_root,
+-    )
++    if static_stdlib:
++        platform_lib_dir = "{toolchain_root}/lib/swift_static/{os}".format(
++            os = os,
++            toolchain_root = toolchain_root,
++        )
++    else:
++        platform_lib_dir = "{toolchain_root}/lib/swift/{os}".format(
++            os = os,
++            toolchain_root = toolchain_root,
++        )
+@@ -422,0 +431,10 @@ def _swift_unix_linkopts_cc_info(
++    ]
++
++    # Appending generic linker args from Swift runtime.
++    if static_stdlib:
++        static_stdlib_args = "{platform_lib_dir}/static-stdlib-args.lnk".format(
++            platform_lib_dir = platform_lib_dir,
++        )
++        linkopts.append("@{}".format(static_stdlib_args))
++
++    linkopts += [
+@@ -519,0 +538 @@ def _swift_toolchain_impl(ctx):
++            SWIFT_FEATURE_STATIC_STDLIB in ctx.features,
+diff --git a/tools/worker/work_processor.cc b/tools/worker/work_processor.cc
+index df6021c..9b21c20 100644
+--- a/tools/worker/work_processor.cc
++++ b/tools/worker/work_processor.cc
+@@ -138,0 +139 @@ void WorkProcessor::ProcessWorkRequest(
++  bool is_static_stdlib = false;
+@@ -163,0 +165,2 @@ void WorkProcessor::ProcessWorkRequest(
++    } else if (arg == "-static-stdlib") {
++      is_static_stdlib = true;
+@@ -179 +182 @@ void WorkProcessor::ProcessWorkRequest(
+-  bool is_incremental = !is_wmo && !is_dump_ast;
++  bool is_incremental = !is_wmo && !is_dump_ast && !is_static_stdlib;
