@@ -1,23 +1,28 @@
 const std = @import("std");
-const c = std.c;
+const posix = std.posix;
 
-const Timeval = extern struct {
-    tv_sec: i64,  // time_t
-    tv_usec: i32, // suseconds_t
-};
+const ctl_kern: c_int = 1;
+const kern_boottime: c_int = 21;
 
 pub fn main() !void {
-    var boottime: c.timeval = undefined;
-    var size: usize = @sizeOf(c.timeval);
+    var boottime: posix.timeval = undefined;
+    var size: usize = @sizeOf(posix.timeval);
+    const mib = [_]c_int{ ctl_kern, kern_boottime };
 
-    if (c.sysctlbyname("kern.boottime", &boottime, &size, null, 0) != 0) {
+    posix.sysctl(&mib, &boottime, &size, null, 0) catch {
         std.log.err("Failed to get system uptime", .{});
         return;
+    };
+
+    var now: posix.timespec = undefined;
+    switch (posix.errno(posix.system.clock_gettime(.REALTIME, &now))) {
+        .SUCCESS => {},
+        else => {
+            std.log.err("Failed to get current time", .{});
+            return;
+        },
     }
 
-    const now = std.time.timestamp();
-    const bt_ptr: *const Timeval = @ptrCast(&boottime);
-
-    const uptime = now - bt_ptr.tv_sec;
+    const uptime = now.sec - boottime.sec;
     std.debug.print("{}\n", .{uptime});
 }

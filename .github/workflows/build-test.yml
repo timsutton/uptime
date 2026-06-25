@@ -20,7 +20,7 @@ jobs:
         # Tailscale will probably never be able to auto-install on GitHub's macOS runners
         if: runner.os == 'Linux'
       - name: Git clone
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Get cache path
         id: get-cache-path
         run: |
@@ -52,7 +52,7 @@ jobs:
     needs: build
     runs-on: ${{ inputs.runner }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
