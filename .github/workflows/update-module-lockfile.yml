@@ -40,7 +40,7 @@ jobs:
           echo "bazel_repo_cache_path=$(bazel info repository_cache)" >>"$GITHUB_OUTPUT"
 
       - name: Restore repo cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: ubuntu-24.04
