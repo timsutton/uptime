@@ -366,7 +366,7 @@
   "moduleExtensions": {
     "@@aspect_rules_js+//npm:extensions.bzl%pnpm": {
       "general": {
-        "bzlTransitiveDigest": "NoKJK2nhdY2qPq1PrRxfbpdE/MIt3808NO2QI7vdBt4=",
+        "bzlTransitiveDigest": "KBb9K2l7vCJX9nKahu9f8pujkpbxLYwoaoJUTm5eHPU=",
         "usagesDigest": "ZYGEy1FrDUNPBzAzD+ujlHkMEsVPMYOvpHm9RhUexUE=",
         "recordedInputs": [
           "REPO_MAPPING:aspect_bazel_lib+,bazel_lib bazel_lib+",
@@ -433,7 +433,7 @@
     "@@aspect_tools_telemetry+//:extension.bzl%telemetry": {
       "general": {
         "bzlTransitiveDigest": "cl5A2O84vDL6Tt+Qga8FCj1DUDGqn+e7ly5rZ+4xvcc=",
-        "usagesDigest": "tiZsmifkpLM+xnn6EXkTF48bYLsbvhr5rcGkv4SuImc=",
+        "usagesDigest": "YrfZ4bJpm8TElVj7Cl9MuPxrvXtxG3i75iLf1pGcdG8=",
         "recordedInputs": [
           "REPO_MAPPING:aspect_tools_telemetry+,bazel_lib bazel_lib+",
           "REPO_MAPPING:aspect_tools_telemetry+,bazel_skylib bazel_skylib+"
@@ -443,7 +443,7 @@
             "repoRuleId": "@@aspect_tools_telemetry+//:extension.bzl%tel_repository",
             "attributes": {
               "deps": {
-                "aspect_rules_lint": "2.7.1",
+                "aspect_rules_lint": "2.7.2",
                 "aspect_tools_telemetry": "0.3.3"
               }
             }
@@ -890,7 +890,7 @@
     },
     "@@rules_rust+//crate_universe/private:internal_extensions.bzl%cu_nr": {
       "general": {
-        "bzlTransitiveDigest": "0UoEjDQrkPOE9U+EQx4lrz7qpp6evMn/oeanXvUNkJs=",
+        "bzlTransitiveDigest": "woydGULL0atBo9HxY+e+xLkH/IYTzUJw/wocm1G6jDA=",
         "usagesDigest": "ZmL90WEq2B6/NJ8rtHAqdnDPn+/9xG/GWR5K4UU4tyo=",
         "recordedInputs": [
           "REPO_MAPPING:bazel_features+,bazel_features_globals bazel_features++version_extension+bazel_features_globals",
