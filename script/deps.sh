@@ -64,11 +64,8 @@ function report_disk_usage() {
 }
 
 function free_some_disk_space() {
-	set -x
-	rm -rf /usr/local/lib/android/sdk/ndk
 	sudo rm -rf /usr/share/dotnet
-	set +x
-	# Other potential candidates could be /usr/share/dotnet/...
+	# Other potential candidates could be /usr/local/lib/android/sdk/...
 }
 
 if [[ "${PLATFORM}" = "linux" ]]; then
