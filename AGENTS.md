@@ -14,3 +14,5 @@
 ## Branch workflow
 
 - When creating a branch for a new change, open a pull request immediately and keep the work attached to that PR.
+- Before running a formatting pass to make linter checks pass, push the WIP branch to CI first so CI can start working.
+- Never update a working Git branch by merging upstream `main` into it. Integrate upstream work only by rebasing the branch on top of `main`.
