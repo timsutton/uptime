@@ -176,6 +176,29 @@ archive_override(
     urls = ["https://github.com/bazelbuild/rules_swift/releases/download/4.0.0-rc4/rules_swift.4.0.0-rc4.tar.gz"],
 )
 
+swift = use_extension("@build_bazel_rules_swift//swift:extensions.bzl", "swift")
+swift.toolchain(
+    name = "swift_toolchain",
+    platform_sha256 = {
+        # Use the Ubuntu 22.04 toolchain for Linux CI. rules_swift cannot currently
+        # select between Ubuntu releases via platform constraints.
+        "ubuntu22.04": "af1dd256952a928e19ee99d67053f56120c2d20363b96f2017e2038093bfbb49",
+        "ubuntu22.04-aarch64": "cb89091dda0a136a94aaaa4eb122161dd7759bd3fd9bd5c9d890dbc90f213b6c",
+    },
+    swift_version = "6.3",
+)
+use_repo(
+    swift,
+    "swift_toolchain",
+    "swift_toolchain_ubuntu22.04",
+    "swift_toolchain_ubuntu22.04-aarch64",
+)
+
+register_toolchains(
+    "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04",
+    "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04-aarch64",
+)
+
 # zig
 bazel_dep(name = "rules_zig", version = "0.16.0")
 

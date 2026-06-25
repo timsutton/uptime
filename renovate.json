@@ -61,6 +61,18 @@
                 "/(^|/)MODULE\\.bazel$/"
             ],
             "matchStrings": [
+                "swift\\.toolchain\\([\\s\\S]*?swift_version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "swiftlang/swift",
+            "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
                 "url\\s*=\\s*\"https://github\\.com/muttleyxd/clang-tools-static-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-20_macos-arm-arm64\""
             ],
             "datasourceTemplate": "github-releases",

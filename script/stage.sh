@@ -5,8 +5,8 @@ set -euo pipefail
 # shellcheck source=common.sh
 source ./script/common.sh
 
-# Because we still use bazel in this staging script, we still invoke deps.sh because it will
-# ensure that the PATH is updated to include the swift distribution's bin dirs.
+# Because we still use bazel in this staging script, we still invoke deps.sh so Linux
+# environments have Bazelisk available.
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
