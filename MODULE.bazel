@@ -4,8 +4,8 @@ bazel_dep(name = "platforms", version = "1.1.0")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
-bazel_dep(name = "apple_support", version = "2.6.1", repo_name = "build_bazel_apple_support")
-bazel_dep(name = "rules_cc", version = "0.2.20")
+bazel_dep(name = "apple_support", version = "2.7.0", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "rules_cc", version = "0.2.21")
 
 # golang
 bazel_dep(name = "rules_go", version = "0.61.1")
@@ -63,7 +63,7 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.71.2")
+bazel_dep(name = "rules_rust", version = "0.71.3")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
