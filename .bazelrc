@@ -1,6 +1,12 @@
 build --compilation_mode=opt
 build --java_runtime_version=remotejdk_21
 
+# Use apple_support's new rules-based cc toolchain, which will eventually
+# replace its legacy templated toolchain (off by default as of 2.7.0)
+# https://github.com/bazelbuild/apple_support/pull/552
+# Remove this once the default has been flipped.
+common --repo_env=APPLE_SUPPORT_RULES_BASED_TOOLCHAIN=1
+
 # rules_graalvm needs this for now for native_image:
 # "Pass an executable or tools argument to ctx.actions.run or ctx.actions.run_shell instead of calling ctx.resolve_tools"
 build --noincompatible_disallow_ctx_resolve_tools
