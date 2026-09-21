@@ -4,20 +4,20 @@ bazel_dep(name = "platforms", version = "1.1.0")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
-bazel_dep(name = "apple_support", version = "2.7.0", repo_name = "build_bazel_apple_support")
-bazel_dep(name = "rules_cc", version = "0.2.21")
+bazel_dep(name = "apple_support", version = "2.8.4", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "rules_cc", version = "0.2.25")
 
 # golang
-bazel_dep(name = "rules_go", version = "0.61.1")
-bazel_dep(name = "gazelle", version = "0.51.3")
+bazel_dep(name = "rules_go", version = "0.63.0")
+bazel_dep(name = "gazelle", version = "0.54.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
 # Download an SDK for the host OS & architecture as well as common remote execution platforms.
-go_sdk.download(version = "1.26.4")
+go_sdk.download(version = "1.27.1")
 
 # kotlin
-bazel_dep(name = "rules_kotlin", version = "2.4.0")
+bazel_dep(name = "rules_kotlin", version = "2.4.20")
 
 register_toolchains("//:kotlin_2_4_toolchain")
 
@@ -51,8 +51,8 @@ register_toolchains("@graalvm//:jvm")
 
 register_toolchains("@graalvm//:sdk")
 
-bazel_dep(name = "rules_java", version = "9.6.1")
-bazel_dep(name = "rules_jvm_external", version = "7.0")
+bazel_dep(name = "rules_java", version = "9.9.0")
+bazel_dep(name = "rules_jvm_external", version = "7.1")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
@@ -63,12 +63,12 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.71.3")
+bazel_dep(name = "rules_rust", version = "0.74.0")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2024",
-    versions = ["1.96.0"],
+    versions = ["1.98.1"],
 )
 use_repo(rust, "rust_toolchains")
 
@@ -83,7 +83,7 @@ crate.from_cargo(
 use_repo(crate, "crates")
 
 # dotnet
-bazel_dep(name = "rules_dotnet", version = "0.22.1")
+bazel_dep(name = "rules_dotnet", version = "0.22.2")
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
 dotnet.toolchain(dotnet_version = "10.0.100")
@@ -99,19 +99,19 @@ use_repo(
 register_toolchains("@dotnet_toolchains//:all")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.27.0")
+bazel_dep(name = "rules_ruby", version = "0.28.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
     portable_ruby = True,
     portable_ruby_checksums = {
-        "ruby-4.0.5.arm64_darwin.tar.gz": "92c3361a33bd2567e0e5a05c8211ffcbdea6482e5709dcdc60b051e193dbd95a",
-        "ruby-4.0.5.arm64_linux.tar.gz": "45e996359af5bd79de5d2a6400f91c10b21652b8ff52a1cb0b6c2b2f389cf231",
-        "ruby-4.0.5.x86_64_darwin.tar.gz": "ecf4ea1c3e71e5b6778827e501707eba67f604945262980b10538efe006c61cc",
-        "ruby-4.0.5.x86_64_linux.tar.gz": "f6040b39c66e4ada01df69fb41e670ff42124784062196fa294fa1eabfd18b61",
+        "ruby-4.0.7.arm64_darwin.tar.gz": "92c3361a33bd2567e0e5a05c8211ffcbdea6482e5709dcdc60b051e193dbd95a",
+        "ruby-4.0.7.arm64_linux.tar.gz": "45e996359af5bd79de5d2a6400f91c10b21652b8ff52a1cb0b6c2b2f389cf231",
+        "ruby-4.0.7.x86_64_darwin.tar.gz": "ecf4ea1c3e71e5b6778827e501707eba67f604945262980b10538efe006c61cc",
+        "ruby-4.0.7.x86_64_linux.tar.gz": "f6040b39c66e4ada01df69fb41e670ff42124784062196fa294fa1eabfd18b61",
     },
-    version = "4.0.5",
+    version = "4.0.7",
 )
 ruby.bundle_fetch(
     name = "bundle",
@@ -153,7 +153,7 @@ use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 register_toolchains("@ruby_toolchains//:all")
 
 # python
-bazel_dep(name = "rules_python", version = "2.1.0")
+bazel_dep(name = "rules_python", version = "2.3.3")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
@@ -208,7 +208,7 @@ zig.toolchain(zig_version = "0.16.0")
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
 #  these out into their own non-root modules since they are used only for formatting or linting)
-bazel_dep(name = "aspect_rules_lint", version = "2.7.2")
+bazel_dep(name = "aspect_rules_lint", version = "2.9.0")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -218,7 +218,7 @@ http_jar = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_j
 
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "8.5.1.2",
+    version = "8.5.1.4",
     dev_dependency = True,
 )
 
@@ -226,14 +226,14 @@ http_archive(
     name = "swiftformat_mac",
     build_file_content = "filegroup(name = \"swiftformat_mac\", srcs=[\"swiftformat\"], visibility=[\"//visibility:public\"])",
     sha256 = "b990400779aceb7d7020796eb9ba814d4480543f671d38fc0ff48cb72f04c584",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.1/swiftformat.zip",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.63.0/swiftformat.zip",
 )
 
 http_archive(
     name = "swiftformat",
     build_file_content = "filegroup(name = \"swiftformat\", srcs=[\"swiftformat_linux\"], visibility=[\"//visibility:public\"])",
     sha256 = "7bc8706e3fd51963f1f29eb99098ebdf482f3497fa527c68e6cf75cbee29c77a",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.1/swiftformat_linux.zip",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.63.0/swiftformat_linux.zip",
 )
 
 # Note that we intentionally don't fetch clang-format from the llvm_toolchains repo, because the llvm archives
