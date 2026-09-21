@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   changes:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       markdown_only: ${{ steps.detect.outputs.markdown_only }}
     steps:
@@ -54,7 +54,7 @@ jobs:
           echo "markdown_only=$markdown_only" >>"$GITHUB_OUTPUT"
 
   Lint:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - name: Format
