@@ -8,7 +8,7 @@ bazel_dep(name = "apple_support", version = "2.7.0", repo_name = "build_bazel_ap
 bazel_dep(name = "rules_cc", version = "0.2.21")
 
 # golang
-bazel_dep(name = "rules_go", version = "0.61.1")
+bazel_dep(name = "rules_go", version = "0.63.0")
 bazel_dep(name = "gazelle", version = "0.51.3")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
@@ -17,7 +17,7 @@ go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.26.4")
 
 # kotlin
-bazel_dep(name = "rules_kotlin", version = "2.4.0")
+bazel_dep(name = "rules_kotlin", version = "2.4.20")
 
 register_toolchains("//:kotlin_2_4_toolchain")
 
@@ -51,8 +51,8 @@ register_toolchains("@graalvm//:jvm")
 
 register_toolchains("@graalvm//:sdk")
 
-bazel_dep(name = "rules_java", version = "9.6.1")
-bazel_dep(name = "rules_jvm_external", version = "7.0")
+bazel_dep(name = "rules_java", version = "9.9.0")
+bazel_dep(name = "rules_jvm_external", version = "7.1")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
@@ -63,12 +63,12 @@ maven.install(
 use_repo(maven, "maven")
 
 # rust
-bazel_dep(name = "rules_rust", version = "0.71.3")
+bazel_dep(name = "rules_rust", version = "0.74.0")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2024",
-    versions = ["1.96.0"],
+    versions = ["1.98.1"],
 )
 use_repo(rust, "rust_toolchains")
 
@@ -99,17 +99,17 @@ use_repo(
 register_toolchains("@dotnet_toolchains//:all")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.27.0")
+bazel_dep(name = "rules_ruby", version = "0.28.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
     name = "ruby",
     portable_ruby = True,
     portable_ruby_checksums = {
-        "ruby-4.0.5.arm64_darwin.tar.gz": "92c3361a33bd2567e0e5a05c8211ffcbdea6482e5709dcdc60b051e193dbd95a",
-        "ruby-4.0.5.arm64_linux.tar.gz": "45e996359af5bd79de5d2a6400f91c10b21652b8ff52a1cb0b6c2b2f389cf231",
-        "ruby-4.0.5.x86_64_darwin.tar.gz": "ecf4ea1c3e71e5b6778827e501707eba67f604945262980b10538efe006c61cc",
-        "ruby-4.0.5.x86_64_linux.tar.gz": "f6040b39c66e4ada01df69fb41e670ff42124784062196fa294fa1eabfd18b61",
+        "ruby-4.0.5.arm64_darwin.tar.gz": "ffd7a08eab45890630e6ae9d65c631446455eaa8f523d7a8e4f9d69040b5eb1b",
+        "ruby-4.0.5.arm64_linux.tar.gz": "690a29527ded311be842ff55eb8e5346c146a3109eff097ff0df9de340058d18",
+        "ruby-4.0.5.x86_64_darwin.tar.gz": "4a1c47e61d5ea9cd592ba080d9322147f5cc4b5471f71940c913ea7c9f6e4740",
+        "ruby-4.0.5.x86_64_linux.tar.gz": "22664769a91813016c64746d315ff8fccf8f06df13bfd71ad527616165a090be",
     },
     version = "4.0.5",
 )
@@ -153,7 +153,7 @@ use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 register_toolchains("@ruby_toolchains//:all")
 
 # python
-bazel_dep(name = "rules_python", version = "2.1.0")
+bazel_dep(name = "rules_python", version = "2.3.3")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
