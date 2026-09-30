@@ -5,9 +5,9 @@
 #include <iostream>
 
 #if defined(__APPLE__) || defined(__FreeBSD__)
-#include <sys/types.h>
 #include <sys/sysctl.h>
 #include <sys/time.h>
+#include <sys/types.h>
 #elif defined(__linux__)
 #include <sys/sysinfo.h>
 #else
@@ -18,7 +18,7 @@ int main() {
   std::chrono::seconds uptime;
 
 #if defined(__APPLE__) || defined(__FreeBSD__)
-  struct timeval boot_time {};
+  struct timeval boot_time{};
   std::size_t size = sizeof(boot_time);
   int mib[] = {CTL_KERN, KERN_BOOTTIME};
 
@@ -32,7 +32,7 @@ int main() {
   uptime = std::chrono::duration_cast<std::chrono::seconds>(
       std::chrono::system_clock::now() - boot);
 #elif defined(__linux__)
-  struct sysinfo info {};
+  struct sysinfo info{};
   if (sysinfo(&info) < 0) {
     std::cerr << "sysinfo: " << std::strerror(errno) << '\n';
     return EXIT_FAILURE;
