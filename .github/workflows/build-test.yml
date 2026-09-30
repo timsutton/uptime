@@ -31,6 +31,16 @@ jobs:
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: ${{ inputs.runner }}
+      - name: Restore disk cache
+        uses: actions/cache/restore@v6
+        id: restore-disk-cache
+        with:
+          path: ~/.cache/bazel/disk
+          # GitHub cache archives are immutable; restore the latest snapshot and
+          # let each successful main build save a fresh one automatically.
+          key: bazel-disk-v1-${{ inputs.runner }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            bazel-disk-v1-${{ inputs.runner }}-
       - name: Build
         run: ./script/build.sh
       - name: Stage compiled artifacts
@@ -47,6 +57,12 @@ jobs:
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: ${{ inputs.runner }}
+      - name: Save disk cache
+        uses: actions/cache/save@v6
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: ~/.cache/bazel/disk
+          key: ${{ steps.restore-disk-cache.outputs.cache-primary-key }}
 
   test:
     needs: build
