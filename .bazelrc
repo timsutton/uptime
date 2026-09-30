@@ -1,6 +1,11 @@
 build --compilation_mode=opt
 build --java_runtime_version=remotejdk_21
 
+# Require explicit Python package initializers, including in external repositories.
+# TODO: Drop this flag once explicit __init__.py creation is the default.
+# https://github.com/bazel-contrib/rules_python/issues/2945
+build --incompatible_default_to_explicit_init_py
+
 # Reuse action outputs across clean builds and CI jobs.
 build --disk_cache=~/.cache/bazel/disk
 
