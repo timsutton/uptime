@@ -1,5 +1,5 @@
 build --compilation_mode=opt
-build --java_runtime_version=remotejdk_21
+build --java_runtime_version=remotejdk_25
 
 # Require explicit Python package initializers, including in external repositories.
 # TODO: Drop this flag once explicit __init__.py creation is the default.
