@@ -6,6 +6,7 @@ package(default_visibility = ["//:__subpackages__"])
 format_multirun(
     name = "format",
     c = ":clang_format",
+    cc = ":clang_format",
     go = "@aspect_rules_lint//format:gofumpt",
     kotlin = ":ktfmt",
     python = "@aspect_rules_lint//format:ruff",
@@ -16,7 +17,7 @@ format_multirun(
     yaml = "@aspect_rules_lint//format:yamlfmt",
 )
 
-# C
+# C / C++
 alias(
     name = "clang_format",
     actual = select({
