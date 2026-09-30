@@ -4,24 +4,24 @@ bazel_dep(name = "platforms", version = "1.1.0")
 
 # apple_support must be declared before rules_cc, and we use rules_cc for the c uptime target
 # https://github.com/bazelbuild/rules_cc/pull/199
-bazel_dep(name = "apple_support", version = "2.7.0", repo_name = "build_bazel_apple_support")
-bazel_dep(name = "rules_cc", version = "0.2.21")
+bazel_dep(name = "apple_support", version = "2.9.1", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "rules_cc", version = "0.2.25")
 
 # golang
-bazel_dep(name = "rules_go", version = "0.63.0")
-bazel_dep(name = "gazelle", version = "0.51.3")
+bazel_dep(name = "rules_go", version = "0.64.0")
+bazel_dep(name = "gazelle", version = "0.54.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
 # Download an SDK for the host OS & architecture as well as common remote execution platforms.
-go_sdk.download(version = "1.26.4")
+go_sdk.download(version = "1.27.1")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.4.20")
 
 register_toolchains("//:kotlin_2_4_toolchain")
 
-bazel_dep(name = "rules_android", version = "0.7.3")
+bazel_dep(name = "rules_android", version = "0.8.0")
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
 # rules_graalvm hasn't yet published 0.11.2 to BCR
@@ -83,7 +83,7 @@ crate.from_cargo(
 use_repo(crate, "crates")
 
 # dotnet
-bazel_dep(name = "rules_dotnet", version = "0.22.1")
+bazel_dep(name = "rules_dotnet", version = "0.22.2")
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
 dotnet.toolchain(dotnet_version = "10.0.100")
@@ -106,12 +106,12 @@ ruby.toolchain(
     name = "ruby",
     portable_ruby = True,
     portable_ruby_checksums = {
-        "ruby-4.0.5.arm64_darwin.tar.gz": "ffd7a08eab45890630e6ae9d65c631446455eaa8f523d7a8e4f9d69040b5eb1b",
-        "ruby-4.0.5.arm64_linux.tar.gz": "690a29527ded311be842ff55eb8e5346c146a3109eff097ff0df9de340058d18",
-        "ruby-4.0.5.x86_64_darwin.tar.gz": "4a1c47e61d5ea9cd592ba080d9322147f5cc4b5471f71940c913ea7c9f6e4740",
-        "ruby-4.0.5.x86_64_linux.tar.gz": "22664769a91813016c64746d315ff8fccf8f06df13bfd71ad527616165a090be",
+        "ruby-4.0.7.arm64_darwin.tar.gz": "8f4da3470f5b45e3c8a563d7eab64cbcb0413b2edcf5d31f8ae35122ccc1b93b",
+        "ruby-4.0.7.arm64_linux.tar.gz": "f753cccc3447ad4795662f21f25673327c15f846a0098f447eb3e81266f72c47",
+        "ruby-4.0.7.x86_64_darwin.tar.gz": "bb2a16c88810f3c064b148fd624ca6897f5ac8fe96119deb0df01005998bb9b7",
+        "ruby-4.0.7.x86_64_linux.tar.gz": "14bcb2ab3c9ea2afc1dd4b7946e89a95770f0d21fbb4116902539350cce5cb54",
     },
-    version = "4.0.5",
+    version = "4.0.7",
 )
 ruby.bundle_fetch(
     name = "bundle",
@@ -153,7 +153,7 @@ use_repo(ruby, "bundle", "ruby", "ruby_toolchains")
 register_toolchains("@ruby_toolchains//:all")
 
 # python
-bazel_dep(name = "rules_python", version = "2.3.3")
+bazel_dep(name = "rules_python", version = "2.3.4")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
@@ -208,7 +208,7 @@ zig.toolchain(zig_version = "0.16.0")
 # formatting
 # (NOTE: we set up a lot of tool-specific repos here, wondering if we may be able to move
 #  these out into their own non-root modules since they are used only for formatting or linting)
-bazel_dep(name = "aspect_rules_lint", version = "2.7.2")
+bazel_dep(name = "aspect_rules_lint", version = "2.9.1")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -218,7 +218,7 @@ http_jar = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_j
 
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "10.0.1",
+    version = "10.1.0",
     dev_dependency = True,
 )
 
