@@ -1,6 +1,9 @@
 build --compilation_mode=opt
 build --java_runtime_version=remotejdk_21
 
+# Reuse action outputs across clean builds and CI jobs.
+build --disk_cache=~/.cache/bazel/disk
+
 # Use apple_support's new rules-based cc toolchain, which will eventually
 # replace its legacy templated toolchain (off by default as of 2.7.0)
 # https://github.com/bazelbuild/apple_support/pull/552
