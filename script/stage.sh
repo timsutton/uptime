@@ -17,7 +17,7 @@ rm -rf "${STAGING_DIR}" && mkdir -p "${STAGING_DIR}"
 output_exes=()
 while IFS= read -r bazel_built_exe; do
 	output_exes+=("$bazel_built_exe")
-done < <(bazel cquery --output=starlark --starlark:file=script/util/runnable_exes.star //src/... | awk NF)
+done < <(bazel cquery --config="${PLATFORM}" --output=starlark --starlark:file=script/util/runnable_exes.star //src/... | awk NF)
 echo "${output_exes[@]}"
 
 # Copy all these exes into the staging directory
