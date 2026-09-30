@@ -1,5 +1,5 @@
 build --compilation_mode=opt
-build --java_runtime_version=remotejdk_21
+build --java_runtime_version=remotejdk_25
 
 # Reuse action outputs across clean builds and CI jobs.
 build --disk_cache=~/.cache/bazel/disk
