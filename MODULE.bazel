@@ -99,7 +99,7 @@ use_repo(
 register_toolchains("@dotnet_toolchains//:all")
 
 # ruby
-bazel_dep(name = "rules_ruby", version = "0.28.0")
+bazel_dep(name = "rules_ruby", version = "0.29.0")
 
 ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
 ruby.toolchain(
