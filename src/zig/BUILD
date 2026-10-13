@@ -20,5 +20,4 @@ zig_binary(
         ":macos": "uptime_darwin.zig",
         ":linux": "uptime_linux.zig",
     }),
-    deps = ["@rules_zig//zig/lib:libc"],
 )
