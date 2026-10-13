@@ -1,11 +1,9 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("sys/sysinfo.h");
-});
+const linux = std.os.linux;
 
-pub fn getSystemUptime() c_long {
-    var info: c.struct_sysinfo = undefined;
-    if (c.sysinfo(&info) == 0) return @as(c_long, info.uptime);
+pub fn getSystemUptime() isize {
+    var info: linux.Sysinfo = undefined;
+    if (linux.errno(linux.sysinfo(&info)) == .SUCCESS) return info.uptime;
     return 0;
 }
 
