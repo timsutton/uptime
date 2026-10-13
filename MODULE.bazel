@@ -59,6 +59,7 @@ maven.install(
     artifacts = [
         "com.github.oshi:oshi-core:6.11.1",
     ],
+    known_contributing_modules = ["protobuf"],
 )
 use_repo(maven, "maven")
 
