@@ -28,8 +28,6 @@ build:quiet --noshow_loading_progress
 build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
 
 # Do Swift static linking on Linux
-# - relies currently on a handcrafted patch from
-#   https://github.com/bazelbuild/rules_swift/pull/706
 # Use the runner's Clang instead of installing an LLVM toolchain, whose download
 # size and setup time would significantly increase CI duration.
 common:linux --repo_env=CC=clang
