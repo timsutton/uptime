@@ -12,6 +12,8 @@ docker run --rm \
 	--volume "${workspace}:/workspace:ro" \
 	--workdir /tmp/uptime \
 	ubuntu:24.04 bash -euo pipefail -c '
+		apt-get update
+		apt-get install -y --no-install-recommends libicu74
 		cp -a /workspace/script .
 		cp -a /workspace/artifacts .
 		./script/test.sh
@@ -22,7 +24,8 @@ docker run --rm \
 	--volume "${swift_output}:/output" \
 	--workdir /tmp/uptime \
 	ubuntu:24.04 bash -euo pipefail -c '
-		cp -a /workspace/. .
+		tar -C /workspace --exclude=./.git --exclude=./.context \
+			--exclude=./artifacts --exclude="./bazel-*" -cf - . | tar -xf -
 		apt-get update
 		apt-get install -y --no-install-recommends sudo
 		source ./script/common.sh
