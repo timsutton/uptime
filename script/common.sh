@@ -23,13 +23,14 @@ export PLATFORM
 export LANG="en_US.UTF-8"
 
 function install_apt_packages() {
-	apt-get update
+	sudo apt-get update
+	sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
 	if ! command -v curl >/dev/null; then
-		apt-get install -y curl
+		sudo apt-get install -y curl
 	fi
 
 	if ! command -v javac >/dev/null; then
-		apt-get install -y openjdk-17-jdk-headless
+		sudo apt-get install -y openjdk-17-jdk-headless
 	fi
 
 	if [ -z "${JAVA_HOME:-}" ]; then
