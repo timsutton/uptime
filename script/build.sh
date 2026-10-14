@@ -50,7 +50,7 @@ else
 fi
 
 # At this point these are only lint-type checks
-bazel test --config="${PLATFORM}" --test_output=errors //...
+bazel test --config="${PLATFORM}" ${XCODE_VERSION_FLAG:+"${XCODE_VERSION_FLAG}"} --test_output=errors //...
 
 for tgt in $(bazel query "${BINARIES_QUERY}"); do
 	bazel run --config=quiet --config="${PLATFORM}" "${tgt}"
