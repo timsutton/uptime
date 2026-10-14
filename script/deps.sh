@@ -3,7 +3,7 @@
 # shellcheck source=common.sh
 source ./script/common.sh
 
-BAZELISK_VERSION=1.27.0
+BAZELISK_VERSION=1.29.0
 
 function install_bazelisk() {
 	if command -v bazelisk >/dev/null; then
