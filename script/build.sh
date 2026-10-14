@@ -6,11 +6,7 @@ set -euo pipefail
 source ./script/common.sh
 
 if [[ "${PLATFORM}" == "linux" ]]; then
-	# A Linux CI runner (e.g. GHA) already has other common dev tools installed, but in
-	# case this looks like some other Ubuntu host, then run some additional required apt installs.
-	if [ -z "${CI:-}" ]; then
-		install_apt_packages
-	fi
+	install_apt_packages
 fi
 
 # TODO: deps.sh is down here because Linux Bazelisk installation needs curl. We could move
