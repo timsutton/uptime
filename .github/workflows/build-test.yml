@@ -76,3 +76,18 @@ jobs:
           path: artifacts
       - name: Test
         run: ./script/test.sh
+
+  test-minimal-linux:
+    needs: build
+    if: inputs.runner == 'ubuntu-24.04'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: binaries-${{ inputs.runner }}
+          path: artifacts
+      - name: Smoke test in clean Ubuntu containers
+        run: ./script/test-minimal-linux.sh

@@ -32,6 +32,8 @@ function install_apt_packages() {
 		apt-get install -y openjdk-17-jdk-headless
 	fi
 
+	apt-get install -y --no-install-recommends clang git patch unzip zlib1g-dev
+
 	if [ -z "${JAVA_HOME:-}" ]; then
 		# shellcheck disable=SC2155
 		export JAVA_HOME="$(dirname "$(dirname "$(realpath "$(which javac)")")")"
