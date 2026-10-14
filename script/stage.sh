@@ -10,6 +10,8 @@ source ./script/common.sh
 # shellcheck source=deps.sh
 source ./script/deps.sh
 
+source ./script/bazel_flags.sh
+
 rm -rf "${STAGING_DIR}" && mkdir -p "${STAGING_DIR}"
 
 # We assemble the output of a Bazel query into an array that holds all runnable executables.
@@ -17,7 +19,7 @@ rm -rf "${STAGING_DIR}" && mkdir -p "${STAGING_DIR}"
 output_exes=()
 while IFS= read -r bazel_built_exe; do
 	output_exes+=("$bazel_built_exe")
-done < <(bazel cquery --config="${PLATFORM}" --output=starlark --starlark:file=script/util/runnable_exes.star //src/... | awk NF)
+done < <(bazel cquery "${BAZEL_BUILD_FLAGS[@]}" --output=starlark --starlark:file=script/util/runnable_exes.star //src/... | awk NF)
 echo "${output_exes[@]}"
 
 # Copy all these exes into the staging directory
