@@ -24,6 +24,7 @@ export LANG="en_US.UTF-8"
 
 function install_apt_packages() {
 	apt-get update
+	apt-get install -y libcurl4-openssl-dev
 	if ! command -v curl >/dev/null; then
 		apt-get install -y curl
 	fi
