@@ -24,16 +24,9 @@ jobs:
             exit 0
           fi
 
-          # Accept either user:password or its base64 encoding.
-          credentials="${BAZEL_REMOTE_BASIC_AUTH}"
-          if [[ "${credentials}" == *:* ]]; then
-            credentials="$(printf '%s' "${credentials}" | base64 | tr -d '\n')"
-            echo "::add-mask::${credentials}"
-          fi
-
           cat >>~/.bazelrc <<EOF
           build --config=remote_cache
-          build:remote_cache "--remote_header=Authorization=Basic ${credentials}"
+          build:remote_cache "--remote_header=Authorization=Basic ${BAZEL_REMOTE_BASIC_AUTH}"
           EOF
       - name: Get cache path
         id: get-cache-path
