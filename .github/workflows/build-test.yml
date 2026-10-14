@@ -10,17 +10,31 @@ jobs:
   build:
     runs-on: ${{ inputs.runner }}
     steps:
-      - name: Tailscale
-        uses: tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-          version: latest
-        # Tailscale will probably never be able to auto-install on GitHub's macOS runners
-        if: runner.os == 'Linux'
       - name: Git clone
         uses: actions/checkout@v7
+      - name: Configure remote cache
+        env:
+          BAZEL_REMOTE_BASIC_AUTH: ${{ secrets.BAZEL_REMOTE_BASIC_AUTH }}
+        run: |
+          set -euo pipefail
+
+          # Secrets are unavailable to pull requests from forks.
+          if [[ -z "${BAZEL_REMOTE_BASIC_AUTH}" ]]; then
+            echo "BAZEL_REMOTE_BASIC_AUTH is unavailable; building without the remote cache."
+            exit 0
+          fi
+
+          # Accept either user:password or its base64 encoding.
+          credentials="${BAZEL_REMOTE_BASIC_AUTH}"
+          if [[ "${credentials}" == *:* ]]; then
+            credentials="$(printf '%s' "${credentials}" | base64 | tr -d '\n')"
+            echo "::add-mask::${credentials}"
+          fi
+
+          cat >>~/.bazelrc <<EOF
+          build --config=remote_cache
+          build:remote_cache "--remote_header=Authorization=Basic ${credentials}"
+          EOF
       - name: Get cache path
         id: get-cache-path
         run: |

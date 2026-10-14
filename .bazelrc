@@ -34,9 +34,10 @@ common:linux --repo_env=CC=clang
 build:linux --features=swift.static_stdlib
 
 # Remote cache
-# Use my Tailnet's remote cache on Linux, but keep builds working if the cache
-# endpoint is unavailable.
-build:linux --remote_cache=grpc://bazel-remote.tailff30e.ts.net:9092
-build:linux --remote_local_fallback
-build:linux --incompatible_remote_local_fallback_for_remote_cache
-build:linux --remote_download_outputs=minimal
+# CI enables this config when the BAZEL_REMOTE_BASIC_AUTH secret is available
+# (see .github/workflows/build-test.yml), which also supplies the auth header.
+# Keep builds working if the cache endpoint is unavailable.
+build:remote_cache --remote_cache=grpcs://bazel-remote.sutton.computer
+build:remote_cache --remote_local_fallback
+build:remote_cache --incompatible_remote_local_fallback_for_remote_cache
+build:remote_cache --remote_download_outputs=minimal
