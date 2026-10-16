@@ -17,7 +17,7 @@ go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.27.2")
 
 # kotlin
-bazel_dep(name = "rules_kotlin", version = "2.4.20")
+bazel_dep(name = "rules_kotlin", version = "2.4.21")
 
 register_toolchains("//:kotlin_2_4_toolchain")
 
@@ -69,7 +69,7 @@ bazel_dep(name = "rules_rust", version = "0.74.0")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2024",
-    versions = ["1.99.0"],
+    versions = ["1.99.1"],
 )
 use_repo(rust, "rust_toolchains")
 
