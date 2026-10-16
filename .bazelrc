@@ -16,6 +16,13 @@ build --disk_cache=~/.cache/bazel/disk
 common --repo_env=APPLE_SUPPORT_RULES_BASED_TOOLCHAIN=1
 common --repo_env=DO_NOT_TRACK=1
 
+# Pin the macOS deployment target instead of defaulting to the installed SDK
+# version. rustc passes its own default (-mmacosx-version-min=11.0.0) to the
+# linker, so a mismatched -target from the cc toolchain makes clang warn with
+# -Woverriding-option on every Rust link.
+build --macos_minimum_os=11.0
+build --host_macos_minimum_os=11.0
+
 # rules_graalvm needs this for now for native_image:
 # "Pass an executable or tools argument to ctx.actions.run or ctx.actions.run_shell instead of calling ctx.resolve_tools"
 build --noincompatible_disallow_ctx_resolve_tools
