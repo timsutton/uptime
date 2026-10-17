@@ -152,6 +152,11 @@ python.toolchain(
     python_version = "3.15",
 )
 
+# Require explicit Python package initializers.
+# https://github.com/bazel-contrib/rules_python/issues/2945
+rules_python_config = use_extension("@rules_python//python/extensions:config.bzl", "config")
+rules_python_config.explicit_init_py(default = True)
+
 # swift
 bazel_dep(name = "rules_swift", version = "4.2.1", repo_name = "build_bazel_rules_swift")
 
