@@ -183,6 +183,18 @@ register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04-aarch64",
 )
 
+# d
+bazel_dep(name = "rules_d", version = "0.12.1")
+
+d = use_extension("@rules_d//d:extensions.bzl", "d")
+
+# LDC ships prebuilt compilers for macOS and Linux on both x86_64 and arm64
+# (DMD has no arm64 builds).
+d.toolchain(d_version = "ldc-1.43.0")
+use_repo(d, "d_toolchains")
+
+register_toolchains("@d_toolchains//:all")
+
 # zig
 bazel_dep(name = "rules_zig", version = "0.17.0")
 

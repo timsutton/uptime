@@ -73,6 +73,19 @@
                 "/(^|/)MODULE\\.bazel$/"
             ],
             "matchStrings": [
+                "d\\.toolchain\\(d_version\\s*=\\s*\"ldc-(?<currentValue>[^\"]+)\"\\)"
+            ],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "ldc-developers/ldc",
+            "extractVersionTemplate": "^v(?<version>.+)$",
+            "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/(^|/)MODULE\\.bazel$/"
+            ],
+            "matchStrings": [
                 "url\\s*=\\s*\"https://github\\.com/muttleyxd/clang-tools-static-binaries/releases/download/(?<currentValue>[^\"]+)/clang-format-20_macos-arm-arm64\""
             ],
             "datasourceTemplate": "github-releases",
