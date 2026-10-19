@@ -22,6 +22,10 @@ build --host_macos_minimum_os=11.0
 # "Pass an executable or tools argument to ctx.actions.run or ctx.actions.run_shell instead of calling ctx.resolve_tools"
 build --noincompatible_disallow_ctx_resolve_tools
 
+# Strip symbols from Rust binaries (~21% smaller on macOS arm64: 455 KB -> 360 KB).
+# Set here because rules_rust ignores Cargo [profile.release].
+build --@rules_rust//:extra_rustc_flags=-Cstrip=symbols
+
 build:quiet --ui_event_filters=-info,-stdout,-stderr
 build:quiet --noshow_progress
 build:quiet --noshow_loading_progress
