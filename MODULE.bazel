@@ -14,7 +14,7 @@ bazel_dep(name = "gazelle", version = "0.54.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
 # Download an SDK for the host OS & architecture as well as common remote execution platforms.
-go_sdk.download(version = "1.27.2")
+go_sdk.download(version = "1.27.3")
 
 # kotlin
 bazel_dep(name = "rules_kotlin", version = "2.4.21")
@@ -158,7 +158,7 @@ rules_python_config = use_extension("@rules_python//python/extensions:config.bzl
 rules_python_config.explicit_init_py(default = True)
 
 # swift
-bazel_dep(name = "rules_swift", version = "4.2.1", repo_name = "build_bazel_rules_swift")
+bazel_dep(name = "rules_swift", version = "4.2.2", repo_name = "build_bazel_rules_swift")
 
 swift = use_extension("@build_bazel_rules_swift//swift:extensions.bzl", "swift")
 swift.toolchain(
