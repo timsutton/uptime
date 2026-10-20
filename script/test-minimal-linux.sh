@@ -12,8 +12,6 @@ docker run --rm \
 	--volume "${workspace}:/workspace:ro" \
 	--workdir /tmp/uptime \
 	ubuntu:24.04 bash -euo pipefail -c '
-		apt-get update
-		apt-get install -y --no-install-recommends libicu74
 		cp -a /workspace/script .
 		cp -a /workspace/artifacts .
 		./script/test.sh
