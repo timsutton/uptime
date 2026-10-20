@@ -38,6 +38,10 @@ build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-o
 # no longer depend on the runner's Clang via CC=clang.
 build:linux --features=swift.static_stdlib
 
+# TEMPORARY (hermetic-llvm experiment): keep building past failures on Linux so
+# CI reports every target that breaks with the new toolchain, not just the first.
+build:linux --keep_going
+
 # Remote cache
 # CI enables this config when the BAZEL_REMOTE_BASIC_AUTH secret is available
 # (see .github/workflows/build-test.yml), which also supplies the auth header.
