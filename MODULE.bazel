@@ -7,6 +7,32 @@ bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "apple_support", version = "2.10.1", repo_name = "build_bazel_apple_support")
 bazel_dep(name = "rules_cc", version = "0.2.26")
 
+# Hermetic LLVM cc toolchain (no host clang or sysroot), registered only for Linux
+# exec/target so macOS keeps using apple_support's Xcode toolchain.
+# https://github.com/hermeticbuild/hermetic-llvm
+bazel_dep(name = "llvm", version = "0.8.25")
+
+llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
+llvm_toolchain.exec(
+    arch = "x86_64",
+    os = "linux",
+)
+llvm_toolchain.exec(
+    arch = "aarch64",
+    os = "linux",
+)
+llvm_toolchain.target(
+    arch = "x86_64",
+    os = "linux",
+)
+llvm_toolchain.target(
+    arch = "aarch64",
+    os = "linux",
+)
+use_repo(llvm_toolchain, "llvm_toolchains")
+
+register_toolchains("@llvm_toolchains//:all")
+
 # golang
 bazel_dep(name = "rules_go", version = "0.64.2")
 bazel_dep(name = "gazelle", version = "0.54.0")
