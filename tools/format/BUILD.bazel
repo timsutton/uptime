@@ -49,6 +49,6 @@ alias(
 
 java_binary(
     name = "ktfmt",
-    main_class = "com.facebook.ktfmt.cli.Main",
+    main_class = "org.jetbrains.kotlinx.ktfmt.cli.Main",
     runtime_deps = ["@ktfmt//jar"],
 )

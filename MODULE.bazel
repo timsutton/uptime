@@ -87,7 +87,7 @@ use_repo(crate, "crates")
 bazel_dep(name = "rules_dotnet", version = "0.22.2")
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
-dotnet.toolchain(dotnet_version = "10.0.100")
+dotnet.toolchain(dotnet_version = "10.0.400")
 use_repo(
     dotnet,
     "dotnet_aarch64-apple-darwin",
@@ -166,10 +166,10 @@ swift.toolchain(
     platform_sha256 = {
         # Use the Ubuntu 22.04 toolchain for Linux CI. rules_swift cannot currently
         # select between Ubuntu releases via platform constraints.
-        "ubuntu22.04": "af1dd256952a928e19ee99d67053f56120c2d20363b96f2017e2038093bfbb49",
-        "ubuntu22.04-aarch64": "cb89091dda0a136a94aaaa4eb122161dd7759bd3fd9bd5c9d890dbc90f213b6c",
+        "ubuntu22.04": "e9ec2ff05ac0fc89bf2e7cecdee5da4d398898a768d7ee2b86a59d2a7f01c44b",
+        "ubuntu22.04-aarch64": "5d50538c0500ff1b253e799f3e48f04db0547856aef76905c85e5bdfe01e6901",
     },
-    swift_version = "6.3",
+    swift_version = "6.4.1",
 )
 use_repo(
     swift,
@@ -224,15 +224,15 @@ bazel_dep(
 http_archive(
     name = "swiftformat_mac",
     build_file_content = "filegroup(name = \"swiftformat_mac\", srcs=[\"swiftformat\"], visibility=[\"//visibility:public\"])",
-    sha256 = "b990400779aceb7d7020796eb9ba814d4480543f671d38fc0ff48cb72f04c584",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.1/swiftformat.zip",
+    sha256 = "5caff00f02c440cc50d1dad588e949402c7cb271f5f8ae248a788164d21bf41a",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.64.3/swiftformat.zip",
 )
 
 http_archive(
     name = "swiftformat",
     build_file_content = "filegroup(name = \"swiftformat\", srcs=[\"swiftformat_linux\"], visibility=[\"//visibility:public\"])",
-    sha256 = "7bc8706e3fd51963f1f29eb99098ebdf482f3497fa527c68e6cf75cbee29c77a",
-    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.61.1/swiftformat_linux.zip",
+    sha256 = "45fe2d2fed940c6d7cf403fbf21bbb7645f0f5f2dd01e179fbb46c450cadc205",
+    url = "https://github.com/nicklockwood/SwiftFormat/releases/download/0.64.3/swiftformat_linux.zip",
 )
 
 # Note that we intentionally don't fetch clang-format from the llvm_toolchains repo, because the llvm archives
@@ -255,6 +255,6 @@ http_file(
 
 http_jar(
     name = "ktfmt",
-    integrity = "sha256-85v5ofUg0n+G8r301tuyV0wF6E9lYXHtZcTlNLhrmWU=",
-    url = "https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-with-dependencies.jar",
+    integrity = "sha256-q6l1O2qzh5JheatzGLqODDPa1IPrxy9jPnlSImWxUhQ=",
+    url = "https://github.com/facebook/ktfmt/releases/download/v0.65/ktfmt-0.65-with-dependencies.jar",
 )
