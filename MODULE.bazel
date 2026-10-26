@@ -183,6 +183,9 @@ register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04-aarch64",
 )
 
+# ios
+bazel_dep(name = "rules_apple", version = "5.3.1", repo_name = "build_bazel_rules_apple")
+
 # d
 bazel_dep(name = "rules_d", version = "0.12.1")
 
