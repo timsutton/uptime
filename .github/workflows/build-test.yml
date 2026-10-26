@@ -18,6 +18,10 @@ jobs:
         run: |
           set -euo pipefail
 
+          # CI starts with an empty disk cache, so skip writing every remote
+          # cache download to it as well.
+          echo 'build --disk_cache=' >>~/.bazelrc
+
           # Secrets are unavailable to pull requests from forks.
           if [[ -z "${BAZEL_REMOTE_BASIC_AUTH}" ]]; then
             echo "BAZEL_REMOTE_BASIC_AUTH is unavailable; building without the remote cache."
@@ -40,16 +44,6 @@ jobs:
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: bazel-repo-${{ inputs.runner }}-v2
-      - name: Restore disk cache
-        uses: actions/cache/restore@v6
-        id: restore-disk-cache
-        with:
-          path: ~/.cache/bazel/disk
-          # GitHub cache archives are immutable; restore the latest snapshot and
-          # let each successful main build save a fresh one automatically.
-          key: bazel-disk-v1-${{ inputs.runner }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: |
-            bazel-disk-v1-${{ inputs.runner }}-
       - name: Build
         run: ./script/build.sh
       - name: Stage compiled artifacts
@@ -66,12 +60,6 @@ jobs:
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
           key: bazel-repo-${{ inputs.runner }}-v2
-      - name: Save disk cache
-        uses: actions/cache/save@v6
-        if: github.ref == 'refs/heads/main'
-        with:
-          path: ~/.cache/bazel/disk
-          key: ${{ steps.restore-disk-cache.outputs.cache-primary-key }}
 
   test:
     needs: build
