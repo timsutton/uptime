@@ -25,6 +25,7 @@ bazel_dep(name = "rules_android", version = "0.8.0")
 
 android_sdk_repository_extension = use_extension("@rules_android//rules/android_sdk_repository:rule.bzl", "android_sdk_repository_extension")
 use_repo(android_sdk_repository_extension, "androidsdk")
+
 bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
 # rules_graalvm hasn't yet published 0.11.2 to BCR
