@@ -26,12 +26,47 @@ SYSTEM_IMAGE="system-images;android-${API_LEVEL};google_apis;${ABI}"
 
 BREW_PREFIX="$(brew --prefix)"
 
-# The SDK command-line tools need Java 17 or later. Homebrew's openjdk@21 is
-# keg-only, so point JAVA_HOME at it rather than relying on the java on PATH.
-if [[ ! -d "${BREW_PREFIX}/opt/openjdk@21" ]]; then
-	brew install openjdk@21
+# The SDK command-line tools need Java 17 or later.
+MIN_JAVA_VERSION=17
+
+function java_major_version() {
+	"$1/bin/java" -XshowSettings:properties -version 2>&1 |
+		awk -F' = ' '/java.specification.version/ { split($2, v, "."); print v[1] }'
+}
+
+# Prints the first Java home that is new enough, checking JAVA_HOME, the JDKs
+# macOS knows about, and Homebrew's openjdk formulae, which are keg-only and so
+# invisible to java_home.
+function find_java_home() {
+	local candidates=()
+	if [[ -n "${JAVA_HOME:-}" ]]; then
+		candidates+=("${JAVA_HOME}")
+	fi
+	if java_home="$(/usr/libexec/java_home -v "${MIN_JAVA_VERSION}+" 2>/dev/null)"; then
+		candidates+=("${java_home}")
+	fi
+	for keg in "${BREW_PREFIX}"/opt/openjdk "${BREW_PREFIX}"/opt/openjdk@*; do
+		candidates+=("${keg}")
+	done
+
+	local version
+	for candidate in "${candidates[@]}"; do
+		[[ -x "${candidate}/bin/java" ]] || continue
+		version="$(java_major_version "${candidate}")"
+		if [[ "${version}" =~ ^[0-9]+$ ]] && ((version >= MIN_JAVA_VERSION)); then
+			echo "${candidate}"
+			return
+		fi
+	done
+	return 1
+}
+
+if ! JAVA_HOME="$(find_java_home)"; then
+	brew install openjdk
+	JAVA_HOME="$(find_java_home)"
 fi
-export JAVA_HOME="${BREW_PREFIX}/opt/openjdk@21"
+export JAVA_HOME
+echo "Using Java from ${JAVA_HOME}"
 
 if [[ ! -d "${BREW_PREFIX}/share/android-commandlinetools" ]]; then
 	brew install --cask android-commandlinetools
