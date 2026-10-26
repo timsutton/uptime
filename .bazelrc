@@ -1,6 +1,10 @@
 build --compilation_mode=opt
 build --java_runtime_version=remotejdk_25
 
+# rules_android builds its own Java tools, which need Java 17+ to compile and run.
+build --tool_java_language_version=17
+build --tool_java_runtime_version=remotejdk_25
+
 # Reuse action outputs across clean builds and CI jobs.
 build --disk_cache=~/.cache/bazel/disk
 
