@@ -31,13 +31,15 @@ jobs:
       - name: Get cache path
         id: get-cache-path
         run: |
-          echo "bazel_repo_cache_path=$(bazel info repository_cache)" >>"$GITHUB_OUTPUT"
+          # Only cache downloaded archives; the sibling contents/ directory holds
+          # extracted repos, which Bazel can recreate from these archives.
+          echo "bazel_repo_cache_path=$(bazel info repository_cache)/content_addressable" >>"$GITHUB_OUTPUT"
       - name: Restore repo cache
         uses: actions/cache/restore@v6
         id: restore-cache
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: bazel-repo-${{ inputs.runner }}-v1
+          key: bazel-repo-${{ inputs.runner }}-v2
       - name: Restore disk cache
         uses: actions/cache/restore@v6
         id: restore-disk-cache
@@ -63,7 +65,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: bazel-repo-${{ inputs.runner }}-v1
+          key: bazel-repo-${{ inputs.runner }}-v2
       - name: Save disk cache
         uses: actions/cache/save@v6
         if: github.ref == 'refs/heads/main'

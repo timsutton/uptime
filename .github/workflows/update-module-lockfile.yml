@@ -37,13 +37,15 @@ jobs:
       - name: Get Bazel repository cache path
         id: get-cache-path
         run: |
-          echo "bazel_repo_cache_path=$(bazel info repository_cache)" >>"$GITHUB_OUTPUT"
+          # Only cache downloaded archives; the sibling contents/ directory holds
+          # extracted repos, which Bazel can recreate from these archives.
+          echo "bazel_repo_cache_path=$(bazel info repository_cache)/content_addressable" >>"$GITHUB_OUTPUT"
 
       - name: Restore repo cache
         uses: actions/cache/restore@v6
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: bazel-repo-ubuntu-24.04-v1
+          key: bazel-repo-ubuntu-24.04-v2
 
       - name: Update lockfile
         run: bazel mod deps --lockfile_mode=update --extension_info=all
