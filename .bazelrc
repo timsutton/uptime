@@ -32,6 +32,12 @@ build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-o
 common:linux --repo_env=CC=clang
 build:linux --features=swift.static_stdlib
 
+# CI-only settings. CI enables this config for every run (see
+# .github/workflows/build-test.yml).
+# CI starts with an empty disk cache, so skip writing every remote cache
+# download to it as well.
+build:ci --disk_cache=
+
 # Remote cache
 # CI enables this config when the BAZEL_REMOTE_BASIC_AUTH secret is available
 # (see .github/workflows/build-test.yml), which also supplies the auth header.
