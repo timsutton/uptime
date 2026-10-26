@@ -107,10 +107,10 @@ ruby.toolchain(
     name = "ruby",
     portable_ruby = True,
     portable_ruby_checksums = {
-        "ruby-4.0.9.arm64_darwin.tar.gz": "8f4da3470f5b45e3c8a563d7eab64cbcb0413b2edcf5d31f8ae35122ccc1b93b",
-        "ruby-4.0.9.arm64_linux.tar.gz": "f753cccc3447ad4795662f21f25673327c15f846a0098f447eb3e81266f72c47",
-        "ruby-4.0.9.x86_64_darwin.tar.gz": "bb2a16c88810f3c064b148fd624ca6897f5ac8fe96119deb0df01005998bb9b7",
-        "ruby-4.0.9.x86_64_linux.tar.gz": "14bcb2ab3c9ea2afc1dd4b7946e89a95770f0d21fbb4116902539350cce5cb54",
+        "ruby-4.0.9.arm64_darwin.tar.gz": "fd9c8430b25060b4d6e7e7ea8168897b6065257dad26c27aa995de8ee745571d",
+        "ruby-4.0.9.arm64_linux.tar.gz": "e09a1100a71dd94d5169a4731c3b6c4091d20d587bf3162600ee79634d0e253b",
+        "ruby-4.0.9.x86_64_darwin.tar.gz": "f4ca74bbc418fd7aa837a8118298cebb3d83a257e8854a55e04a156c4a929a6f",
+        "ruby-4.0.9.x86_64_linux.tar.gz": "f832130678773eedaa0dd94d24596c9daee7f75e2a32169a9476dd2fbd99845e",
     },
     version = "4.0.9",
 )
