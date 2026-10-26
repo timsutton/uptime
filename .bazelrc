@@ -48,3 +48,7 @@ build:remote_cache --incompatible_remote_local_fallback_for_remote_cache
 build:remote_cache --remote_download_outputs=minimal
 # bazel-remote stores blobs zstd-compressed, so it can serve them without recompressing.
 build:remote_cache --remote_cache_compression
+# Fetch external dependencies through the remote cache's downloader, falling
+# back to the original URLs if it is unavailable.
+build:remote_cache --remote_downloader=grpcs://bazel-remote.sutton.computer
+build:remote_cache --remote_downloader_local_fallback
