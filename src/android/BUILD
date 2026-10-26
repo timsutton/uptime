@@ -1,7 +1,11 @@
 load("@rules_android//android:rules.bzl", "android_binary")
 load("@rules_kotlin//kotlin:android.bzl", "kt_android_library")
 
-# A minimal Android app that displays uptime. Build the APK with:
+# A minimal Android app that displays uptime. On macOS, set up an Android SDK and
+# emulator, then build and launch the app, with:
+#   ./script/android.sh
+#
+# Or build just the APK with:
 #   bazel build //src/android:app
 #
 # Building needs an Android SDK, found through ANDROID_HOME. To set it for this
