@@ -37,7 +37,7 @@ jobs:
         id: restore-cache
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: ${{ inputs.runner }}
+          key: bazel-repo-${{ inputs.runner }}-v1
       - name: Restore disk cache
         uses: actions/cache/restore@v6
         id: restore-disk-cache
@@ -63,7 +63,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: ${{ inputs.runner }}
+          key: bazel-repo-${{ inputs.runner }}-v1
       - name: Save disk cache
         uses: actions/cache/save@v6
         if: github.ref == 'refs/heads/main'

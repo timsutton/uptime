@@ -43,7 +43,7 @@ jobs:
         uses: actions/cache/restore@v6
         with:
           path: ${{ steps.get-cache-path.outputs.bazel_repo_cache_path }}
-          key: ubuntu-24.04
+          key: bazel-repo-ubuntu-24.04-v1
 
       - name: Update lockfile
         run: bazel mod deps --lockfile_mode=update --extension_info=all
