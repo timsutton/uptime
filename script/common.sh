@@ -5,9 +5,10 @@
 # A query that will return all targets that produce a binary
 # that we want to consider our artifact for testing.
 #
-# Note that kt is an exception, because we only test the native_image produced kt binary
+# Note that kt is an exception, because we only test the native_image produced kt binary,
+# and android is excluded because its android_binary is an APK, not something we can run
 export BINARIES_QUERY="
-    kind(.*_binary, //src/... except //src/kt/...)
+    kind(.*_binary, //src/... except //src/kt/... except //src/android/...)
     +kind(native_image, //src/kt/...)"
 
 # Dir used to stage artifacts for CI
