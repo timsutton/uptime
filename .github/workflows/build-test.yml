@@ -12,15 +12,13 @@ jobs:
     steps:
       - name: Git clone
         uses: actions/checkout@v7
-      - name: Configure remote cache
+      - name: Configure Bazel for CI
         env:
           BAZEL_REMOTE_BASIC_AUTH: ${{ secrets.BAZEL_REMOTE_BASIC_AUTH }}
         run: |
           set -euo pipefail
 
-          # CI starts with an empty disk cache, so skip writing every remote
-          # cache download to it as well.
-          echo 'build --disk_cache=' >>~/.bazelrc
+          echo 'build --config=ci' >>~/.bazelrc
 
           # Secrets are unavailable to pull requests from forks.
           if [[ -z "${BAZEL_REMOTE_BASIC_AUTH}" ]]; then
