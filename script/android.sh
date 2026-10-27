@@ -73,35 +73,29 @@ if [[ ! -d "${BREW_PREFIX}/share/android-commandlinetools" ]]; then
 fi
 export ANDROID_HOME="${BREW_PREFIX}/share/android-commandlinetools"
 
-sdkmanager="${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
+android="${ANDROID_HOME}/cmdline-tools/latest/bin/android"
 avdmanager="${ANDROID_HOME}/cmdline-tools/latest/bin/avdmanager"
 adb="${ANDROID_HOME}/platform-tools/adb"
-emulator="${ANDROID_HOME}/emulator/emulator"
 
-# `yes` exits with SIGPIPE once sdkmanager stops reading, which pipefail would
-# otherwise treat as a failure.
-{ yes || true; } | "${sdkmanager}" --licenses >/dev/null
-"${sdkmanager}" \
+# Unlike sdkmanager, `android sdk install` accepts the SDK licenses itself.
+"${android}" --sdk="${ANDROID_HOME}" sdk install \
 	"platform-tools" \
 	"platforms;android-${API_LEVEL}" \
 	"build-tools;${BUILD_TOOLS_VERSION}" \
 	"emulator" \
 	"${SYSTEM_IMAGE}"
 
-if ! "${emulator}" -list-avds | grep -qx "${AVD_NAME}"; then
+# `android emulator create` can't choose the AVD's name or system image (it
+# picks a Play Store image for a device profile), so avdmanager, which isn't
+# deprecated, still creates the AVD.
+if ! "${android}" --sdk="${ANDROID_HOME}" emulator list | grep -qx "${AVD_NAME}"; then
 	echo no | "${avdmanager}" create avd --name "${AVD_NAME}" --package "${SYSTEM_IMAGE}"
 fi
 
+# `android emulator start` returns once Android has finished booting.
 if ! "${adb}" devices | grep -q "device$"; then
-	echo "Starting the ${AVD_NAME} emulator"
-	nohup "${emulator}" -avd "${AVD_NAME}" >/tmp/android-emulator-"${AVD_NAME}".log 2>&1 &
-	"${adb}" wait-for-device
+	"${android}" --sdk="${ANDROID_HOME}" emulator start "${AVD_NAME}"
 fi
-
-echo "Waiting for Android to finish booting"
-until [[ "$("${adb}" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
-	sleep 2
-done
 
 bazel build --repo_env=ANDROID_HOME="${ANDROID_HOME}" //src/android:app
 "${adb}" install -r bazel-bin/src/android/app.apk
