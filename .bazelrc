@@ -19,6 +19,12 @@ common --repo_env=DO_NOT_TRACK=1
 # "Pass an executable or tools argument to ctx.actions.run or ctx.actions.run_shell instead of calling ctx.resolve_tools"
 build --noincompatible_disallow_ctx_resolve_tools
 
+# Require explicit Python package initializers in every module. rules_python's
+# explicit_init_py module setting covers only the module that sets it, so
+# dependencies such as rules_android would otherwise warn on every analysis.
+# https://github.com/bazel-contrib/rules_python/issues/2945
+common --@rules_python//python/config_settings:incompatible_default_to_explicit_init_py
+
 # Strip symbols from Rust binaries (~21% smaller on macOS arm64: 455 KB -> 360 KB).
 # Set here because rules_rust ignores Cargo [profile.release].
 build --@rules_rust//:extra_rustc_flags=-Cstrip=symbols
