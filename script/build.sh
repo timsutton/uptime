@@ -17,10 +17,12 @@ source ./script/deps.sh
 source ./script/bazel_flags.sh
 
 bazel info
-bazel build "${BAZEL_BUILD_FLAGS[@]}" //...
+bazel build "${BAZEL_BUILD_FLAGS[@]}" "${BUILD_TARGETS}"
 
 # At this point these are only lint-type checks
-bazel test "${BAZEL_BUILD_FLAGS[@]}" --test_output=errors //...
+if [[ "${PLATFORM}" != "linux" ]]; then
+	bazel test "${BAZEL_BUILD_FLAGS[@]}" --test_output=errors //...
+fi
 
 for tgt in $(bazel query "${BINARIES_QUERY}"); do
 	bazel run --config=quiet "${BAZEL_BUILD_FLAGS[@]}" "${tgt}"

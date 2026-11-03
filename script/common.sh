@@ -20,6 +20,16 @@ if [[ "$(uname -s)" = "Linux" ]]; then
 fi
 export PLATFORM
 
+# TEMPORARY (hermetic-llvm experiment): only build Swift on Linux to iterate faster.
+BUILD_TARGETS="//..."
+STAGE_TARGETS="//src/..."
+if [[ "${PLATFORM}" == "linux" ]]; then
+	BUILD_TARGETS="//src/swift/..."
+	STAGE_TARGETS="//src/swift/..."
+	BINARIES_QUERY="kind(.*_binary, //src/swift/...)"
+fi
+export BUILD_TARGETS STAGE_TARGETS
+
 # TODO: comment for why this is needed
 export LANG="en_US.UTF-8"
 
