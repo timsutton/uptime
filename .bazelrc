@@ -40,10 +40,7 @@ build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-o
 # The cc toolchain on Linux comes from hermetic-llvm (see MODULE.bazel), so we
 # no longer depend on the runner's Clang via CC=clang.
 build:linux --features=swift.static_stdlib
-
-# TEMPORARY (hermetic-llvm experiment): keep building past failures on Linux so
-# CI reports every target that breaks with the new toolchain, not just the first.
-build:linux --keep_going
+build:linux --platforms=//tools/platforms:linux_libstdcxx
 
 # CI-only settings. CI enables this config for every run (see
 # .github/workflows/build-test.yml).

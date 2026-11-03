@@ -10,7 +10,7 @@ bazel_dep(name = "rules_cc", version = "0.2.27")
 # Hermetic LLVM cc toolchain (no host clang or sysroot), registered only for Linux
 # exec/target so macOS keeps using apple_support's Xcode toolchain.
 # https://github.com/hermeticbuild/hermetic-llvm
-bazel_dep(name = "llvm", version = "0.8.25")
+bazel_dep(name = "llvm", version = "0.8.26")
 
 llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
 llvm_toolchain.exec(
@@ -184,6 +184,13 @@ python.toolchain(
 
 # swift
 bazel_dep(name = "rules_swift", version = "4.2.2", repo_name = "build_bazel_rules_swift")
+
+# Forward the libc include paths of sysroot-less cc toolchains (hermetic-llvm) to swiftc.
+single_version_override(
+    module_name = "rules_swift",
+    patch_strip = 1,
+    patches = ["//tools/patches:rules_swift-sysrootless_cc_toolchain.patch"],
+)
 
 swift = use_extension("@build_bazel_rules_swift//swift:extensions.bzl", "swift")
 swift.toolchain(
