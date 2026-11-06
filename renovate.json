@@ -6,6 +6,7 @@
     "schedule": [
         "every 1 weeks on Monday"
     ],
+    "platformAutomerge": false,
     "customManagers": [
         {
             "customType": "regex",
