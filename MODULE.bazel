@@ -201,6 +201,8 @@ register_toolchains("@d_toolchains//:all")
 bazel_dep(name = "rules_zig", version = "0.17.0")
 
 zig = use_extension("@rules_zig//zig:extensions.bzl", "zig")
+# rules_zig 0.17.0 does not know about Zig 0.17.1 yet; drop zig_index.json once a newer rules_zig is released.
+zig.index(file = "//:zig_index.json")
 zig.toolchain(zig_version = "0.17.1")
 
 # formatting
