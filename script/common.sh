@@ -34,6 +34,14 @@ function install_apt_packages() {
 		sudo apt-get install -y openjdk-17-jdk-headless
 	fi
 
+	# Needed for building on a bare Ubuntu image; GitHub-hosted runners already have these.
+	# - clang: the cc toolchain, as .bazelrc sets CC=clang on Linux
+	# - git: required by cgrindel_bazel_starlib's git toolchain (pulled in via Swift deps)
+	# - libncurses6: runtime dependency of the downloaded swiftc
+	# - libxml2-dev: -lxml2 when statically linking Foundation
+	# - lld: rules_swift passes `-z nostart-stop-gc`, which ld.gold rejects
+	sudo apt-get install -y --no-install-recommends clang git libncurses6 libxml2-dev lld
+
 	if [ -z "${JAVA_HOME:-}" ]; then
 		# shellcheck disable=SC2155
 		export JAVA_HOME="$(dirname "$(dirname "$(realpath "$(which javac)")")")"
