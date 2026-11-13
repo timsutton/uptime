@@ -186,7 +186,7 @@ register_toolchains(
 bazel_dep(name = "rules_apple", version = "5.4.0", repo_name = "build_bazel_rules_apple")
 
 # d
-bazel_dep(name = "rules_d", version = "0.12.1")
+bazel_dep(name = "rules_d", version = "0.13.0")
 
 d = use_extension("@rules_d//d:extensions.bzl", "d")
 
