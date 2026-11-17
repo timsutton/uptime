@@ -157,7 +157,7 @@ python.toolchain(
 )
 
 # swift
-bazel_dep(name = "rules_swift", version = "4.2.2", repo_name = "build_bazel_rules_swift")
+bazel_dep(name = "rules_swift", version = "4.3.0", repo_name = "build_bazel_rules_swift")
 
 swift = use_extension("@build_bazel_rules_swift//swift:extensions.bzl", "swift")
 swift.toolchain(
@@ -219,7 +219,7 @@ http_jar = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_j
 
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "10.1.0",
+    version = "10.2.0",
     dev_dependency = True,
 )
 
