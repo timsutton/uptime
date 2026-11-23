@@ -1,9 +1,8 @@
 def format(target):
-    # This currently results in a lot of:
-    # Error: 'NoneType' value has no field or method 'path'
-    #
-    # TODO: improve this Starlark so that we can filter out the non-applicable targets for this
-    #       query before we try and access any executable-related attributes
+    # Filter out targets that can't produce a runnable executable before accessing any
+    # executable-related attributes (files_to_run is None for non-executable targets).
+    if target.files_to_run == None:
+        return ""
     exe = target.files_to_run.executable
     if exe == None:
         return ""
