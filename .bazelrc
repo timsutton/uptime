@@ -70,5 +70,31 @@ build:remote_cache --remote_cache_compression
 build:remote_cache --remote_downloader=grpcs://bazel-remote.sutton.computer
 build:remote_cache --remote_downloader_local_fallback
 
+# Remote execution on the homelab Buildbarn cluster, reachable from the LAN or
+# Tailscale. The workers are Linux x86_64, so this builds Linux x86_64 binaries
+# from any client: bazel build --config=remote //src/...
+# Don't combine it with --config=linux, --config=macos or --config=remote_cache.
+build:remote --remote_executor=grpcs://buildbarn.k8s.sutton.computer
+build:remote --remote_cache=grpcs://buildbarn.k8s.sutton.computer
+build:remote --remote_instance_name=homelab
+build:remote --platforms=//tools/platforms:linux_x86_64_remote
+build:remote --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
+build:remote --features=swift.static_stdlib
+build:remote --spawn_strategy=remote
+build:remote --noremote_local_fallback
+# One worker with 20 execution slots.
+build:remote --jobs=20
+# Uploading language SDKs over a slow link can take longer than the default 60s.
+build:remote --remote_timeout=10m
+build:remote --remote_download_outputs=toplevel
+# The cluster is the cache, so don't keep a second copy of everything locally.
+build:remote --disk_cache=
+# Upload and download only the changed chunks of large blobs.
+build:remote --experimental_remote_cache_chunking
+# Publish build events to Buildbarn Portal.
+build:remote --bes_backend=grpcs://buildbarn-portal.k8s.sutton.computer
+build:remote --bes_results_url=https://buildbarn-portal.k8s.sutton.computer/bazel-invocations/
+build:remote --bes_upload_mode=fully_async
+
 # Load optional per-user overrides after the shared repository settings.
 try-import %workspace%/user.bazelrc
