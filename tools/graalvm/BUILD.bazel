@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 # @graalvm only ever holds the distribution for the client's OS and CPU, so
-# --config=remote registers this one for its Linux x86_64 workers.
+# --config=remote_linux registers this one for its Linux x86_64 workers.
 toolchain(
     name = "linux_x86_64",
     exec_compatible_with = [

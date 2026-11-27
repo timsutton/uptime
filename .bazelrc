@@ -78,7 +78,7 @@ build:remote_cache --remote_downloader=grpcs://bazel-remote.sutton.computer
 build:remote_cache --remote_downloader_local_fallback
 
 # Remote execution on the homelab Buildbarn cluster, reachable from the LAN or
-# Tailscale. --config=remote and --config=remote_macos both include these
+# Tailscale. --config=remote_linux and --config=remote_macos both include these
 # shared settings. Don't combine either with --config=linux or
 # --config=remote_cache.
 build:buildbarn --remote_executor=grpcs://buildbarn.k8s.sutton.computer
@@ -98,16 +98,16 @@ build:buildbarn --bes_results_url=https://buildbarn-portal.k8s.sutton.computer/b
 build:buildbarn --bes_upload_mode=fully_async
 
 # Build Linux x86_64 binaries on the Linux workers, from any client:
-# bazel build --config=remote //src/...
-build:remote --config=buildbarn
-build:remote --platforms=//tools/platforms:linux_x86_64_remote
-build:remote --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
-build:remote --features=swift.static_stdlib
-build:remote --extra_toolchains=//tools/graalvm:linux_x86_64
+# bazel build --config=remote_linux //src/...
+build:remote_linux --config=buildbarn
+build:remote_linux --platforms=//tools/platforms:linux_x86_64_remote
+build:remote_linux --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
+build:remote_linux --features=swift.static_stdlib
+build:remote_linux --extra_toolchains=//tools/graalvm:linux_x86_64
 # The Linux workers can't run Xcode.
-build:remote --build_tag_filters=-requires-macos
+build:remote_linux --build_tag_filters=-requires-macos
 # One worker with 20 execution slots.
-build:remote --jobs=20
+build:remote_linux --jobs=20
 
 # Build macOS arm64 binaries on the Mac worker, from a Mac client (Xcode and
 # the macOS toolchains are configured from the client):
