@@ -88,7 +88,6 @@ build:buildbarn --spawn_strategy=remote
 build:buildbarn --noremote_local_fallback
 # Uploading language SDKs over a slow link can take longer than the default 60s.
 build:buildbarn --remote_timeout=10m
-build:buildbarn --remote_download_outputs=toplevel
 # The cluster is the cache, so don't keep a second copy of everything locally.
 build:buildbarn --disk_cache=
 # Upload and download only the changed chunks of large blobs.
