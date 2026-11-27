@@ -221,6 +221,14 @@ bazel_dep(name = "rules_apple", version = "5.4.0", repo_name = "build_bazel_rule
 # d
 bazel_dep(name = "rules_d", version = "0.13.1")
 
+# ldc2, its config and its import/ldc modules aren't declared as compiler inputs,
+# which breaks remote execution.
+single_version_override(
+    module_name = "rules_d",
+    patch_strip = 1,
+    patches = ["//tools/patches:rules_d-ldc2_inputs.patch"],
+)
+
 d = use_extension("@rules_d//d:extensions.bzl", "d")
 
 # LDC ships prebuilt compilers for macOS and Linux on both x86_64 and arm64

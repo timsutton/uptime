@@ -1,0 +1,21 @@
+--- a/d/private/sdk/BUILD.ldc.bazel
++++ b/d/private/sdk/BUILD.ldc.bazel
+@@ -61,11 +61,17 @@
+ filegroup(
+     name = "dmd",
+     srcs = ["bin/ldmd2"],
++    # ldmd2 is a wrapper which executes ldc2, and ldc2 reads etc/ldc2.conf.
+     data = [
+         ":druntime_files",
+         ":phobos_files",
+         ":stdlib_files",
+-    ],
++    ] + glob([
++        "bin/ldc2",
++        "etc/**",
++        # Compiler modules such as ldc.attributes, which druntime imports.
++        "import/ldc/**",
++    ]),
+ )
+ 
+ filegroup(
