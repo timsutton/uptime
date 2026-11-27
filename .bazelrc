@@ -38,10 +38,15 @@ build:quiet --noshow_loading_progress
 # Keep --config=macos valid even when it doesn't need platform-specific flags.
 build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-on-macos
 
+# Apply the *:linux and *:macos settings on those hosts without --config.
+common --enable_platform_specific_config
+
 # Do Swift static linking on Linux
 # The cc toolchain on Linux comes from hermetic-llvm (see MODULE.bazel), so we
 # no longer depend on the runner's Clang via CC=clang.
 build:linux --features=swift.static_stdlib
+# The platform applies to exec tools as well as targets: tests need an execution
+# platform which satisfies the target platform's constraints.
 build:linux --host_platform=//tools/platforms:linux_libstdcxx
 
 # CI-only settings. CI enables this config for every run (see
