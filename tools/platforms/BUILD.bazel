@@ -24,3 +24,20 @@ platform(
         "pool": "k8s-ubuntu26-04",
     },
 )
+
+# The homelab Buildbarn Mac worker: macOS on Apple silicon. Actions that use
+# Xcode run with the worker's Xcode, so keep its version in step with the
+# client's. The exec_properties must match the worker's platform properties
+# exactly.
+platform(
+    name = "macos_remote",
+    constraint_values = [
+        "@platforms//os:osx",
+        "@platforms//cpu:aarch64",
+    ],
+    exec_properties = {
+        "ISA": "aarch64",
+        "OSFamily": "darwin",
+        "pool": "mac",
+    },
+)

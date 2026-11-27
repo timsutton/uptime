@@ -11,7 +11,7 @@ load("@platforms//host:constraints.bzl", "HOST_CONSTRAINTS")
 # Building for iOS needs Xcode, so skip these targets in builds of //... on other
 # hosts. This checks the host rather than the target platform, because
 # ios_application always builds for an iOS platform. For the same reason,
-# --config=remote, whose workers run Linux, filters these out by tag.
+# --config=remote_linux, whose workers run Linux, filters these out by tag.
 MACOS_HOST_ONLY = [] if "@platforms//os:osx" in HOST_CONSTRAINTS else ["@platforms//:incompatible"]
 
 swift_library(

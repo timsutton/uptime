@@ -78,33 +78,43 @@ build:remote_cache --remote_downloader=grpcs://bazel-remote.sutton.computer
 build:remote_cache --remote_downloader_local_fallback
 
 # Remote execution on the homelab Buildbarn cluster, reachable from the LAN or
-# Tailscale. The workers are Linux x86_64, so this builds Linux x86_64 binaries
-# from any client: bazel build --config=remote //src/...
-# Don't combine it with --config=linux, --config=macos or --config=remote_cache.
-build:remote --remote_executor=grpcs://buildbarn.k8s.sutton.computer
-build:remote --remote_cache=grpcs://buildbarn.k8s.sutton.computer
-build:remote --remote_instance_name=homelab
-build:remote --platforms=//tools/platforms:linux_x86_64_remote
-build:remote --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
-build:remote --features=swift.static_stdlib
-build:remote --extra_toolchains=//tools/graalvm:linux_x86_64
-build:remote --spawn_strategy=remote
-# There are no macOS workers.
-build:remote --build_tag_filters=-requires-macos
-build:remote --noremote_local_fallback
-# One worker with 20 execution slots.
-build:remote --jobs=20
+# Tailscale. --config=remote_linux and --config=remote_macos both include these
+# shared settings. Don't combine either with --config=linux or
+# --config=remote_cache.
+build:buildbarn --remote_executor=grpcs://buildbarn.k8s.sutton.computer
+build:buildbarn --remote_cache=grpcs://buildbarn.k8s.sutton.computer
+build:buildbarn --remote_instance_name=homelab
+build:buildbarn --spawn_strategy=remote
+build:buildbarn --noremote_local_fallback
 # Uploading language SDKs over a slow link can take longer than the default 60s.
-build:remote --remote_timeout=10m
-build:remote --remote_download_outputs=toplevel
+build:buildbarn --remote_timeout=10m
 # The cluster is the cache, so don't keep a second copy of everything locally.
-build:remote --disk_cache=
+build:buildbarn --disk_cache=
 # Upload and download only the changed chunks of large blobs.
-build:remote --experimental_remote_cache_chunking
+build:buildbarn --experimental_remote_cache_chunking
 # Publish build events to Buildbarn Portal.
-build:remote --bes_backend=grpcs://buildbarn-portal.k8s.sutton.computer
-build:remote --bes_results_url=https://buildbarn-portal.k8s.sutton.computer/bazel-invocations/
-build:remote --bes_upload_mode=fully_async
+build:buildbarn --bes_backend=grpcs://buildbarn-portal.k8s.sutton.computer
+build:buildbarn --bes_results_url=https://buildbarn-portal.k8s.sutton.computer/bazel-invocations/
+build:buildbarn --bes_upload_mode=fully_async
+
+# Build Linux x86_64 binaries on the Linux workers, from any client:
+# bazel build --config=remote_linux //src/...
+build:remote_linux --config=buildbarn
+build:remote_linux --platforms=//tools/platforms:linux_x86_64_remote
+build:remote_linux --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
+build:remote_linux --features=swift.static_stdlib
+build:remote_linux --extra_toolchains=//tools/graalvm:linux_x86_64
+# The Linux workers can't run Xcode.
+build:remote_linux --build_tag_filters=-requires-macos
+# One worker with 20 execution slots.
+build:remote_linux --jobs=20
+
+# Build macOS arm64 binaries on the Mac worker, from a Mac client (Xcode and
+# the macOS toolchains are configured from the client):
+# bazel build --config=remote_macos //src/...
+build:remote_macos --config=buildbarn
+build:remote_macos --platforms=//tools/platforms:macos_remote
+build:remote_macos --extra_execution_platforms=//tools/platforms:macos_remote
 
 # Load optional per-user overrides after the shared repository settings.
 try-import %workspace%/user.bazelrc
