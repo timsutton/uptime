@@ -19,6 +19,9 @@ jobs:
           set -euo pipefail
 
           echo 'build --config=ci' >>~/.bazelrc
+          # With the repo contents cache on, a remote cache error while loading
+          # fails the build instead of falling back.
+          echo 'startup --noexperimental_remote_repo_contents_cache' >>~/.bazelrc
 
           # Secrets are unavailable to pull requests from forks.
           if [[ -z "${BAZEL_REMOTE_BASIC_AUTH}" ]]; then

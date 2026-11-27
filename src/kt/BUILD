@@ -41,7 +41,6 @@ native_image(
         ":linux": "MainLinuxKt",
         ":macos": "MainDarwinKt",
     }),
-    native_image_tool = "@graalvm//:native-image",
     proxy_configuration = "jna-proxy-config.json",
     reflection_configuration = "jna-reflection-config.json",
     deps = [":uptime_jar"],

@@ -7,6 +7,13 @@ build --tool_java_language_version=17
 # compiling them and when running rules_android's tools, so use JDK 21.
 build --tool_java_runtime_version=remotejdk_21
 
+# Also cache the results of reproducible repository rules in the remote cache,
+# and download their files only when needed. This does nothing without a remote
+# cache. Startup options can't be limited to a --config. The feature is still
+# experimental: remove this if builds hang while loading. CI turns it off,
+# because remote cache errors become fatal despite --remote_local_fallback.
+startup --experimental_remote_repo_contents_cache
+
 # Reuse action outputs across clean builds and CI jobs.
 build --disk_cache=~/.cache/bazel/disk
 
@@ -69,6 +76,35 @@ build:remote_cache --remote_cache_compression
 # back to the original URLs if it is unavailable.
 build:remote_cache --remote_downloader=grpcs://bazel-remote.sutton.computer
 build:remote_cache --remote_downloader_local_fallback
+
+# Remote execution on the homelab Buildbarn cluster, reachable from the LAN or
+# Tailscale. The workers are Linux x86_64, so this builds Linux x86_64 binaries
+# from any client: bazel build --config=remote //src/...
+# Don't combine it with --config=linux, --config=macos or --config=remote_cache.
+build:remote --remote_executor=grpcs://buildbarn.k8s.sutton.computer
+build:remote --remote_cache=grpcs://buildbarn.k8s.sutton.computer
+build:remote --remote_instance_name=homelab
+build:remote --platforms=//tools/platforms:linux_x86_64_remote
+build:remote --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
+build:remote --features=swift.static_stdlib
+build:remote --extra_toolchains=//tools/graalvm:linux_x86_64
+build:remote --spawn_strategy=remote
+# There are no macOS workers.
+build:remote --build_tag_filters=-requires-macos
+build:remote --noremote_local_fallback
+# One worker with 20 execution slots.
+build:remote --jobs=20
+# Uploading language SDKs over a slow link can take longer than the default 60s.
+build:remote --remote_timeout=10m
+build:remote --remote_download_outputs=toplevel
+# The cluster is the cache, so don't keep a second copy of everything locally.
+build:remote --disk_cache=
+# Upload and download only the changed chunks of large blobs.
+build:remote --experimental_remote_cache_chunking
+# Publish build events to Buildbarn Portal.
+build:remote --bes_backend=grpcs://buildbarn-portal.k8s.sutton.computer
+build:remote --bes_results_url=https://buildbarn-portal.k8s.sutton.computer/bazel-invocations/
+build:remote --bes_upload_mode=fully_async
 
 # Load optional per-user overrides after the shared repository settings.
 try-import %workspace%/user.bazelrc

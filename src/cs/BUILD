@@ -24,9 +24,27 @@ config_setting(
     ],
 )
 
+# Remote workers can't reach nuget.org, so on Linux x86_64 the packages are
+# Bazel inputs. Other platforms download them while publishing.
+RUNTIME_PACKAGES = [
+    "@nupkg_microsoft.aspnetcore.app.runtime.linux-x64//file",
+    "@nupkg_microsoft.net.illink.tasks//file",
+    "@nupkg_microsoft.netcore.app.runtime.linux-x64//file",
+]
+
+NATIVEAOT_PACKAGES = RUNTIME_PACKAGES + [
+    "@nupkg_microsoft.dotnet.ilcompiler//file",
+    "@nupkg_microsoft.netcore.app.runtime.nativeaot.linux-x64//file",
+    "@nupkg_runtime.linux-x64.microsoft.dotnet.ilcompiler//file",
+]
+
 dotnet_singlefile_binary(
     name = "uptime",
     srcs = ["Program.cs"],
+    nuget_packages = select({
+        ":linux_x86_64": RUNTIME_PACKAGES,
+        "//conditions:default": [],
+    }),
     project = "uptime.csproj",
     runtime_identifier = select({
         ":macos_arm64": "osx-arm64",
@@ -54,6 +72,10 @@ dotnet_singlefile_binary(
 dotnet_nativeaot_binary(
     name = "uptime_aot",
     srcs = ["Program.cs"],
+    nuget_packages = select({
+        ":linux_x86_64": NATIVEAOT_PACKAGES,
+        "//conditions:default": [],
+    }),
     project = "uptime.csproj",
     runtime_identifier = select({
         ":macos_arm64": "osx-arm64",

@@ -7,3 +7,20 @@ platform(
     constraint_values = ["@llvm//constraints/cxxstdlib:libstdcxx.12.5.0"],
     parents = ["@platforms//host"],
 )
+
+# The homelab Buildbarn workers: Ubuntu 22.04 on x86_64. The exec_properties
+# must match the worker's platform properties exactly.
+platform(
+    name = "linux_x86_64_remote",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        # See linux_libstdcxx above.
+        "@llvm//constraints/cxxstdlib:libstdcxx.12.5.0",
+    ],
+    exec_properties = {
+        "ISA": "x86_64",
+        "OSFamily": "linux",
+        "pool": "k8s-ubuntu22-04",
+    },
+)

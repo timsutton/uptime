@@ -10,12 +10,14 @@ load("@platforms//host:constraints.bzl", "HOST_CONSTRAINTS")
 
 # Building for iOS needs Xcode, so skip these targets in builds of //... on other
 # hosts. This checks the host rather than the target platform, because
-# ios_application always builds for an iOS platform.
+# ios_application always builds for an iOS platform. For the same reason,
+# --config=remote, whose workers run Linux, filters these out by tag.
 MACOS_HOST_ONLY = [] if "@platforms//os:osx" in HOST_CONSTRAINTS else ["@platforms//:incompatible"]
 
 swift_library(
     name = "app_lib",
     srcs = ["UptimeApp.swift"],
+    tags = ["requires-macos"],
     target_compatible_with = MACOS_HOST_ONLY,
 )
 
@@ -25,6 +27,7 @@ ios_application(
     families = ["iphone"],
     infoplists = ["Info.plist"],
     minimum_os_version = "18.0",
+    tags = ["requires-macos"],
     target_compatible_with = MACOS_HOST_ONLY,
     deps = [":app_lib"],
 )
