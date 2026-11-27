@@ -80,7 +80,10 @@ build:remote --remote_instance_name=homelab
 build:remote --platforms=//tools/platforms:linux_x86_64_remote
 build:remote --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
 build:remote --features=swift.static_stdlib
+build:remote --extra_toolchains=//tools/graalvm:linux_x86_64
 build:remote --spawn_strategy=remote
+# There are no macOS workers.
+build:remote --build_tag_filters=-requires-macos
 build:remote --noremote_local_fallback
 # One worker with 20 execution slots.
 build:remote --jobs=20

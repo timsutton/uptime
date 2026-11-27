@@ -81,6 +81,17 @@ register_toolchains("@graalvm//:jvm")
 
 register_toolchains("@graalvm//:sdk")
 
+# The same release as above, for Linux x86_64 remote execution (see //tools/graalvm).
+graalvm_http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+graalvm_http_archive(
+    name = "graalvm_linux_x86_64",
+    build_file = "//tools/graalvm:graalvm.BUILD",
+    sha256 = "e34ec7e8e8c6a4bb99ab4fa32c3e04d01f2f2bd88920ddda7545fd35a0511f75",
+    strip_prefix = "graalvm-community-openjdk-22.0.1+8.1",
+    url = "https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-22.0.1/graalvm-community-jdk-22.0.1_linux-x64_bin.tar.gz",
+)
+
 bazel_dep(name = "rules_java", version = "9.9.0")
 bazel_dep(name = "rules_jvm_external", version = "7.2")
 
@@ -116,6 +127,14 @@ use_repo(crate, "crates")
 # dotnet
 bazel_dep(name = "rules_dotnet", version = "0.22.2")
 
+# rules_dotnet leaves the SDK's targeting and apphost packs out of the toolchain's
+# files, so remote workers don't receive them.
+single_version_override(
+    module_name = "rules_dotnet",
+    patch_strip = 1,
+    patches = ["//tools/patches:rules_dotnet-sdk_packs.patch"],
+)
+
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
 dotnet.toolchain(dotnet_version = "10.0.400")
 use_repo(
@@ -128,6 +147,30 @@ use_repo(
 )
 
 register_toolchains("@dotnet_toolchains//:all")
+
+# The NuGet packages that publishing //src/cs needs on Linux x86_64, where remote
+# workers can't reach nuget.org. The version is the runtime version of the SDK
+# above, so update both together.
+nupkg_http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+NUGET_RUNTIME_VERSION = "10.0.11"
+
+[
+    nupkg_http_file(
+        name = "nupkg_" + package,
+        downloaded_file_path = "{}.{}.nupkg".format(package, NUGET_RUNTIME_VERSION),
+        sha256 = sha256,
+        url = "https://api.nuget.org/v3-flatcontainer/{0}/{1}/{0}.{1}.nupkg".format(package, NUGET_RUNTIME_VERSION),
+    )
+    for package, sha256 in {
+        "microsoft.aspnetcore.app.runtime.linux-x64": "e2c6e51115cd654275222ae70971587bd9514336c2f948910a274ffcd004e791",
+        "microsoft.dotnet.ilcompiler": "da108b2e633101c25b0df6a7a0c6023614f24b92f4bfb0eb2c0814e678a0c871",
+        "microsoft.net.illink.tasks": "28ee7ccf5c4bdfe67823c8e0ea62232174f61e224d77e7c6ef5caa1413ac0a76",
+        "microsoft.netcore.app.runtime.linux-x64": "dec12c4b4ed5d2739669243756493090bb0f7b013a33a0eb84ec77428a8ab1ca",
+        "microsoft.netcore.app.runtime.nativeaot.linux-x64": "0cdb85db8968305eb2a27b46236aa862ad7a27898a5c7d9b5d8a5c10486459c7",
+        "runtime.linux-x64.microsoft.dotnet.ilcompiler": "b8c66ae71b46fb629090a6baff7eaee2e63b799de39fb49ec7d72acf98cb0102",
+    }.items()
+]
 
 # ruby
 bazel_dep(name = "rules_ruby", version = "0.29.0")

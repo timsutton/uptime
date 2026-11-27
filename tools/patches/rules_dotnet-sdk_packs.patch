@@ -1,0 +1,10 @@
+--- a/dotnet/repositories.bzl
++++ b/dotnet/repositories.bzl
+@@ -44,6 +44,7 @@
+     }}),
+     data = glob([
+         "host/**/*",
++        "packs/**/*",
+         "sdk/**/*",
+         "shared/Microsoft.AspNetCore.App/**/*",
+         "shared/Microsoft.NETCore.App/**/*",
