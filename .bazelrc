@@ -42,7 +42,7 @@ build:macos --features=noop-this-is-because-we-have-no-config-flags-to-set-yet-o
 # The cc toolchain on Linux comes from hermetic-llvm (see MODULE.bazel), so we
 # no longer depend on the runner's Clang via CC=clang.
 build:linux --features=swift.static_stdlib
-build:linux --platforms=//tools/platforms:linux_libstdcxx
+build:linux --host_platform=//tools/platforms:linux_libstdcxx
 
 # CI-only settings. CI enables this config for every run (see
 # .github/workflows/build-test.yml).
