@@ -7,6 +7,12 @@ build --tool_java_language_version=17
 # compiling them and when running rules_android's tools, so use JDK 21.
 build --tool_java_runtime_version=remotejdk_21
 
+# Also cache the results of reproducible repository rules in the remote cache,
+# and download their files only when needed. This does nothing without a remote
+# cache. Startup options can't be limited to a --config. The feature is still
+# experimental: remove this if builds hang while loading.
+startup --experimental_remote_repo_contents_cache
+
 # Reuse action outputs across clean builds and CI jobs.
 build --disk_cache=~/.cache/bazel/disk
 
