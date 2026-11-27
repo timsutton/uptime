@@ -1,0 +1,9 @@
+package(default_visibility = ["//visibility:public"])
+
+# The Swift runtime archives are built against libstdc++, so linking a Linux Swift
+# binary needs hermetic-llvm's libstdc++ instead of its default libc++.
+platform(
+    name = "linux_libstdcxx",
+    constraint_values = ["@llvm//constraints/cxxstdlib:libstdcxx.12.5.0"],
+    parents = ["@platforms//host"],
+)

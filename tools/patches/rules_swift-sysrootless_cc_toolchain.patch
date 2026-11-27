@@ -1,0 +1,86 @@
+diff --git a/swift/toolchains/swift_toolchain.bzl b/swift/toolchains/swift_toolchain.bzl
+index 071b2781..df0a7efa 100644
+--- a/swift/toolchains/swift_toolchain.bzl
++++ b/swift/toolchains/swift_toolchain.bzl
+@@ -486,8 +486,15 @@ def _swift_unix_linkopts_cc_info(
+         "-l_CFXMLInterface",
+         "-l_FoundationCShims",
+         "-l_FoundationCollections",
+-        "-lcurl",
+-        "-lxml2",
++    ] + (
++        # Toolchains without a sysroot have no system copies of these libraries,
++        # and lld fails on missing `-l` flags even under `--as-needed`. Targets
++        # using FoundationNetworking or FoundationXML must provide them instead.
++        [] if _explicit_system_include_dirs(_c_compile_args(ctx, cc_toolchain)) else [
++            "-lcurl",
++            "-lxml2",
++        ]
++    ) + [
+         "-Wl,--pop-state",
+     ]
+ 
+@@ -644,6 +651,35 @@ def _android_target_system_name(ctx, cc_toolchain):
+ 
+     fail("Android CC toolchain compiler arguments do not contain a `--target=` argument")
+ 
++def _explicit_system_include_dirs(c_compile_args):
++    """Returns the `-isystem` directories of a toolchain without a real sysroot.
++
++    Sysroot-less toolchains such as hermetic-llvm pass `-nostdlibinc` and list
++    their libc and kernel headers with `-isystem` instead.
++    """
++    if "-nostdlibinc" not in c_compile_args:
++        return []
++    return [
++        c_compile_args[index + 1]
++        for index, arg in enumerate(c_compile_args[:-1])
++        if arg == "-isystem"
++    ]
++
++def _sdkroot_from_explicit_libc_headers(c_compile_args):
++    """Returns an SDK root that exposes a sysroot-less toolchain's libc headers.
++
++    The Swift compiler only injects its glibc module map into a libc include
++    directory that the Clang driver derives from the sysroot, so `-isystem` alone
++    isn't enough. The driver searches `<sysroot>/include`, so a libc directory
++    named `include` can be selected by using its parent as the SDK root. Header
++    directories are opaque during analysis, so this relies on the libc headers
++    being listed last, after any kernel headers they depend on.
++    """
++    include_dirs = _explicit_system_include_dirs(c_compile_args)
++    if include_dirs and paths.basename(include_dirs[-1]) == "include":
++        return paths.dirname(include_dirs[-1])
++    return None
++
+ def _resolve_sdkroot(ctx, cc_toolchain):
+     """Returns the SDK root (sysroot) for `-sdk`.
+ 
+@@ -666,8 +702,12 @@ def _resolve_sdkroot(ctx, cc_toolchain):
+ 
+     # Rules based toolchains don't set the sysroot field so we have to find
+     # it in the arguments instead.
++    c_compile_args = _c_compile_args(ctx, cc_toolchain)
++    libc_sdkroot = _sdkroot_from_explicit_libc_headers(c_compile_args)
++    if libc_sdkroot:
++        return libc_sdkroot
+     sysroot_arg_prefix = "--sysroot="
+-    for arg in _c_compile_args(ctx, cc_toolchain):
++    for arg in c_compile_args:
+         if arg.startswith(sysroot_arg_prefix):
+             return arg[len(sysroot_arg_prefix):]
+     return None
+@@ -760,9 +800,12 @@ def _swift_toolchain_impl(ctx):
+ 
+     swiftcopts = []
+ 
+-    for arg in _c_compile_args(ctx, cc_toolchain):
++    c_compile_args = _c_compile_args(ctx, cc_toolchain)
++    for arg in c_compile_args:
+         if arg.startswith("--gcc-toolchain="):
+             swiftcopts.extend(["-Xcc", arg])
++    for include_dir in _explicit_system_include_dirs(c_compile_args):
++        swiftcopts.extend(["-Xcc", "-isystem", "-Xcc", include_dir])
+ 
+     if is_exec_config(ctx):
+         swiftcopts.extend(ctx.attr._exec_copts[BuildSettingInfo].value)
