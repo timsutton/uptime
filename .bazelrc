@@ -114,8 +114,8 @@ build:remote --jobs=20
 # the macOS toolchains are configured from the client):
 # bazel build --config=remote_macos //src/...
 build:remote_macos --config=buildbarn
-build:remote_macos --platforms=//tools/platforms:macos_arm64_remote
-build:remote_macos --extra_execution_platforms=//tools/platforms:macos_arm64_remote
+build:remote_macos --platforms=//tools/platforms:macos_remote
+build:remote_macos --extra_execution_platforms=//tools/platforms:macos_remote
 
 # Load optional per-user overrides after the shared repository settings.
 try-import %workspace%/user.bazelrc
