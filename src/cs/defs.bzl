@@ -50,6 +50,8 @@ export PATH="/usr/bin:/bin:/usr/sbin:${{PATH:-}}"
 export DOTNET_MULTILEVEL_LOOKUP=0
 export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+# Remote workers lack libicu; run the CLI with invariant globalization.
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 export DOTNET_CLI_HOME="$(pwd)/{intermediate}/.dotnet"
 # Remote workers don't set HOME, which NuGet requires.
 export HOME="$DOTNET_CLI_HOME"
@@ -132,6 +134,8 @@ export PATH="/usr/bin:/bin:/usr/sbin:${{PATH:-}}"
 export DOTNET_MULTILEVEL_LOOKUP=0
 export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+# Remote workers lack libicu; run the CLI with invariant globalization.
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 export DOTNET_CLI_HOME="$(pwd)/{intermediate}/.dotnet"
 # Remote workers don't set HOME, which NuGet requires.
 export HOME="$DOTNET_CLI_HOME"
