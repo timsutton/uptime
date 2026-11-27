@@ -8,7 +8,7 @@ platform(
     parents = ["@platforms//host"],
 )
 
-# The homelab Buildbarn workers: Ubuntu 22.04 on x86_64. The exec_properties
+# The homelab Buildbarn workers: Ubuntu 26.04 on x86_64. The exec_properties
 # must match the worker's platform properties exactly.
 platform(
     name = "linux_x86_64_remote",
@@ -21,6 +21,6 @@ platform(
     exec_properties = {
         "ISA": "x86_64",
         "OSFamily": "linux",
-        "pool": "k8s-ubuntu22-04",
+        "pool": "k8s-ubuntu26-04",
     },
 )
