@@ -116,5 +116,10 @@ build:remote_macos --config=buildbarn
 build:remote_macos --platforms=//tools/platforms:macos_remote
 build:remote_macos --extra_execution_platforms=//tools/platforms:macos_remote
 
+# Try the hermetic LLVM C/C++ toolchain and its downloaded macOS SDK on the
+# Mac worker. Swift and iOS still use the Xcode toolchains.
+build:remote_macos_llvm --config=remote_macos
+build:remote_macos_llvm --extra_toolchains=@llvm//toolchain:macos_aarch64_to_macos_aarch64,@llvm//toolchain:cc_runtimes_macos
+
 # Load optional per-user overrides after the shared repository settings.
 try-import %workspace%/user.bazelrc
