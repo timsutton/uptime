@@ -1,0 +1,48 @@
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@build_bazel_rules_swift//swift/toolchains:swift_toolchain.bzl", "swift_toolchain")
+load("@build_bazel_rules_swift//swift/toolchains:swift_tools.bzl", "swift_tools")
+
+toolchain(
+    name = "linux_x86_64_to_macos_aarch64",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:macos",
+    ],
+    toolchain = ":macos_aarch64",
+    toolchain_type = "@build_bazel_rules_swift//toolchains:toolchain_type",
+    visibility = ["//visibility:public"],
+)
+
+swift_toolchain(
+    name = "macos_aarch64",
+    arch = "arm64",
+    features = ["swift.no_embed_debug_module"],
+    os = "macos",
+    parsed_version = "6.4.1",
+    swift_resource_dir = ":macos_swift_resources",
+    swift_tools = ":linux_swift_tools",
+    version_file = "@swift_toolchain_ubuntu22.04//:.swift-version",
+)
+
+swift_tools(
+    name = "linux_swift_tools",
+    additional_inputs = [
+        "@macos_swift_sdk//sysroot",
+        "@swift_toolchain_ubuntu22.04//:swift_sdk_compiler_inputs",
+    ],
+    swift_autolink_extract = "@swift_toolchain_ubuntu22.04//:usr/bin/swift-autolink-extract",
+    swift_driver = "@swift_toolchain_ubuntu22.04//:usr/bin/swiftc",
+    swift_symbolgraph_extract = "@swift_toolchain_ubuntu22.04//:usr/bin/swift-symbolgraph-extract",
+)
+
+# Swift's Clang importer looks for built-in headers under <resource-dir>/clang.
+copy_to_directory(
+    name = "macos_swift_resources",
+    include_external_repositories = ["*"],
+    replace_prefixes = {"usr/lib/clang/*": "clang"},
+    srcs = ["@swift_toolchain_ubuntu22.04//:clang_resource_headers"],
+)

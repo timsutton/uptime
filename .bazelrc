@@ -116,13 +116,14 @@ build:remote_macos --config=buildbarn
 build:remote_macos --platforms=//tools/platforms:macos_remote
 build:remote_macos --extra_execution_platforms=//tools/platforms:macos_remote
 
-# Cross-compile macOS arm64 C/C++ binaries on the Linux worker with hermetic
-# LLVM and its downloaded macOS SDK. Swift and iOS still use Xcode.
+# Cross-compile macOS arm64 C, C++, and Swift CLI binaries on the Linux workers
+# with downloaded toolchains and SDK. The iOS app still uses Xcode.
 build:remote_macos_llvm --config=buildbarn
 build:remote_macos_llvm --platforms=//tools/platforms:macos_remote
 build:remote_macos_llvm --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
-build:remote_macos_llvm --extra_toolchains=@llvm//toolchain:linux_x86_64_to_macos_aarch64,@llvm//toolchain:cc_runtimes_macos
+build:remote_macos_llvm --extra_toolchains=@llvm//toolchain:linux_x86_64_to_macos_aarch64,@llvm//toolchain:cc_runtimes_macos,//tools/swift:linux_x86_64_to_macos_aarch64
 build:remote_macos_llvm --repo_env=BAZEL_NO_APPLE_CPP_TOOLCHAIN=1
+build:remote_macos_llvm --repo_env=BAZEL_MACOS_INCLUDE_SWIFT_SDK=1
 build:remote_macos_llvm --jobs=20
 
 # Load optional per-user overrides after the shared repository settings.

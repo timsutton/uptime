@@ -1,0 +1,30 @@
+diff --git a/extensions/osx.bzl b/extensions/osx.bzl
+--- a/extensions/osx.bzl
++++ b/extensions/osx.bzl
+@@ -222,6 +222,26 @@
+     if "PrintCore" not in frameworks:
+         excludes.append("usr/include/cups/**")
+
++    if mctx.getenv("BAZEL_MACOS_INCLUDE_SWIFT_SDK") == "1":
++        includes.extend([
++            "usr/lib/swift/*.swiftmodule/**",
++            "usr/lib/swift/shims/**",
++            "usr/lib/swift/libswiftCore.tbd",
++            "usr/lib/swift/libswiftCoreFoundation.tbd",
++            "usr/lib/swift/libswiftDarwin.tbd",
++            "usr/lib/swift/libswiftDispatch.tbd",
++            "usr/lib/swift/libswiftFoundation.tbd",
++            "usr/lib/swift/libswiftObjectiveC.tbd",
++            "usr/lib/swift/libswiftObservation.tbd",
++            "usr/lib/swift/libswiftSystem*.tbd",
++            "usr/lib/swift/libswift_*.tbd",
++            "System/Library/Frameworks/Combine.framework/**",
++            "System/Library/Frameworks/CoreServices.framework/**",
++        ])
++        # The Darwin Swift module imports the Mach bank headers.
++        excludes.remove("usr/include/bank/**")
++        excludes.remove("usr/lib/swift/**")
++
+     if sdk_source.kind == "host":
+         _host_macos_sdk_repository(
+             name = "macos_sdk",

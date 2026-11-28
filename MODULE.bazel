@@ -11,6 +11,16 @@ bazel_dep(name = "rules_cc", version = "0.2.28")
 # exec/target so macOS keeps using apple_support's Xcode toolchain.
 # https://github.com/hermeticbuild/hermetic-llvm
 bazel_dep(name = "llvm", version = "0.8.27")
+bazel_dep(name = "bazel_lib", version = "3.2.2")
+
+single_version_override(
+    module_name = "llvm",
+    patch_strip = 1,
+    patches = ["//tools/patches:llvm-macos_swift_sdk.patch"],
+)
+
+macos_sdk = use_extension("@llvm//extensions:osx.bzl", "osx")
+use_repo(macos_sdk, macos_swift_sdk = "macos_sdk")
 
 llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
 llvm_toolchain.exec(
@@ -232,7 +242,10 @@ bazel_dep(name = "rules_swift", version = "4.3.0", repo_name = "build_bazel_rule
 single_version_override(
     module_name = "rules_swift",
     patch_strip = 1,
-    patches = ["//tools/patches:rules_swift-sysrootless_cc_toolchain.patch"],
+    patches = [
+        "//tools/patches:rules_swift-sysrootless_cc_toolchain.patch",
+        "//tools/patches:rules_swift-macos_sdk.patch",
+    ],
 )
 
 swift = use_extension("@build_bazel_rules_swift//swift:extensions.bzl", "swift")

@@ -4,11 +4,11 @@ Learning Bazel with a polyglot multi-platform project: a simple `uptime` executa
 
 ## Cross-compiling for macOS with hermetic LLVM
 
-Build the Apple silicon C and C++ binaries on Buildbarn's Linux workers and download them locally:
+Build the Apple silicon C, C++, and Swift binaries on Buildbarn's Linux workers and download them locally:
 
 ```sh
 bazel build --config=remote_macos_llvm --remote_download_outputs=toplevel \
-  //src/c:uptime //src/cpp:uptime
+  //src/c:uptime //src/cpp:uptime //src/swift:uptime
 ```
 
-Hermetic LLVM downloads its own compiler and macOS SDK. The Swift CLI and iOS app still use Xcode through `--config=remote_macos`.
+Hermetic LLVM supplies Clang and the macOS SDK, and the Swift.org Linux toolchain supplies `swiftc`. The iOS app still uses Xcode through `--config=remote_macos`.
