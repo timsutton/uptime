@@ -7,10 +7,22 @@ bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "apple_support", version = "2.12.0", repo_name = "build_bazel_apple_support")
 bazel_dep(name = "rules_cc", version = "0.2.28")
 
-# Hermetic LLVM cc toolchain (no host clang or sysroot), registered only for Linux
-# exec/target so macOS keeps using apple_support's Xcode toolchain.
+# Register hermetic LLVM by default for Linux. The remote_macos_llvm config
+# opts into the macOS cross-toolchains.
 # https://github.com/hermeticbuild/hermetic-llvm
 bazel_dep(name = "llvm", version = "0.8.27")
+
+# Materialize the resource directory for the Swift compiler's Clang importer.
+bazel_dep(name = "bazel_lib", version = "3.2.2")
+
+single_version_override(
+    module_name = "llvm",
+    patch_strip = 1,
+    patches = ["//tools/patches:llvm-macos_swift_sdk.patch"],
+)
+
+macos_sdk = use_extension("@llvm//extensions:osx.bzl", "osx")
+use_repo(macos_sdk, macos_swift_sdk = "macos_sdk")
 
 llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
 llvm_toolchain.exec(
@@ -232,7 +244,10 @@ bazel_dep(name = "rules_swift", version = "4.3.0", repo_name = "build_bazel_rule
 single_version_override(
     module_name = "rules_swift",
     patch_strip = 1,
-    patches = ["//tools/patches:rules_swift-sysrootless_cc_toolchain.patch"],
+    patches = [
+        "//tools/patches:rules_swift-sysrootless_cc_toolchain.patch",
+        "//tools/patches:rules_swift-macos_sdk.patch",
+    ],
 )
 
 swift = use_extension("@build_bazel_rules_swift//swift:extensions.bzl", "swift")

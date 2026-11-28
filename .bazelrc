@@ -78,8 +78,8 @@ build:remote_cache --remote_downloader=grpcs://bazel-remote.sutton.computer
 build:remote_cache --remote_downloader_local_fallback
 
 # Remote execution on the homelab Buildbarn cluster, reachable from the LAN or
-# Tailscale. --config=remote_linux and --config=remote_macos both include these
-# shared settings. Don't combine either with --config=linux or
+# Tailscale. The remote platform configs include these shared settings.
+# Don't combine them with --config=linux or
 # --config=remote_cache.
 build:buildbarn --remote_executor=grpcs://buildbarn.k8s.sutton.computer
 build:buildbarn --remote_cache=grpcs://buildbarn.k8s.sutton.computer
@@ -115,6 +115,17 @@ build:remote_linux --jobs=20
 build:remote_macos --config=buildbarn
 build:remote_macos --platforms=//tools/platforms:macos_remote
 build:remote_macos --extra_execution_platforms=//tools/platforms:macos_remote
+
+# Cross-compile macOS arm64 C, C++, and Swift CLI binaries on the Linux workers
+# with downloaded toolchains and SDK. The iOS app still uses Xcode.
+build:remote_macos_llvm --config=buildbarn
+build:remote_macos_llvm --platforms=//tools/platforms:macos_remote
+build:remote_macos_llvm --extra_execution_platforms=//tools/platforms:linux_x86_64_remote
+build:remote_macos_llvm --extra_toolchains=@llvm//toolchain:linux_x86_64_to_macos_aarch64,@llvm//toolchain:cc_runtimes_macos,//tools/swift:linux_x86_64_to_macos_aarch64
+build:remote_macos_llvm --repo_env=BAZEL_NO_APPLE_CPP_TOOLCHAIN=1
+build:remote_macos_llvm --repo_env=BAZEL_MACOS_INCLUDE_SWIFT_SDK=1
+build:remote_macos_llvm --features=-swift.static_stdlib
+build:remote_macos_llvm --jobs=20
 
 # Load optional per-user overrides after the shared repository settings.
 try-import %workspace%/user.bazelrc

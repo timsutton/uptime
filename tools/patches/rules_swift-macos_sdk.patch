@@ -1,0 +1,108 @@
+diff --git a/swift/toolchains/swift_toolchain.bzl b/swift/toolchains/swift_toolchain.bzl
+--- a/swift/toolchains/swift_toolchain.bzl
++++ b/swift/toolchains/swift_toolchain.bzl
+@@ -600,6 +600,9 @@
+         linkopts = ["-Wl,--defsym,main={}".format(entry_point_name)],
+     )
+
++def _macos_entry_point_linkopts_provider(*, entry_point_name):
++    return struct(linkopts = ["-Wl,-e,_{}".format(entry_point_name)])
++
+ def _windows_entry_point_linkopts_provider(*, entry_point_name):
+     """Returns linkopts to customize the entry point of a binary on Windows.
+
+@@ -732,6 +735,12 @@
+         target_system_name = cc_toolchain.target_gnu_system_name,
+     )
+
++    if ctx.attr.os == "macos":
++        for arg in _c_compile_args(ctx, cc_toolchain):
++            if arg.startswith("-mmacosx-version-min="):
++                target_system_name = "{}-apple-macosx{}".format(ctx.attr.arch, arg.split("=")[1])
++                break
++
+     # TODO: Use cc_toolchain.target_gnu_system_name once
+     # https://github.com/bazelbuild/rules_android_ndk/pull/147 is available.
+     if ctx.attr.os == "android":
+@@ -779,6 +788,14 @@
+         swift_linkopts_cc_info = _swift_sdk_linkopts_cc_info(
+             ctx.label,
+             ["--sysroot={}".format(sdkroot)] + ctx.attr.linkopts,
++            ctx.files.linker_inputs,
++        )
++    elif ctx.attr.os == "macos":
++        if not sdkroot:
++            fail("The macOS Swift toolchain requires an SDK")
++        swift_linkopts_cc_info = _swift_sdk_linkopts_cc_info(
++            ctx.label,
++            ["-L" + sdkroot + "/usr/lib/swift", "-lswiftCore"] + ctx.attr.linkopts,
+             ctx.files.linker_inputs,
+         )
+     elif ctx.attr.os == "wasi":
+@@ -811,6 +828,10 @@
+         )
+
+     swiftcopts = []
++    if ctx.file.swift_resource_dir:
++        swiftcopts.extend(["-resource-dir", ctx.file.swift_resource_dir.path])
++    if ctx.attr.os == "macos":
++        swiftcopts.extend(["-I", paths.join(sdkroot, "usr/lib/swift/shims")])
+
+     c_compile_args = _c_compile_args(ctx, cc_toolchain)
+     for arg in c_compile_args:
+@@ -851,3 +872,5 @@
+     additional_tools = [ctx.file.version_file]
++    if ctx.file.swift_resource_dir:
++        additional_tools.append(ctx.file.swift_resource_dir)
+     if ctx.attr.swift_tools:
+         additional_tools += ctx.attr.swift_tools[SwiftToolsInfo].additional_inputs
+@@ -905,6 +928,10 @@
+     # TODO(allevato): Move some of the remaining hardcoded values, like object
+     # format and Obj-C interop support, to attributes so that we can remove the
+     # assumptions that are only valid on Linux.
++    entry_point_linkopts_provider = {
++        "macos": _macos_entry_point_linkopts_provider,
++        "windows": _windows_entry_point_linkopts_provider,
++    }.get(ctx.attr.os, _entry_point_linkopts_provider)
+     swift_toolchain_info = SwiftToolchainInfo(
+         action_configs = all_action_configs,
+         cc_language = None,
+@@ -915,9 +942,7 @@
+         cross_import_overlays = collect_cross_import_overlays(ctx.attr.cross_import_overlays),
+         debug_outputs_provider = None,
+         developer_dirs = [],
+-        entry_point_linkopts_provider = (
+-            _windows_entry_point_linkopts_provider if ctx.attr.os == "windows" else _entry_point_linkopts_provider
+-        ),
++        entry_point_linkopts_provider = entry_point_linkopts_provider,
+         feature_allowlists = [
+             target[SwiftFeatureAllowlistInfo]
+             for target in ctx.attr.feature_allowlists
+@@ -1080,3 +1105,7 @@
+                 mandatory = False,
+             ),
++            "swift_resource_dir": attr.label(
++                allow_single_file = True,
++                doc = "Directory of target Swift compiler resources.",
++            ),
+             "static_runtime": attr.label_list(
+diff --git a/swift/internal/extensions/toolchain.BUILD b/swift/internal/extensions/toolchain.BUILD
+--- a/swift/internal/extensions/toolchain.BUILD
++++ b/swift/internal/extensions/toolchain.BUILD
+@@ -21,6 +21,7 @@
+ ### Tools referenced by Swift SDK cross-compilation repositories. ###
+
+ exports_files([
++    ".swift-version",
+     "usr/bin/clang",
+     "usr/bin/llvm-ar",
+     "usr/bin/swift",
+@@ -46,3 +47,8 @@
+     ),
+ )
+
++filegroup(
++    name = "clang_resource_headers",
++    srcs = glob(["usr/lib/clang/*/include/**"]),
++)
++
