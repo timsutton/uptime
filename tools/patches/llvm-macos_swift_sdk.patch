@@ -1,7 +1,7 @@
 diff --git a/extensions/osx.bzl b/extensions/osx.bzl
 --- a/extensions/osx.bzl
 +++ b/extensions/osx.bzl
-@@ -222,6 +222,26 @@
+@@ -222,6 +222,40 @@
      if "PrintCore" not in frameworks:
          excludes.append("usr/include/cups/**")
 
@@ -14,16 +14,30 @@ diff --git a/extensions/osx.bzl b/extensions/osx.bzl
 +            "usr/lib/swift/libswiftDarwin.tbd",
 +            "usr/lib/swift/libswiftDispatch.tbd",
 +            "usr/lib/swift/libswiftFoundation.tbd",
++            "usr/lib/swift/libswiftIOKit.tbd",
 +            "usr/lib/swift/libswiftObjectiveC.tbd",
 +            "usr/lib/swift/libswiftObservation.tbd",
++            "usr/lib/swift/libswiftSwiftOnoneSupport.tbd",
 +            "usr/lib/swift/libswiftSystem*.tbd",
++            "usr/lib/swift/libswiftXPC.tbd",
 +            "usr/lib/swift/libswift_*.tbd",
++            "System/Library/Frameworks/CFNetwork.framework/**",
 +            "System/Library/Frameworks/Combine.framework/**",
 +            "System/Library/Frameworks/CoreServices.framework/**",
++            "System/Library/Frameworks/DiskArbitration.framework/**",
++            "System/Library/Frameworks/IOKit.framework/**",
 +        ])
-+        # The Darwin Swift module imports the Mach bank headers.
-+        excludes.remove("usr/include/bank/**")
-+        excludes.remove("usr/lib/swift/**")
++        # Darwin imports Mach bank headers, and IOKit imports device headers.
++        excludes = [
++            path
++            for path in excludes
++            if path not in [
++                "usr/include/bank/**",
++                "usr/include/device.modulemap",
++                "usr/include/device/**",
++                "usr/lib/swift/**",
++            ]
++        ]
 +
      if sdk_source.kind == "host":
          _host_macos_sdk_repository(

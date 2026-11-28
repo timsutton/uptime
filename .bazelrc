@@ -124,6 +124,7 @@ build:remote_macos_llvm --extra_execution_platforms=//tools/platforms:linux_x86_
 build:remote_macos_llvm --extra_toolchains=@llvm//toolchain:linux_x86_64_to_macos_aarch64,@llvm//toolchain:cc_runtimes_macos,//tools/swift:linux_x86_64_to_macos_aarch64
 build:remote_macos_llvm --repo_env=BAZEL_NO_APPLE_CPP_TOOLCHAIN=1
 build:remote_macos_llvm --repo_env=BAZEL_MACOS_INCLUDE_SWIFT_SDK=1
+build:remote_macos_llvm --features=-swift.static_stdlib
 build:remote_macos_llvm --jobs=20
 
 # Load optional per-user overrides after the shared repository settings.

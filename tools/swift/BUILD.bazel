@@ -22,6 +22,7 @@ swift_toolchain(
     arch = "arm64",
     features = ["swift.no_embed_debug_module"],
     os = "macos",
+    # Keep in sync with the Swift download in MODULE.bazel.
     parsed_version = "6.4.1",
     swift_resource_dir = ":macos_swift_resources",
     swift_tools = ":linux_swift_tools",
@@ -42,7 +43,7 @@ swift_tools(
 # Swift's Clang importer looks for built-in headers under <resource-dir>/clang.
 copy_to_directory(
     name = "macos_swift_resources",
+    srcs = ["@swift_toolchain_ubuntu22.04//:clang_resource_headers"],
     include_external_repositories = ["*"],
     replace_prefixes = {"usr/lib/clang/*": "clang"},
-    srcs = ["@swift_toolchain_ubuntu22.04//:clang_resource_headers"],
 )
